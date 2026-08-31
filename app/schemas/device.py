@@ -1,4 +1,4 @@
-from src.schemas.telemetry import TelemetryResponse
+from app.schemas.telemetry import TelemetryResponse
 
 
 class DeviceStatusResponse(TelemetryResponse):

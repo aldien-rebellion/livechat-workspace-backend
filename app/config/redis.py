@@ -1,6 +1,6 @@
 import redis.asyncio as aioredis
 
-from src.config.settings import settings
+from app.config.settings import settings
 
 # Global async Redis client
 redis_client: aioredis.Redis = aioredis.from_url(
