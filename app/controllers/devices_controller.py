@@ -5,7 +5,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.core.redis import get_device_status_key, get_redis
+from app.config.redis import get_device_status_key, get_redis
 from app.db.session import get_db
 from app.models.telemetry import Telemetry
 from app.schemas.device import DeviceStatusResponse
