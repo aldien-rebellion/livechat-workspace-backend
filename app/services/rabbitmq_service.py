@@ -1,4 +1,5 @@
 import json
+import os
 from datetime import datetime
 from uuid import UUID
 
@@ -15,7 +16,8 @@ class DateTimeEncoder(json.JSONEncoder):
 
 
 async def publish_alert_email(device_id: str, voltage: float, timestamp: str):
-    connection = await aio_pika.connect_robust("amqp://guest:guest@127.0.0.1:5672/")
+    rabbitmq_url = os.getenv("RABBITMQ_URL", "amqp://guest:guest@127.0.0.1:5672/")
+    connection = await aio_pika.connect_robust(rabbitmq_url)
     async with connection:
         channel = await connection.channel()
         await channel.declare_queue("alert_emails", durable=True)
