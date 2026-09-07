@@ -1,11 +1,13 @@
 import asyncio
 import json
+import os
 
 import aio_pika
 
 
 async def main():
-    connection = await aio_pika.connect_robust("amqp://guest:guest@127.0.0.1:5672/")
+    rabbitmq_url = os.getenv("RABBITMQ_URL", "amqp://guest:guest@127.0.0.1:5672/")
+    connection = await aio_pika.connect_robust(rabbitmq_url)
 
     async with connection:
         channel = await connection.channel()
