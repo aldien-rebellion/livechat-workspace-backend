@@ -2,15 +2,22 @@ import json
 
 import redis.asyncio as aioredis
 from fastapi import APIRouter, Depends, HTTPException, status
+from pydantic import BaseModel
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.config.redis import get_device_status_key, get_redis
 from app.db.session import get_db
 from app.models.telemetry import Telemetry
+from app.models.user import User
+from app.routes.deps import get_current_admin, get_current_user
 from app.schemas.device import DeviceStatusResponse
 
 router = APIRouter()
+
+
+class CommandRequest(BaseModel):
+    command: str
 
 
 @router.get(
@@ -22,12 +29,11 @@ async def get_device_status(
     device_id: str,
     db: AsyncSession = Depends(get_db),
     redis: aioredis.Redis = Depends(get_redis),
+    current_user: User = Depends(get_current_user),
 ):
     """
     Retrieve the latest status of a device using the Cache-Aside Pattern.
-    - Checks Redis first (Cache Hit).
-    - If not found (Cache Miss), queries the latest record from PostgreSQL,
-      caches it into Redis, and returns the result.
+    Protected by Auth Middleware (requires any logged-in user).
     """
     cache_key = get_device_status_key(device_id)
 
@@ -57,3 +63,26 @@ async def get_device_status(
     await redis.set(cache_key, response_data.model_dump_json())
 
     return response_data
+
+
+@router.post(
+    "/{device_id}/commands",
+    status_code=status.HTTP_200_OK,
+)
+async def send_device_command(
+    device_id: str,
+    payload: CommandRequest,
+    current_admin: User = Depends(get_current_admin),
+):
+    """
+    Send command (e.g., Remote Reset) to Pi Pico.
+    Protected by Auth & Role Middleware (requires admin privileges).
+    """
+    # Simulate sending command to Pi Pico
+    if payload.command != "reset":
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail="Unsupported command"
+        )
+    return {
+        "message": f"Command '{payload.command}' sent successfully to device {device_id}"
+    }
