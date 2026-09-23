@@ -3,6 +3,7 @@ from fastapi import APIRouter
 from app.controllers import (
     auth_controller,
     channel_controller,
+    chat_websocket_controller,
     devices_controller,
     file_controller,
     health_controller,
@@ -13,6 +14,9 @@ from app.controllers import (
 
 api_router = APIRouter()
 api_router.include_router(health_controller.router, prefix="", tags=["Health"])
+api_router.include_router(
+    chat_websocket_controller.router, prefix="", tags=["WebSocket"]
+)
 api_router.include_router(auth_controller.router, prefix="/auth", tags=["Auth"])
 api_router.include_router(
     workspaces_router := workspace_controller.router,

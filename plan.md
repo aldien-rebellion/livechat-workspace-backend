@@ -318,7 +318,7 @@ sequenceDiagram
 [x] Phase 1: Database Entities & Migrations
 [x] Phase 2: Security, Authentication & User Management
 [x] Phase 3: Workspace, Channel (Group & DM) & File Storage Services
-[ ] Phase 4: Core Real-Time WebSocket & Redis Pub/Sub Distribution
+[x] Phase 4: Core Real-Time WebSocket & Redis Pub/Sub Distribution
 [ ] Phase 5: Presence Engine, Read Receipts & Status Caching
 [ ] Phase 6: Automated Testing Suite (Unit, Integration & WS)
 [ ] Phase 7: Containerization, CI/CD Pipeline & VPS Docker Compose
@@ -350,13 +350,13 @@ sequenceDiagram
 - [x] Task 3.4: Expose REST controllers in `app/controllers/workspace_controller.py`, `channel_controller.py`, and `file_controller.py`.
 
 ### Phase 4: Core Real-Time WebSocket & Redis Pub/Sub
-- [ ] Task 4.1: Implement `ConnectionManager` in `app/services/connection_manager.py`:
+- [x] Task 4.1: Implement `ConnectionManager` in `app/services/connection_manager.py`:
   - Track active client WebSockets by `channel_id` and `user_id`.
   - Handle connection acceptance, disconnect cleanup, and broadcast to local sockets.
-- [ ] Task 4.2: Implement `RedisPubSubManager` in `app/services/redis_pubsub.py`:
+- [x] Task 4.2: Implement `RedisPubSubManager` in `app/services/redis_pubsub.py`:
   - Listen asynchronously to Redis channel patterns (`pubsub:channel:*`).
   - Bridge incoming Redis messages to local `ConnectionManager.broadcast()`.
-- [ ] Task 4.3: Implement WebSocket controller in `app/controllers/chat_websocket_controller.py`:
+- [x] Task 4.3: Implement WebSocket controller in `app/controllers/chat_websocket_controller.py`:
   - Authenticate JWT from query or header on handshake.
   - On `message:send`: Persist message to PostgreSQL first, then publish to Redis Pub/Sub.
   - Send ACK back to sender socket.

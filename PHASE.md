@@ -26,8 +26,8 @@
 
 ## 2. Checklist for AI Agent / Engineer
 
-- [ ] Implement `ConnectionManager` for in-memory WebSocket tracking
-- [ ] Implement `RedisPubSubManager` for cross-instance message sync
-- [ ] Implement `/api/v1/ws/channels/{channel_id}` endpoint
-- [ ] Implement strict "Persist to DB first, then Pub/Sub" workflow
-- [ ] Handle connection lifecycle, heartbeat pings, and disconnects gracefully
+- [x] Implement `ConnectionManager` for in-memory WebSocket tracking
+- [x] Implement `RedisPubSubManager` for cross-instance message sync
+- [x] Implement `/api/v1/ws/channels/{channel_id}` endpoint
+- [x] Implement strict "Persist to DB first, then Pub/Sub" workflow
+- [x] Handle connection lifecycle, heartbeat pings, and disconnects gracefully

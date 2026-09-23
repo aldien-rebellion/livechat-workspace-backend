@@ -1,6 +1,7 @@
 from app.controllers import (
     auth_controller,
     channel_controller,
+    chat_websocket_controller,
     devices_controller,
     file_controller,
     health_controller,
@@ -16,6 +17,7 @@ __all__ = [
     "telemetry_controller",
     "workspace_controller",
     "channel_controller",
+    "chat_websocket_controller",
     "message_controller",
     "file_controller",
 ]
