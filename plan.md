@@ -321,7 +321,7 @@ sequenceDiagram
 [x] Phase 4: Core Real-Time WebSocket & Redis Pub/Sub Distribution
 [x] Phase 5: Presence Engine, Read Receipts & Status Caching
 [x] Phase 6: Automated Testing Suite (Unit, Integration & WS)
-[ ] Phase 7: Containerization, CI/CD Pipeline & VPS Docker Compose
+[x] Phase 7: Containerization, CI/CD Pipeline & VPS Docker Compose
 [ ] Phase 8: High-Concurrency Load Testing (k6)
 [ ] Phase 9: Production Monitoring (Prometheus & Grafana)
 ```
@@ -378,15 +378,14 @@ sequenceDiagram
   - Spin up 2 isolated browser contexts (User A and User B).
   - Verify bidirectional real-time message broadcast, online presence updates, and typing indicators.
 
-
 ### Phase 7: Containerization, CI/CD Pipeline & VPS Docker Compose
-- [ ] Task 7.1: Create optimized multi-stage `Dockerfile` (non-root user, volume mount for `/app/uploads`).
-- [ ] Task 7.2: Create production `docker-compose.yml` defining:
+- [x] Task 7.1: Create optimized multi-stage `Dockerfile` (non-root user, volume mount for `/app/uploads`).
+- [x] Task 7.2: Create production `docker-compose.yml` defining:
   - `postgres` (with persistent volume)
   - `redis` (with persistent volume)
   - `api` (FastAPI app)
   - `nginx` (reverse proxy for HTTP & WebSocket SSL termination)
-- [ ] Task 7.3: Create `.github/workflows/ci.yml` for automated linting, test execution, and Docker build check.
+- [x] Task 7.3: Create `.github/workflows/ci.yml` for automated linting, test execution, and Docker build check.
 
 ### Phase 8: High-Concurrency Load Testing (k6)
 - [ ] Task 8.1: Create `tests/load_testing/ws_stress_test.js`:

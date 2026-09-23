@@ -27,8 +27,8 @@
 
 ## 2. Checklist for AI Agent / Engineer
 
-- [ ] Create production-ready multi-stage `Dockerfile`
-- [ ] Configure `docker-compose.yml` with healthchecks and dependencies
-- [ ] Configure Nginx reverse proxy configuration (`nginx/nginx.conf`)
-- [ ] Implement `.github/workflows/ci.yml` pipeline
-- [ ] Validate full stack startup via `docker compose up --build`
+- [x] Create production-ready multi-stage `Dockerfile`
+- [x] Configure `docker-compose.yml` with healthchecks and dependencies
+- [x] Configure Nginx reverse proxy configuration (`nginx/nginx.conf`)
+- [x] Implement `.github/workflows/ci.yml` pipeline
+- [x] Validate full stack startup via `docker compose up --build`
