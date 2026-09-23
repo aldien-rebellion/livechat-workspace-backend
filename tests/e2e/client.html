@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LiveChat E2E Test Client</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            margin: 20px;
+            background: #f4f6f8;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 24px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        h2 { margin-top: 0; }
+        .form-group {
+            margin-bottom: 12px;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        input[type="text"], input[type="password"] {
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            flex: 1;
+        }
+        button {
+            padding: 8px 16px;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover { background: #1d4ed8; }
+        button:disabled { background: #9ca3af; cursor: not-allowed; }
+        #connection-status {
+            font-weight: bold;
+            display: inline-block;
+            margin-left: 10px;
+        }
+        .status-connected { color: #16a34a; }
+        .status-disconnected { color: #dc2626; }
+        #messages-list {
+            height: 300px;
+            overflow-y: auto;
+            border: 1px solid #e5e7eb;
+            border-radius: 4px;
+            padding: 12px;
+            margin-bottom: 12px;
+            background: #f9fafb;
+            list-style: none;
+        }
+        .message-item {
+            padding: 6px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .msg-sender { font-weight: 600; color: #1f2937; }
+        .msg-content { margin-left: 8px; }
+        .msg-meta { font-size: 11px; color: #6b7280; margin-left: 8px; }
+        #typing-indicator {
+            min-height: 20px;
+            font-size: 12px;
+            font-style: italic;
+            color: #6b7280;
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>LiveChat Test Client</h2>
+
+        <!-- Auth Section -->
+        <div id="auth-section">
+            <div class="form-group">
+                <input type="text" id="username-input" placeholder="Username" />
+                <input type="password" id="password-input" placeholder="Password" />
+                <button id="login-btn">Log In</button>
+            </div>
+            <div style="font-size: 12px; color: #6b7280; margin-bottom: 16px;">
+                Token: <span id="token-display">None</span>
+            </div>
+        </div>
+
+        <hr style="margin: 16px 0; border: 0; border-top: 1px solid #e5e7eb;">
+
+        <!-- Channel & WebSocket Connection Section -->
+        <div id="channel-section">
+            <div class="form-group">
+                <input type="text" id="channel-id-input" placeholder="Channel UUID" />
+                <button id="connect-btn" disabled>Connect WS</button>
+                <button id="disconnect-btn" disabled>Disconnect</button>
+                <span id="connection-status" class="status-disconnected">DISCONNECTED</span>
+            </div>
+        </div>
+
+        <hr style="margin: 16px 0; border: 0; border-top: 1px solid #e5e7eb;">
+
+        <!-- Chat Stream Section -->
+        <div id="chat-section">
+            <ul id="messages-list"></ul>
+            <div id="typing-indicator"></div>
+
+            <div class="form-group">
+                <input type="text" id="message-input" placeholder="Type a message..." disabled />
+                <button id="send-btn" disabled>Send</button>
+                <button id="typing-btn" disabled>Typing</button>
+                <button id="mark-read-btn" disabled>Mark Last Read</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let accessToken = null;
+        let socket = null;
+        let lastReceivedMsgId = null;
+
+        const usernameInput = document.getElementById('username-input');
+        const passwordInput = document.getElementById('password-input');
+        const loginBtn = document.getElementById('login-btn');
+        const tokenDisplay = document.getElementById('token-display');
+
+        const channelIdInput = document.getElementById('channel-id-input');
+        const connectBtn = document.getElementById('connect-btn');
+        const disconnectBtn = document.getElementById('disconnect-btn');
+        const connectionStatus = document.getElementById('connection-status');
+
+        const messagesList = document.getElementById('messages-list');
+        const typingIndicator = document.getElementById('typing-indicator');
+        const messageInput = document.getElementById('message-input');
+        const sendBtn = document.getElementById('send-btn');
+        const typingBtn = document.getElementById('typing-btn');
+        const markReadBtn = document.getElementById('mark-read-btn');
+
+        // 1. Auth Flow
+        loginBtn.addEventListener('click', async () => {
+            const username = usernameInput.value.trim();
+            const password = passwordInput.value.trim();
+            if (!username || !password) return;
+
+            try {
+                const res = await fetch('/api/v1/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+                const data = await res.json();
+                if (res.ok && data.access_token) {
+                    accessToken = data.access_token;
+                    tokenDisplay.textContent = accessToken.substring(0, 15) + '...';
+                    connectBtn.disabled = false;
+                } else {
+                    alert('Login failed: ' + (data.detail || JSON.stringify(data)));
+                }
+            } catch (err) {
+                alert('Login error: ' + err.message);
+            }
+        });
+
+        // 2. WebSocket Flow
+        connectBtn.addEventListener('click', () => {
+            const channelId = channelIdInput.value.trim();
+            if (!channelId || !accessToken) return;
+
+            const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsUrl = `${protocol}//${window.location.host}/api/v1/ws/channels/${channelId}?token=${accessToken}`;
+
+            socket = new WebSocket(wsUrl);
+
+            socket.onopen = () => {
+                connectionStatus.textContent = 'CONNECTED';
+                connectionStatus.className = 'status-connected';
+                connectBtn.disabled = true;
+                disconnectBtn.disabled = false;
+                messageInput.disabled = false;
+                sendBtn.disabled = false;
+                typingBtn.disabled = false;
+                markReadBtn.disabled = false;
+            };
+
+            socket.onmessage = (event) => {
+                const packet = JSON.parse(event.data);
+                handleIncomingEvent(packet);
+            };
+
+            socket.onclose = () => {
+                connectionStatus.textContent = 'DISCONNECTED';
+                connectionStatus.className = 'status-disconnected';
+                connectBtn.disabled = false;
+                disconnectBtn.disabled = true;
+                messageInput.disabled = true;
+                sendBtn.disabled = true;
+                typingBtn.disabled = true;
+                markReadBtn.disabled = true;
+            };
+
+            socket.onerror = (err) => {
+                console.error('WebSocket Error:', err);
+            };
+        });
+
+        disconnectBtn.addEventListener('click', () => {
+            if (socket) {
+                socket.close();
+            }
+        });
+
+        // 3. Event Handling
+        function handleIncomingEvent(packet) {
+            const evt = packet.event;
+            const data = packet.data;
+
+            if (evt === 'message:broadcast') {
+                lastReceivedMsgId = data.id;
+                const li = document.createElement('li');
+                li.className = 'message-item';
+                li.setAttribute('data-msg-id', data.id);
+
+                const sender = document.createElement('span');
+                sender.className = 'msg-sender';
+                sender.textContent = (data.user && data.user.username) || 'Unknown';
+
+                const content = document.createElement('span');
+                content.className = 'msg-content';
+                content.textContent = data.content;
+
+                const meta = document.createElement('span');
+                meta.className = 'msg-meta';
+                meta.id = `meta-${data.id}`;
+                meta.textContent = `(id: ${data.id.substring(0, 6)})`;
+
+                li.appendChild(sender);
+                li.appendChild(content);
+                li.appendChild(meta);
+                messagesList.appendChild(li);
+                messagesList.scrollTop = messagesList.scrollHeight;
+            } else if (evt === 'typing:indicator' || evt === 'typing:start') {
+                typingIndicator.textContent = `${data.username || 'Someone'} is typing...`;
+                setTimeout(() => {
+                    typingIndicator.textContent = '';
+                }, 3000);
+            } else if (evt === 'message:read_update') {
+                const messageIds = data.message_ids || [];
+                const readerId = data.read_by ? data.read_by.user_id : 'someone';
+                for (const mid of messageIds) {
+                    const targetMeta = document.getElementById(`meta-${mid}`);
+                    if (targetMeta && !targetMeta.textContent.includes('Read')) {
+                        targetMeta.textContent += ` [Read by ${readerId.substring(0, 6)}]`;
+                    }
+                }
+            }
+        }
+
+        // 4. Send Message
+        sendBtn.addEventListener('click', () => {
+            const content = messageInput.value.trim();
+            if (!content || !socket) return;
+
+            socket.send(JSON.stringify({
+                event: 'message:send',
+                data: { content: content }
+            }));
+            messageInput.value = '';
+        });
+
+        messageInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendBtn.click();
+            }
+        });
+
+        // 5. Typing Notification
+        typingBtn.addEventListener('click', () => {
+            if (!socket) return;
+            socket.send(JSON.stringify({
+                event: 'typing:start'
+            }));
+        });
+
+        // 6. Mark Read
+        markReadBtn.addEventListener('click', () => {
+            if (!socket || !lastReceivedMsgId) return;
+            socket.send(JSON.stringify({
+                event: 'message:read',
+                data: { message_ids: [lastReceivedMsgId] }
+            }));
+        });
+    </script>
+</body>
+</html>

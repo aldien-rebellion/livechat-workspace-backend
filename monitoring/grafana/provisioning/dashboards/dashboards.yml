@@ -1,0 +1,11 @@
+apiVersion: 1
+
+providers:
+  - name: "LiveChat Dashboards"
+    orgId: 1
+    folder: "LiveChat"
+    type: file
+    disableDeletion: false
+    editable: true
+    options:
+      path: /etc/grafana/provisioning/dashboards
