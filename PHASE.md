@@ -8,23 +8,23 @@
 
 ## 1. Scope & Deliverables
 
-1. **Prometheus Instrumentation (`app/core/metrics.py`):**
+1. **Prometheus Instrumentation (`app/config/metrics.py`):**
    - Expose `/metrics` endpoint using `prometheus-fastapi-instrumentator`.
    - Custom metrics:
      - `livechat_active_websocket_connections`: Gauge tracking current live WebSocket connections.
-     - `livechat_messages_processed_total`: Counter tracking message volume by channel and message type.
-     - `livechat_db_query_duration_seconds`: Histogram tracking database query execution time.
+     - `livechat_messages_published_total`: Counter tracking message volume by message type.
+     - `livechat_messages_read_total`: Counter tracking read receipts.
 2. **Monitoring Infrastructure (`docker-compose.monitoring.yml`):**
-   - Prometheus container with scrape config (`prometheus/prometheus.yml`).
+   - Prometheus container with scrape config (`monitoring/prometheus/prometheus.yml`).
    - Grafana container with automated datasource & dashboard provisioning.
-3. **Dashboards (`monitoring/grafana/dashboards/`):**
-   - Live Chat Overview Dashboard (Active users, WebSocket connections, msg/sec throughput, p95 API latency, HTTP error rate).
+3. **Dashboards (`monitoring/grafana/provisioning/dashboards/`):**
+   - Live Chat Observability Dashboard (Active WebSocket connections, message throughput, HTTP RPS, p95 latency).
 
 ---
 
 ## 2. Checklist for AI Agent / Engineer
 
 - [ ] Add `prometheus-fastapi-instrumentator` and configure `/metrics` in `app/main.py`
-- [ ] Implement custom gauges and counters in `app/core/metrics.py`
-- [ ] Create `prometheus/prometheus.yml` scrape configuration
+- [ ] Connect custom gauges and counters in WebSocket and message handlers
+- [ ] Create `monitoring/prometheus/prometheus.yml` scrape configuration
 - [ ] Configure `docker-compose.monitoring.yml` and test Grafana dashboard
