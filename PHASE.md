@@ -35,8 +35,8 @@
 
 ## 2. Checklist for AI Agent / Engineer
 
-- [ ] Implement `StorageService` and `LocalStorageService`
-- [ ] Implement Pydantic schemas in `app/schemas/workspace.py` and `app/schemas/channel.py`
-- [ ] Implement `WorkspaceService` with role permissions
-- [ ] Implement `ChannelService` with Group Channel and 1-on-1 DM support
-- [ ] Implement REST endpoints in controllers and register in `api_router.py`
+- [x] Implement `StorageService` and `LocalStorageService`
+- [x] Implement Pydantic schemas in `app/schemas/workspace.py` and `app/schemas/channel.py`
+- [x] Implement `WorkspaceService` with role permissions
+- [x] Implement `ChannelService` with Group Channel and 1-on-1 DM support
+- [x] Implement REST endpoints in controllers and register in `api_router.py`

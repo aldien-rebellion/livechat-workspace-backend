@@ -317,7 +317,7 @@ sequenceDiagram
 ```
 [x] Phase 1: Database Entities & Migrations
 [x] Phase 2: Security, Authentication & User Management
-[ ] Phase 3: Workspace, Channel (Group & DM) & File Storage Services
+[x] Phase 3: Workspace, Channel (Group & DM) & File Storage Services
 [ ] Phase 4: Core Real-Time WebSocket & Redis Pub/Sub Distribution
 [ ] Phase 5: Presence Engine, Read Receipts & Status Caching
 [ ] Phase 6: Automated Testing Suite (Unit, Integration & WS)
@@ -344,10 +344,10 @@ sequenceDiagram
 - [x] Task 2.4: Build auth endpoints (`/register`, `/login`, `/me`) in `app/controllers/auth_controller.py`.
 
 ### Phase 3: Workspace, Channel (Group & DM) & Storage Services
-- [ ] Task 3.1: Create schemas in `app/schemas/workspace.py` and `app/schemas/channel.py`.
-- [ ] Task 3.2: Implement `StorageService` interface with `LocalStorageService` saving to `/app/uploads`.
-- [ ] Task 3.3: Implement `WorkspaceService` and `ChannelService` (supporting both Group Channels and 1-on-1 DM creation).
-- [ ] Task 3.4: Expose REST controllers in `app/controllers/workspace_controller.py`, `channel_controller.py`, and `file_controller.py`.
+- [x] Task 3.1: Create schemas in `app/schemas/workspace.py` and `app/schemas/channel.py`.
+- [x] Task 3.2: Implement `StorageService` interface with `LocalStorageService` saving to `/app/uploads`.
+- [x] Task 3.3: Implement `WorkspaceService` and `ChannelService` (supporting both Group Channels and 1-on-1 DM creation).
+- [x] Task 3.4: Expose REST controllers in `app/controllers/workspace_controller.py`, `channel_controller.py`, and `file_controller.py`.
 
 ### Phase 4: Core Real-Time WebSocket & Redis Pub/Sub
 - [ ] Task 4.1: Implement `ConnectionManager` in `app/services/connection_manager.py`:
