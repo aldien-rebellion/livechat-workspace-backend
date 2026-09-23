@@ -315,7 +315,7 @@ sequenceDiagram
 ## 7. Execution Roadmap & Tasks for AI Implementation
 
 ```
-[ ] Phase 1: Database Entities & Migrations
+[x] Phase 1: Database Entities & Migrations
 [ ] Phase 2: Security, Authentication & User Management
 [ ] Phase 3: Workspace, Channel (Group & DM) & File Storage Services
 [ ] Phase 4: Core Real-Time WebSocket & Redis Pub/Sub Distribution
@@ -327,15 +327,15 @@ sequenceDiagram
 ```
 
 ### Phase 1: Database Entities & Migrations
-- [ ] Task 1.1: Define SQLAlchemy async models in `app/models/`:
+- [x] Task 1.1: Define SQLAlchemy async models in `app/models/`:
   - `user.py` (enhance existing User model)
   - `workspace.py` (`Workspace`, `WorkspaceMember`)
   - `channel.py` (`Channel` with `channel_type: PUBLIC | PRIVATE | DIRECT_MESSAGE`, `ChannelMember`)
   - `message.py` (`Message` with `parent_id`, `file_url`, `is_deleted`)
   - `message_read.py` (`MessageRead` composite PK `message_id` + `user_id`)
-- [ ] Task 1.2: Register new models in `app/db/base.py` (without removing `Telemetry`).
-- [ ] Task 1.3: Generate Alembic migration (`alembic revision --autogenerate -m "add_livechat_models"`).
-- [ ] Task 1.4: Run migration against PostgreSQL container (`alembic upgrade head`).
+- [x] Task 1.2: Register new models in `app/db/base.py` (without removing `Telemetry`).
+- [x] Task 1.3: Generate Alembic migration (`alembic revision --autogenerate -m "add_livechat_models"`).
+- [x] Task 1.4: Run migration against PostgreSQL container (`alembic upgrade head`).
 
 ### Phase 2: Security, Authentication & User Management
 - [ ] Task 2.1: Verify & refine JWT token utility in `app/services/security.py`.

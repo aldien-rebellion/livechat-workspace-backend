@@ -26,11 +26,11 @@
 
 ## 2. Checklist for AI Agent / Engineer
 
-- [ ] Define `User` model updates in `app/models/user.py`
-- [ ] Implement `Workspace` and `WorkspaceMember` in `app/models/workspace.py`
-- [ ] Implement `Channel` and `ChannelMember` in `app/models/channel.py`
-- [ ] Implement `Message` in `app/models/message.py`
-- [ ] Implement `MessageRead` in `app/models/message_read.py`
-- [ ] Export all models in `app/models/__init__.py` and import in `app/db/base.py`
-- [ ] Run `alembic revision --autogenerate -m "add_livechat_models"`
-- [ ] Run `alembic upgrade head` and verify schema
+- [x] Define `User` model updates in `app/models/user.py`
+- [x] Implement `Workspace` and `WorkspaceMember` in `app/models/workspace.py`
+- [x] Implement `Channel` and `ChannelMember` in `app/models/channel.py`
+- [x] Implement `Message` in `app/models/message.py`
+- [x] Implement `MessageRead` in `app/models/message_read.py`
+- [x] Export all models in `app/models/__init__.py` and import in `app/db/base.py`
+- [x] Run `alembic revision --autogenerate -m "add_livechat_models"`
+- [x] Run `alembic upgrade head` and verify schema
