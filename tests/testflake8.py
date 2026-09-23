@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 
 router = APIRouter()
-const unusedVar = 10;
+# const unusedVar = 10;
 
 
 @router.get("/healthcheck", tags=["Health"])
