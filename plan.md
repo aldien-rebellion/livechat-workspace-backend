@@ -64,6 +64,8 @@ flowchart TD
 | **Cache & Pub/Sub Broker**| Redis 7+ (`redis-py` async) | Channel Pub/Sub, Online/Offline Presence, Caching |
 | **Authentication & Security**| JWT (OAuth2 Password Bearer) | `python-jose`, `passlib[bcrypt]` |
 | **File / Media Storage** | Local Storage via `StorageService` | Abstract interface storing to `/app/uploads` volume (S3-ready) |
+| **Testing (Unit & Integration)** | Pytest + `pytest-asyncio` + `httpx` | Async unit and integration testing |
+| **Testing (E2E & Interactive)** | Playwright | Multi-user real-time chat simulation with lightweight web client |
 | **Load Testing** | k6 (JavaScript) | Native WebSocket (`k6/ws`) and HTTP high-concurrency benchmarks |
 | **Observability** | Prometheus + Grafana | `prometheus-fastapi-instrumentator` |
 | **Deployment Target** | Docker Compose on Cloud VPS | AWS EC2 / DigitalOcean / GCP Compute Engine |
@@ -371,6 +373,11 @@ sequenceDiagram
 - [ ] Task 6.1: Setup test fixtures in `tests/conftest.py` (async DB session, async Redis client).
 - [ ] Task 6.2: Write tests for Auth, Workspaces, and Channels in `tests/test_chat_services.py`.
 - [ ] Task 6.3: Write WebSocket integration test with `httpx` / `TestClient.websocket_connect` in `tests/test_websocket.py`.
+- [ ] Task 6.4: Build Lightweight HTML Chat Test Client in `tests/e2e/client.html` (minimal UI with auth, channel switch, real-time message stream, typing indicator, and read receipt triggers).
+- [ ] Task 6.5: Implement Playwright E2E interactive test suite in `tests/e2e/test_chat_e2e.py`:
+  - Spin up 2 isolated browser contexts (User A and User B).
+  - Verify bidirectional real-time message broadcast, online presence updates, and typing indicators.
+
 
 ### Phase 7: Containerization, CI/CD Pipeline & VPS Docker Compose
 - [ ] Task 7.1: Create optimized multi-stage `Dockerfile` (non-root user, volume mount for `/app/uploads`).
