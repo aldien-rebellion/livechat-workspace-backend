@@ -319,7 +319,7 @@ sequenceDiagram
 [x] Phase 2: Security, Authentication & User Management
 [x] Phase 3: Workspace, Channel (Group & DM) & File Storage Services
 [x] Phase 4: Core Real-Time WebSocket & Redis Pub/Sub Distribution
-[ ] Phase 5: Presence Engine, Read Receipts & Status Caching
+[x] Phase 5: Presence Engine, Read Receipts & Status Caching
 [ ] Phase 6: Automated Testing Suite (Unit, Integration & WS)
 [ ] Phase 7: Containerization, CI/CD Pipeline & VPS Docker Compose
 [ ] Phase 8: High-Concurrency Load Testing (k6)
@@ -362,12 +362,12 @@ sequenceDiagram
   - Send ACK back to sender socket.
 
 ### Phase 5: Presence Engine, Read Receipts & Status Caching
-- [ ] Task 5.1: Implement `PresenceService` in `app/services/presence_service.py`:
+- [x] Task 5.1: Implement `PresenceService` in `app/services/presence_service.py`:
   - Set Redis key `presence:user:{user_id}` on connect/heartbeat.
   - Remove on disconnect, update workspace online set.
-- [ ] Task 5.2: Implement Granular Read Receipts:
+- [x] Task 5.2: Implement Granular Read Receipts:
   - On WS event `message:read`: Insert or ignore into `message_reads` table, publish `message:read_update` via Redis Pub/Sub.
-- [ ] Task 5.3: Implement REST endpoint `GET /api/v1/workspaces/{id}/online-users`.
+- [x] Task 5.3: Implement REST endpoint `GET /api/v1/workspaces/{id}/online-users`.
 
 ### Phase 6: Automated Testing Suite
 - [ ] Task 6.1: Setup test fixtures in `tests/conftest.py` (async DB session, async Redis client).

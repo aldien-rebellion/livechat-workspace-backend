@@ -73,7 +73,6 @@ def test_websocket_chat_flow(client: TestClient):
                 "event": "message:send",
                 "data": {
                     "content": "Hello real-time WebSocket!",
-                    "message_type": "text",
                 },
             }
         )

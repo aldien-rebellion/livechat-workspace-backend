@@ -26,7 +26,7 @@
 
 ## 2. Checklist for AI Agent / Engineer
 
-- [ ] Implement `PresenceService` with Redis sliding TTL
-- [ ] Connect presence lifecycle to WebSocket connect / disconnect / heartbeat
-- [ ] Implement granular read receipts in DB and WebSocket broadcast
-- [ ] Implement endpoints for online users and message readers
+- [x] Implement `PresenceService` with Redis sliding TTL
+- [x] Connect presence lifecycle to WebSocket connect / disconnect / heartbeat
+- [x] Implement granular read receipts in DB and WebSocket broadcast
+- [x] Implement endpoints for online users and message readers

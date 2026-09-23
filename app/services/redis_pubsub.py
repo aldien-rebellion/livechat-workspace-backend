@@ -10,6 +10,7 @@ from app.config.redis import redis_client
 from app.services.connection_manager import ConnectionManager, connection_manager
 
 logger = logging.getLogger(__name__)
+INSTANCE_ID = uuid.uuid4().hex
 
 
 class RedisPubSubManager:
@@ -18,9 +19,11 @@ class RedisPubSubManager:
         self._listener_task: Optional[asyncio.Task] = None
         self._pubsub: Optional[aioredis.client.PubSub] = None
         self._running: bool = False
+        self.instance_id: str = INSTANCE_ID
 
     async def publish_to_channel(self, channel_id: uuid.UUID, event_dict: dict) -> None:
         channel_key = f"pubsub:channel:{channel_id}"
+        event_dict["_sender_instance"] = self.instance_id
         payload_str = json.dumps(event_dict)
         await self.redis.publish(channel_key, payload_str)
 
@@ -38,20 +41,26 @@ class RedisPubSubManager:
 
     async def _listen_loop(self, conn_mgr: ConnectionManager) -> None:
         try:
-            while self._running and self._pubsub:
-                message = await self._pubsub.get_message(
-                    ignore_subscribe_messages=True, timeout=1.0
-                )
-                if message and message.get("type") == "pmessage":
+            async for message in self._pubsub.listen():
+                if not self._running:
+                    break
+                if message and message.get("type") in ("message", "pmessage"):
                     try:
                         channel_pattern_name = message["channel"]
                         channel_id_str = channel_pattern_name.split(":")[-1]
                         channel_uuid = uuid.UUID(channel_id_str)
-                        data = json.loads(message["data"])
+                        raw_data = message["data"]
+                        data = (
+                            json.loads(raw_data)
+                            if isinstance(raw_data, str)
+                            else raw_data
+                        )
+                        # Skip re-broadcasting messages originated from this instance
+                        if data.get("_sender_instance") == self.instance_id:
+                            continue
                         await conn_mgr.broadcast_to_channel(channel_uuid, data)
                     except Exception as ex:
                         logger.error(f"Error handling Redis Pub/Sub message: {ex}")
-                await asyncio.sleep(0.01)
         except asyncio.CancelledError:
             logger.info("Redis Pub/Sub listener loop cancelled")
         except Exception as e:
@@ -68,11 +77,14 @@ class RedisPubSubManager:
             except asyncio.CancelledError:
                 pass
         if self._pubsub:
-            await self._pubsub.punsubscribe("pubsub:channel:*")
-            if hasattr(self._pubsub, "aclose"):
-                await self._pubsub.aclose()
-            else:
-                await self._pubsub.close()
+            try:
+                await self._pubsub.punsubscribe("pubsub:channel:*")
+                if hasattr(self._pubsub, "aclose"):
+                    await self._pubsub.aclose()
+                else:
+                    await self._pubsub.close()
+            except Exception:
+                pass
             self._pubsub = None
         logger.info("Redis Pub/Sub listener stopped")
 

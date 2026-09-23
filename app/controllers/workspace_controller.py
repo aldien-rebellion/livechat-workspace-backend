@@ -98,3 +98,29 @@ async def add_workspace_member(
         user_id=member_in.user_id,
         role=member_in.role,
     )
+
+
+@router.get("/{workspace_id}/online-users")
+async def get_workspace_online_users(
+    workspace_id: uuid.UUID,
+    current_user: User = Depends(get_current_active_user),
+    db: AsyncSession = Depends(get_db),
+):
+    is_member = await WorkspaceService.is_member(
+        db=db, workspace_id=workspace_id, user_id=current_user.id
+    )
+    if not is_member:
+        from fastapi import HTTPException
+
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Must be a workspace member to view online users",
+        )
+    from app.services.presence_service import presence_service
+
+    online_ids = await presence_service.get_online_users(workspace_id)
+    return {
+        "workspace_id": workspace_id,
+        "online_count": len(online_ids),
+        "online_users": online_ids,
+    }

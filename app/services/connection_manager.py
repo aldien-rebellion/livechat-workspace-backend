@@ -20,6 +20,7 @@ class ConnectionManager:
             self._channels[channel_id] = {}
         if user_id not in self._channels[channel_id]:
             self._channels[channel_id][user_id] = set()
+        self._channels[channel_id][user_id].add(websocket)
         active_count = len(self._channels[channel_id])
         logger.info(
             f"User {user_id} connected to channel {channel_id} "
