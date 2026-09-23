@@ -24,7 +24,7 @@
 
 ## 2. Checklist for AI Agent / Engineer
 
-- [ ] Add `prometheus-fastapi-instrumentator` and configure `/metrics` in `app/main.py`
-- [ ] Connect custom gauges and counters in WebSocket and message handlers
-- [ ] Create `monitoring/prometheus/prometheus.yml` scrape configuration
-- [ ] Configure `docker-compose.monitoring.yml` and test Grafana dashboard
+- [x] Add `prometheus-fastapi-instrumentator` and configure `/metrics` in `app/main.py`
+- [x] Connect custom gauges and counters in WebSocket and message handlers
+- [x] Create `monitoring/prometheus/prometheus.yml` scrape configuration
+- [x] Configure `docker-compose.monitoring.yml` and test Grafana dashboard

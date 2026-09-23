@@ -4,6 +4,8 @@ from typing import Dict, Set
 
 from fastapi import WebSocket
 
+from app.config.metrics import active_websocket_connections
+
 logger = logging.getLogger(__name__)
 
 
@@ -21,6 +23,7 @@ class ConnectionManager:
         if user_id not in self._channels[channel_id]:
             self._channels[channel_id][user_id] = set()
         self._channels[channel_id][user_id].add(websocket)
+        active_websocket_connections.inc()
         active_count = len(self._channels[channel_id])
         logger.info(
             f"User {user_id} connected to channel {channel_id} "
@@ -32,6 +35,7 @@ class ConnectionManager:
     ) -> None:
         if channel_id in self._channels and user_id in self._channels[channel_id]:
             self._channels[channel_id][user_id].discard(websocket)
+            active_websocket_connections.dec()
             if not self._channels[channel_id][user_id]:
                 del self._channels[channel_id][user_id]
             if not self._channels[channel_id]:

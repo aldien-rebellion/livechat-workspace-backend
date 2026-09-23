@@ -323,7 +323,7 @@ sequenceDiagram
 [x] Phase 6: Automated Testing Suite (Unit, Integration & WS)
 [x] Phase 7: Containerization, CI/CD Pipeline & VPS Docker Compose
 [x] Phase 8: High-Concurrency Load Testing (k6)
-[ ] Phase 9: Production Monitoring (Prometheus & Grafana)
+[x] Phase 9: Production Monitoring (Prometheus & Grafana)
 ```
 
 ### Phase 1: Database Entities & Migrations
@@ -396,13 +396,13 @@ sequenceDiagram
 - [x] Task 8.3: Document benchmark metrics, bottlenecks, and server tuning guidelines.
 
 ### Phase 9: Production Monitoring (Prometheus & Grafana)
-- [ ] Task 9.1: Instrument FastAPI with `prometheus-fastapi-instrumentator` exposing `/metrics`.
-- [ ] Task 9.2: Implement custom Prometheus metrics:
+- [x] Task 9.1: Instrument FastAPI with `prometheus-fastapi-instrumentator` exposing `/metrics`.
+- [x] Task 9.2: Implement custom Prometheus metrics:
   - `livechat_active_websocket_connections` (Gauge)
   - `livechat_messages_processed_total` (Counter)
   - `livechat_db_query_duration_seconds` (Histogram)
-- [ ] Task 9.3: Add `docker-compose.monitoring.yml` with Prometheus and Grafana.
-- [ ] Task 9.4: Provide pre-built Grafana dashboard JSON displaying active connections, throughput, and latency.
+- [x] Task 9.3: Add `docker-compose.monitoring.yml` with Prometheus and Grafana.
+- [x] Task 9.4: Provide pre-built Grafana dashboard JSON displaying active connections, throughput, and latency.
 
 ---
 

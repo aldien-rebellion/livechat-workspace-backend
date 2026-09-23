@@ -4,6 +4,7 @@ from pathlib import Path
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse
+from prometheus_fastapi_instrumentator import Instrumentator
 
 from app.config.settings import settings
 from app.routes.api_router import api_router
@@ -45,6 +46,9 @@ app.add_middleware(
 
 # Include API router
 app.include_router(api_router, prefix=settings.API_V1_STR)
+
+# Instrument Prometheus metrics
+Instrumentator().instrument(app).expose(app, endpoint="/metrics")
 
 
 @app.get("/")

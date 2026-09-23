@@ -7,6 +7,7 @@ from fastapi import APIRouter, Query, WebSocket, WebSocketDisconnect, status
 from jose import JWTError
 from sqlalchemy import select
 
+from app.config.metrics import chat_messages_published_total
 from app.db.session import AsyncSessionLocal
 from app.models.channel import Channel
 from app.models.user import User
@@ -127,6 +128,7 @@ async def websocket_channel_endpoint(
                         message_type=message_type,
                         file_url=file_url,
                     )
+                chat_messages_published_total.labels(message_type=message_type).inc()
 
                 # 2. Publish to Redis Pub/Sub for cross-instance broadcast
                 broadcast_payload = {

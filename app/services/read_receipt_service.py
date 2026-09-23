@@ -8,6 +8,7 @@ from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
+from app.config.metrics import chat_messages_read_total
 from app.models.channel import ChannelMember
 from app.models.message import Message
 from app.models.message_read import MessageRead
@@ -53,6 +54,9 @@ class ReadReceiptService:
             member.last_read_at = now
 
         await db.commit()
+
+        if marked_ids:
+            chat_messages_read_total.inc(len(marked_ids))
 
         # Broadcast read receipt to channel
         payload = {
