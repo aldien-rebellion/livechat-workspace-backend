@@ -315,8 +315,8 @@ sequenceDiagram
 ## 7. Execution Roadmap & Tasks for AI Implementation
 
 ```
-[ ] Phase 1: Database Entities & Migrations
-[ ] Phase 2: Security, Authentication & User Management
+[x] Phase 1: Database Entities & Migrations
+[x] Phase 2: Security, Authentication & User Management
 [ ] Phase 3: Workspace, Channel (Group & DM) & File Storage Services
 [ ] Phase 4: Core Real-Time WebSocket & Redis Pub/Sub Distribution
 [ ] Phase 5: Presence Engine, Read Receipts & Status Caching
@@ -327,21 +327,21 @@ sequenceDiagram
 ```
 
 ### Phase 1: Database Entities & Migrations
-- [ ] Task 1.1: Define SQLAlchemy async models in `app/models/`:
+- [x] Task 1.1: Define SQLAlchemy async models in `app/models/`:
   - `user.py` (enhance existing User model)
   - `workspace.py` (`Workspace`, `WorkspaceMember`)
   - `channel.py` (`Channel` with `channel_type: PUBLIC | PRIVATE | DIRECT_MESSAGE`, `ChannelMember`)
   - `message.py` (`Message` with `parent_id`, `file_url`, `is_deleted`)
   - `message_read.py` (`MessageRead` composite PK `message_id` + `user_id`)
-- [ ] Task 1.2: Register new models in `app/db/base.py` (without removing `Telemetry`).
-- [ ] Task 1.3: Generate Alembic migration (`alembic revision --autogenerate -m "add_livechat_models"`).
-- [ ] Task 1.4: Run migration against PostgreSQL container (`alembic upgrade head`).
+- [x] Task 1.2: Register new models in `app/db/base.py` (without removing `Telemetry`).
+- [x] Task 1.3: Generate Alembic migration (`alembic revision --autogenerate -m "add_livechat_models"`).
+- [x] Task 1.4: Run migration against PostgreSQL container (`alembic upgrade head`).
 
 ### Phase 2: Security, Authentication & User Management
-- [ ] Task 2.1: Verify & refine JWT token utility in `app/services/security.py`.
-- [ ] Task 2.2: Implement `get_current_user` in `app/routes/deps.py`.
-- [ ] Task 2.3: Create Pydantic schemas in `app/schemas/user.py`.
-- [ ] Task 2.4: Build auth endpoints (`/register`, `/login`, `/me`) in `app/controllers/auth_controller.py`.
+- [x] Task 2.1: Verify & refine JWT token utility in `app/services/security.py`.
+- [x] Task 2.2: Implement `get_current_user` in `app/routes/deps.py`.
+- [x] Task 2.3: Create Pydantic schemas in `app/schemas/user.py`.
+- [x] Task 2.4: Build auth endpoints (`/register`, `/login`, `/me`) in `app/controllers/auth_controller.py`.
 
 ### Phase 3: Workspace, Channel (Group & DM) & Storage Services
 - [ ] Task 3.1: Create schemas in `app/schemas/workspace.py` and `app/schemas/channel.py`.
