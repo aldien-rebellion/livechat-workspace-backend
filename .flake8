@@ -8,6 +8,7 @@ exclude =
     dist,
     .venv,
     venv,
-    env
+    env,
+    tests/testflake8.py
 per-file-ignores =
     __init__.py: F401
