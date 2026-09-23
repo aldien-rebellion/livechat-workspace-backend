@@ -322,7 +322,7 @@ sequenceDiagram
 [x] Phase 5: Presence Engine, Read Receipts & Status Caching
 [x] Phase 6: Automated Testing Suite (Unit, Integration & WS)
 [x] Phase 7: Containerization, CI/CD Pipeline & VPS Docker Compose
-[ ] Phase 8: High-Concurrency Load Testing (k6)
+[x] Phase 8: High-Concurrency Load Testing (k6)
 [ ] Phase 9: Production Monitoring (Prometheus & Grafana)
 ```
 
@@ -388,12 +388,12 @@ sequenceDiagram
 - [x] Task 7.3: Create `.github/workflows/ci.yml` for automated linting, test execution, and Docker build check.
 
 ### Phase 8: High-Concurrency Load Testing (k6)
-- [ ] Task 8.1: Create `tests/load_testing/ws_stress_test.js`:
+- [x] Task 8.1: Create `tests/load_testing/ws_stress_test.js`:
   - Simulate 1,000 to 10,000 concurrent WebSocket connections using `k6/ws`.
   - Simulate continuous chat message exchanges and measure p95 / p99 delivery latency.
-- [ ] Task 8.2: Create `tests/load_testing/http_load_test.js`:
+- [x] Task 8.2: Create `tests/load_testing/http_load_test.js`:
   - Measure message history retrieval throughput under load.
-- [ ] Task 8.3: Document benchmark metrics, bottlenecks, and server tuning guidelines.
+- [x] Task 8.3: Document benchmark metrics, bottlenecks, and server tuning guidelines.
 
 ### Phase 9: Production Monitoring (Prometheus & Grafana)
 - [ ] Task 9.1: Instrument FastAPI with `prometheus-fastapi-instrumentator` exposing `/metrics`.
