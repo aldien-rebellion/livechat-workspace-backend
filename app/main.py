@@ -1,14 +1,37 @@
+from contextlib import asynccontextmanager
+from pathlib import Path
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import HTMLResponse
 
 from app.config.settings import settings
 from app.routes.api_router import api_router
+from app.services.connection_manager import connection_manager
+from app.services.redis_pubsub import redis_pubsub_manager
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Startup: Start Redis PubSub background listener
+    try:
+        await redis_pubsub_manager.start_listener(connection_manager)
+    except Exception:
+        pass
+    yield
+    # Shutdown: Stop Redis PubSub listener
+    try:
+        await redis_pubsub_manager.stop_listener()
+    except Exception:
+        pass
+
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
     openapi_url=f"{settings.API_V1_STR}/openapi.json",
     docs_url=f"{settings.API_V1_STR}/docs",
     redoc_url=f"{settings.API_V1_STR}/redoc",
+    lifespan=lifespan,
 )
 
 # CORS middleware
@@ -32,11 +55,21 @@ async def root():
     }
 
 
+@app.get("/e2e", response_class=HTMLResponse)
+async def get_e2e_client():
+    client_path = (
+        Path(__file__).resolve().parent.parent / "tests" / "e2e" / "client.html"
+    )
+    if client_path.exists():
+        return HTMLResponse(content=client_path.read_text(encoding="utf-8"))
+    return HTMLResponse(content="<h1>E2E Test Client not found</h1>", status_code=404)
+
+
 if __name__ == "__main__":
     import uvicorn
 
     uvicorn.run(
-        "src.main:app",
+        "app.main:app",
         host=settings.HOST,
         port=settings.PORT,
         reload=settings.DEBUG,
