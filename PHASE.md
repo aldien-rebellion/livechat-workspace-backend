@@ -20,6 +20,9 @@
    - WebSocket connection handshake & token validation.
    - Message send and receive verification.
    - Read receipt event flow verification.
+4. **Playwright E2E Multi-User Interactive Testing (`tests/e2e/`):**
+   - `tests/e2e/client.html`: Lightweight HTML/JS chat test client with JWT auth, channel switching, live WebSocket message stream, typing indicator, and read receipt triggers.
+   - `tests/e2e/test_chat_e2e.py`: Playwright test script launching 2 isolated browser contexts (User A & User B) to simulate real users chatting simultaneously and verifying real-time synchronization.
 
 ---
 
@@ -29,4 +32,6 @@
 - [ ] Implement Auth test suite in `tests/test_auth.py`
 - [ ] Implement Workspace & Channel test suite in `tests/test_channels.py`
 - [ ] Implement WebSocket test suite in `tests/test_websocket.py`
-- [ ] Run `pytest -v` and achieve >= 80% test coverage
+- [ ] Build lightweight HTML chat client in `tests/e2e/client.html`
+- [ ] Implement Playwright multi-user E2E tests in `tests/e2e/test_chat_e2e.py`
+- [ ] Run `pytest -v` (unit/integration) and `pytest tests/e2e/` (Playwright E2E)
