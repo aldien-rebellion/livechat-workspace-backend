@@ -6,10 +6,12 @@ from unittest.mock import AsyncMock, MagicMock
 import pytest
 from httpx import ASGITransport, AsyncClient
 
-from app.core.redis import get_redis
+from app.config.redis import get_redis
 from app.db.session import get_db
 from app.main import app
 from app.models.telemetry import Telemetry
+from app.models.user import User
+from app.routes.deps import get_current_user
 
 
 @pytest.fixture
@@ -43,8 +45,12 @@ async def async_client(mock_db, mock_redis):
     async def override_get_redis():
         return mock_redis
 
+    async def override_get_current_user():
+        return User(id=1, username="testuser", password_hash="dummy", role="admin")
+
     app.dependency_overrides[get_db] = override_get_db
     app.dependency_overrides[get_redis] = override_get_redis
+    app.dependency_overrides[get_current_user] = override_get_current_user
 
     transport = ASGITransport(app=app)
     async with AsyncClient(transport=transport, base_url="http://test") as ac:

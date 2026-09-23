@@ -315,66 +315,66 @@ sequenceDiagram
 ## 7. Execution Roadmap & Tasks for AI Implementation
 
 ```
-[ ] Phase 1: Database Entities & Migrations
-[ ] Phase 2: Security, Authentication & User Management
-[ ] Phase 3: Workspace, Channel (Group & DM) & File Storage Services
-[ ] Phase 4: Core Real-Time WebSocket & Redis Pub/Sub Distribution
-[ ] Phase 5: Presence Engine, Read Receipts & Status Caching
-[ ] Phase 6: Automated Testing Suite (Unit, Integration & WS)
+[x] Phase 1: Database Entities & Migrations
+[x] Phase 2: Security, Authentication & User Management
+[x] Phase 3: Workspace, Channel (Group & DM) & File Storage Services
+[x] Phase 4: Core Real-Time WebSocket & Redis Pub/Sub Distribution
+[x] Phase 5: Presence Engine, Read Receipts & Status Caching
+[x] Phase 6: Automated Testing Suite (Unit, Integration & WS)
 [ ] Phase 7: Containerization, CI/CD Pipeline & VPS Docker Compose
 [ ] Phase 8: High-Concurrency Load Testing (k6)
 [ ] Phase 9: Production Monitoring (Prometheus & Grafana)
 ```
 
 ### Phase 1: Database Entities & Migrations
-- [ ] Task 1.1: Define SQLAlchemy async models in `app/models/`:
+- [x] Task 1.1: Define SQLAlchemy async models in `app/models/`:
   - `user.py` (enhance existing User model)
   - `workspace.py` (`Workspace`, `WorkspaceMember`)
   - `channel.py` (`Channel` with `channel_type: PUBLIC | PRIVATE | DIRECT_MESSAGE`, `ChannelMember`)
   - `message.py` (`Message` with `parent_id`, `file_url`, `is_deleted`)
   - `message_read.py` (`MessageRead` composite PK `message_id` + `user_id`)
-- [ ] Task 1.2: Register new models in `app/db/base.py` (without removing `Telemetry`).
-- [ ] Task 1.3: Generate Alembic migration (`alembic revision --autogenerate -m "add_livechat_models"`).
-- [ ] Task 1.4: Run migration against PostgreSQL container (`alembic upgrade head`).
+- [x] Task 1.2: Register new models in `app/db/base.py` (without removing `Telemetry`).
+- [x] Task 1.3: Generate Alembic migration (`alembic revision --autogenerate -m "add_livechat_models"`).
+- [x] Task 1.4: Run migration against PostgreSQL container (`alembic upgrade head`).
 
 ### Phase 2: Security, Authentication & User Management
-- [ ] Task 2.1: Verify & refine JWT token utility in `app/services/security.py`.
-- [ ] Task 2.2: Implement `get_current_user` in `app/routes/deps.py`.
-- [ ] Task 2.3: Create Pydantic schemas in `app/schemas/user.py`.
-- [ ] Task 2.4: Build auth endpoints (`/register`, `/login`, `/me`) in `app/controllers/auth_controller.py`.
+- [x] Task 2.1: Verify & refine JWT token utility in `app/services/security.py`.
+- [x] Task 2.2: Implement `get_current_user` in `app/routes/deps.py`.
+- [x] Task 2.3: Create Pydantic schemas in `app/schemas/user.py`.
+- [x] Task 2.4: Build auth endpoints (`/register`, `/login`, `/me`) in `app/controllers/auth_controller.py`.
 
 ### Phase 3: Workspace, Channel (Group & DM) & Storage Services
-- [ ] Task 3.1: Create schemas in `app/schemas/workspace.py` and `app/schemas/channel.py`.
-- [ ] Task 3.2: Implement `StorageService` interface with `LocalStorageService` saving to `/app/uploads`.
-- [ ] Task 3.3: Implement `WorkspaceService` and `ChannelService` (supporting both Group Channels and 1-on-1 DM creation).
-- [ ] Task 3.4: Expose REST controllers in `app/controllers/workspace_controller.py`, `channel_controller.py`, and `file_controller.py`.
+- [x] Task 3.1: Create schemas in `app/schemas/workspace.py` and `app/schemas/channel.py`.
+- [x] Task 3.2: Implement `StorageService` interface with `LocalStorageService` saving to `/app/uploads`.
+- [x] Task 3.3: Implement `WorkspaceService` and `ChannelService` (supporting both Group Channels and 1-on-1 DM creation).
+- [x] Task 3.4: Expose REST controllers in `app/controllers/workspace_controller.py`, `channel_controller.py`, and `file_controller.py`.
 
 ### Phase 4: Core Real-Time WebSocket & Redis Pub/Sub
-- [ ] Task 4.1: Implement `ConnectionManager` in `app/services/connection_manager.py`:
+- [x] Task 4.1: Implement `ConnectionManager` in `app/services/connection_manager.py`:
   - Track active client WebSockets by `channel_id` and `user_id`.
   - Handle connection acceptance, disconnect cleanup, and broadcast to local sockets.
-- [ ] Task 4.2: Implement `RedisPubSubManager` in `app/services/redis_pubsub.py`:
+- [x] Task 4.2: Implement `RedisPubSubManager` in `app/services/redis_pubsub.py`:
   - Listen asynchronously to Redis channel patterns (`pubsub:channel:*`).
   - Bridge incoming Redis messages to local `ConnectionManager.broadcast()`.
-- [ ] Task 4.3: Implement WebSocket controller in `app/controllers/chat_websocket_controller.py`:
+- [x] Task 4.3: Implement WebSocket controller in `app/controllers/chat_websocket_controller.py`:
   - Authenticate JWT from query or header on handshake.
   - On `message:send`: Persist message to PostgreSQL first, then publish to Redis Pub/Sub.
   - Send ACK back to sender socket.
 
 ### Phase 5: Presence Engine, Read Receipts & Status Caching
-- [ ] Task 5.1: Implement `PresenceService` in `app/services/presence_service.py`:
+- [x] Task 5.1: Implement `PresenceService` in `app/services/presence_service.py`:
   - Set Redis key `presence:user:{user_id}` on connect/heartbeat.
   - Remove on disconnect, update workspace online set.
-- [ ] Task 5.2: Implement Granular Read Receipts:
+- [x] Task 5.2: Implement Granular Read Receipts:
   - On WS event `message:read`: Insert or ignore into `message_reads` table, publish `message:read_update` via Redis Pub/Sub.
-- [ ] Task 5.3: Implement REST endpoint `GET /api/v1/workspaces/{id}/online-users`.
+- [x] Task 5.3: Implement REST endpoint `GET /api/v1/workspaces/{id}/online-users`.
 
 ### Phase 6: Automated Testing Suite
-- [ ] Task 6.1: Setup test fixtures in `tests/conftest.py` (async DB session, async Redis client).
-- [ ] Task 6.2: Write tests for Auth, Workspaces, and Channels in `tests/test_chat_services.py`.
-- [ ] Task 6.3: Write WebSocket integration test with `httpx` / `TestClient.websocket_connect` in `tests/test_websocket.py`.
-- [ ] Task 6.4: Build Lightweight HTML Chat Test Client in `tests/e2e/client.html` (minimal UI with auth, channel switch, real-time message stream, typing indicator, and read receipt triggers).
-- [ ] Task 6.5: Implement Playwright E2E interactive test suite in `tests/e2e/test_chat_e2e.py`:
+- [x] Task 6.1: Setup test fixtures in `tests/conftest.py` (async DB session, async Redis client).
+- [x] Task 6.2: Write tests for Auth, Workspaces, and Channels in `tests/test_channels.py` and `tests/test_auth.py`.
+- [x] Task 6.3: Write WebSocket integration test with `httpx` / `TestClient.websocket_connect` in `tests/test_websocket.py`.
+- [x] Task 6.4: Build Lightweight HTML Chat Test Client in `tests/e2e/client.html` (minimal UI with auth, channel switch, real-time message stream, typing indicator, and read receipt triggers).
+- [x] Task 6.5: Implement Playwright E2E interactive test suite in `tests/e2e/test_chat_e2e.py`:
   - Spin up 2 isolated browser contexts (User A and User B).
   - Verify bidirectional real-time message broadcast, online presence updates, and typing indicators.
 
