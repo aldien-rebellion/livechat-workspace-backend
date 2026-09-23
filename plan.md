@@ -316,7 +316,7 @@ sequenceDiagram
 
 ```
 [x] Phase 1: Database Entities & Migrations
-[ ] Phase 2: Security, Authentication & User Management
+[x] Phase 2: Security, Authentication & User Management
 [ ] Phase 3: Workspace, Channel (Group & DM) & File Storage Services
 [ ] Phase 4: Core Real-Time WebSocket & Redis Pub/Sub Distribution
 [ ] Phase 5: Presence Engine, Read Receipts & Status Caching
@@ -338,10 +338,10 @@ sequenceDiagram
 - [x] Task 1.4: Run migration against PostgreSQL container (`alembic upgrade head`).
 
 ### Phase 2: Security, Authentication & User Management
-- [ ] Task 2.1: Verify & refine JWT token utility in `app/services/security.py`.
-- [ ] Task 2.2: Implement `get_current_user` in `app/routes/deps.py`.
-- [ ] Task 2.3: Create Pydantic schemas in `app/schemas/user.py`.
-- [ ] Task 2.4: Build auth endpoints (`/register`, `/login`, `/me`) in `app/controllers/auth_controller.py`.
+- [x] Task 2.1: Verify & refine JWT token utility in `app/services/security.py`.
+- [x] Task 2.2: Implement `get_current_user` in `app/routes/deps.py`.
+- [x] Task 2.3: Create Pydantic schemas in `app/schemas/user.py`.
+- [x] Task 2.4: Build auth endpoints (`/register`, `/login`, `/me`) in `app/controllers/auth_controller.py`.
 
 ### Phase 3: Workspace, Channel (Group & DM) & Storage Services
 - [ ] Task 3.1: Create schemas in `app/schemas/workspace.py` and `app/schemas/channel.py`.

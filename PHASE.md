@@ -30,8 +30,8 @@
 
 ## 2. Checklist for AI Agent / Engineer
 
-- [ ] Verify password hashing and JWT token generator in `app/services/security.py`
-- [ ] Implement schemas in `app/schemas/user.py`
-- [ ] Implement `get_current_user` and `get_current_active_user` in `app/routes/deps.py`
-- [ ] Implement endpoints in `app/controllers/auth_controller.py`
-- [ ] Add unit tests for registration, login, and auth validation
+- [x] Verify password hashing and JWT token generator in `app/services/security.py`
+- [x] Implement schemas in `app/schemas/user.py`
+- [x] Implement `get_current_user` and `get_current_active_user` in `app/routes/deps.py`
+- [x] Implement endpoints in `app/controllers/auth_controller.py`
+- [x] Add unit tests for registration, login, and auth validation
