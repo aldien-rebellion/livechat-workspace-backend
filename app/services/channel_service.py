@@ -163,9 +163,13 @@ class ChannelService:
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail="Channel not found",
             )
-        stmt = select(ChannelMember).where(
-            ChannelMember.channel_id == channel_id,
-            ChannelMember.user_id == user_id,
+        stmt = (
+            select(ChannelMember)
+            .where(
+                ChannelMember.channel_id == channel_id,
+                ChannelMember.user_id == user_id,
+            )
+            .options(selectinload(ChannelMember.user))
         )
         res = await db.execute(stmt)
         existing = res.scalars().first()
@@ -175,8 +179,9 @@ class ChannelService:
         member = ChannelMember(channel_id=channel_id, user_id=user_id)
         db.add(member)
         await db.commit()
-        await db.refresh(member)
-        return member
+
+        res = await db.execute(stmt)
+        return res.scalars().first()
 
     @classmethod
     async def get_messages(

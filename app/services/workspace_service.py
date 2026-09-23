@@ -5,6 +5,7 @@ from typing import List, Optional
 from fastapi import HTTPException, status
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import selectinload
 
 from app.models.channel import Channel, ChannelMember
 from app.models.workspace import Workspace, WorkspaceMember
@@ -109,9 +110,13 @@ class WorkspaceService:
                 detail="Workspace not found",
             )
 
-        stmt = select(WorkspaceMember).where(
-            WorkspaceMember.workspace_id == workspace_id,
-            WorkspaceMember.user_id == user_id,
+        stmt = (
+            select(WorkspaceMember)
+            .where(
+                WorkspaceMember.workspace_id == workspace_id,
+                WorkspaceMember.user_id == user_id,
+            )
+            .options(selectinload(WorkspaceMember.user))
         )
         res = await db.execute(stmt)
         existing = res.scalars().first()
@@ -131,5 +136,7 @@ class WorkspaceService:
             db.add(ChannelMember(channel_id=channel.id, user_id=user_id))
 
         await db.commit()
-        await db.refresh(member)
-        return member
+
+        # Reload with user relationship eager loaded
+        res = await db.execute(stmt)
+        return res.scalars().first()

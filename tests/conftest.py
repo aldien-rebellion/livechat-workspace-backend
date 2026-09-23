@@ -4,6 +4,7 @@ from sqlalchemy.pool import NullPool
 
 from app.config.redis import redis_client
 from app.config.settings import settings
+from app.db import session as db_session
 from app.db.session import get_db
 from app.main import app
 
@@ -11,6 +12,9 @@ test_engine = create_async_engine(settings.DATABASE_URL, poolclass=NullPool)
 TestSessionLocal = async_sessionmaker(
     test_engine, expire_on_commit=False, autoflush=False
 )
+
+# Use NullPool for all internal AsyncSessionLocal calls in tests
+db_session.AsyncSessionLocal = TestSessionLocal
 
 
 @pytest.fixture(autouse=True)
@@ -25,9 +29,14 @@ def override_db_dependency():
 
 
 @pytest.fixture(autouse=True)
-async def cleanup_redis_pool():
+async def cleanup_resources():
     yield
     try:
         await redis_client.connection_pool.disconnect()
+    except Exception:
+        pass
+    try:
+        await test_engine.dispose()
+        await db_session.engine.dispose()
     except Exception:
         pass

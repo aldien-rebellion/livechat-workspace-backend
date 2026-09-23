@@ -1,7 +1,9 @@
 from contextlib import asynccontextmanager
+from pathlib import Path
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import HTMLResponse
 
 from app.config.settings import settings
 from app.routes.api_router import api_router
@@ -51,6 +53,16 @@ async def root():
         "message": f"Welcome to {settings.PROJECT_NAME}",
         "docs": f"{settings.API_V1_STR}/docs",
     }
+
+
+@app.get("/e2e", response_class=HTMLResponse)
+async def get_e2e_client():
+    client_path = (
+        Path(__file__).resolve().parent.parent / "tests" / "e2e" / "client.html"
+    )
+    if client_path.exists():
+        return HTMLResponse(content=client_path.read_text(encoding="utf-8"))
+    return HTMLResponse(content="<h1>E2E Test Client not found</h1>", status_code=404)
 
 
 if __name__ == "__main__":

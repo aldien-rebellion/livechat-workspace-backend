@@ -320,7 +320,7 @@ sequenceDiagram
 [x] Phase 3: Workspace, Channel (Group & DM) & File Storage Services
 [x] Phase 4: Core Real-Time WebSocket & Redis Pub/Sub Distribution
 [x] Phase 5: Presence Engine, Read Receipts & Status Caching
-[ ] Phase 6: Automated Testing Suite (Unit, Integration & WS)
+[x] Phase 6: Automated Testing Suite (Unit, Integration & WS)
 [ ] Phase 7: Containerization, CI/CD Pipeline & VPS Docker Compose
 [ ] Phase 8: High-Concurrency Load Testing (k6)
 [ ] Phase 9: Production Monitoring (Prometheus & Grafana)
@@ -370,11 +370,11 @@ sequenceDiagram
 - [x] Task 5.3: Implement REST endpoint `GET /api/v1/workspaces/{id}/online-users`.
 
 ### Phase 6: Automated Testing Suite
-- [ ] Task 6.1: Setup test fixtures in `tests/conftest.py` (async DB session, async Redis client).
-- [ ] Task 6.2: Write tests for Auth, Workspaces, and Channels in `tests/test_chat_services.py`.
-- [ ] Task 6.3: Write WebSocket integration test with `httpx` / `TestClient.websocket_connect` in `tests/test_websocket.py`.
-- [ ] Task 6.4: Build Lightweight HTML Chat Test Client in `tests/e2e/client.html` (minimal UI with auth, channel switch, real-time message stream, typing indicator, and read receipt triggers).
-- [ ] Task 6.5: Implement Playwright E2E interactive test suite in `tests/e2e/test_chat_e2e.py`:
+- [x] Task 6.1: Setup test fixtures in `tests/conftest.py` (async DB session, async Redis client).
+- [x] Task 6.2: Write tests for Auth, Workspaces, and Channels in `tests/test_channels.py` and `tests/test_auth.py`.
+- [x] Task 6.3: Write WebSocket integration test with `httpx` / `TestClient.websocket_connect` in `tests/test_websocket.py`.
+- [x] Task 6.4: Build Lightweight HTML Chat Test Client in `tests/e2e/client.html` (minimal UI with auth, channel switch, real-time message stream, typing indicator, and read receipt triggers).
+- [x] Task 6.5: Implement Playwright E2E interactive test suite in `tests/e2e/test_chat_e2e.py`:
   - Spin up 2 isolated browser contexts (User A and User B).
   - Verify bidirectional real-time message broadcast, online presence updates, and typing indicators.
 

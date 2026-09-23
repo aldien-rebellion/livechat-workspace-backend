@@ -32,6 +32,6 @@
 - [x] Implement Auth test suite in `tests/test_auth.py`
 - [x] Implement Workspace & Channel test suite in `tests/test_channels.py`
 - [x] Implement WebSocket test suite in `tests/test_websocket.py`
-- [ ] Build lightweight HTML chat client in `tests/e2e/client.html`
-- [ ] Implement Playwright multi-user E2E tests in `tests/e2e/test_chat_e2e.py`
-- [ ] Run `pytest -v` (unit/integration) and verify full test suite passes
+- [x] Build lightweight HTML chat client in `tests/e2e/client.html`
+- [x] Implement Playwright multi-user E2E tests in `tests/e2e/test_chat_e2e.py`
+- [x] Run `pytest -v` (unit/integration) and verify full test suite passes

@@ -183,6 +183,9 @@ async def websocket_channel_endpoint(
                         "username": user.username,
                     },
                 }
+                await connection_manager.broadcast_to_channel(
+                    channel_id, typing_payload
+                )
                 await redis_pubsub_manager.publish_to_channel(
                     channel_id, typing_payload
                 )
