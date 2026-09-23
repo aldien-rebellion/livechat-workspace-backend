@@ -402,13 +402,14 @@ sequenceDiagram
 
 ## 8. AI Agent Execution Directives & Conventions
 
-1. **Strict Async Paradigm:** All database queries must use SQLAlchemy 2.0 async syntax (`await session.execute(...)`), never synchronous blocking calls.
-2. **Redis Async Operations:** Always use `aioredis` / async client (`await redis.get(...)`).
-3. **No Breaking Changes to Workshop Code:** Do not remove `telemetry` or `devices` modules/migrations; keep them coexisting.
-4. **Error Handling Standards:**
+1. **Phase Branch Workflow:** When working on any phase branch (`feature/phase-X-*`), the AI Agent must read `PHASE.md` in the workspace root first as the primary task scope, deliverables definition, and execution checklist for that specific phase.
+2. **Strict Async Paradigm:** All database queries must use SQLAlchemy 2.0 async syntax (`await session.execute(...)`), never synchronous blocking calls.
+3. **Redis Async Operations:** Always use `aioredis` / async client (`await redis.get(...)`).
+4. **No Breaking Changes to Workshop Code:** Do not remove `telemetry` or `devices` modules/migrations; keep them coexisting.
+5. **Error Handling Standards:**
    - Raise FastAPI `HTTPException` with explicit status codes.
    - For WebSockets, send JSON error envelopes or standard close codes before terminating.
-5. **Code Style & Quality:**
+6. **Code Style & Quality:**
    - Strict typing with type hints (`typing.Optional`, `typing.List`, or Python 3.10+ union types `X | None`).
    - All code must pass `flake8`, `black`, and `isort` linting without errors.
-6. **Task Progression:** Mark completed tasks with `[x]` in this document as each task is implemented and verified.
+7. **Task Progression:** Mark completed tasks with `[x]` in both `plan.md` and `PHASE.md` as each task is implemented and verified.
