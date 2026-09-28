@@ -1,0 +1,35 @@
+################################################################################
+# docker-compose.prod.yml
+# Production Compose file — deploy on Cloud Server (Workshop 12)
+#
+# Usage on server:
+#   export DOCKERHUB_USERNAME=your_username
+#   docker compose -f docker-compose.prod.yml up -d --remove-orphans
+#
+# Or place a .env file next to this file with DOCKERHUB_USERNAME=...
+################################################################################
+
+services:
+  iot-api:
+    image: ${DOCKERHUB_USERNAME}/iot-api:latest
+    container_name: iot_api
+    restart: always
+    ports:
+      - "8000:8000"   # IoT API port (change to "80:8000" to serve on port 80)
+    env_file:
+      - .env          # Server-side .env with DATABASE_URL, SECRET_KEY, etc.
+    environment:
+      - HOST=0.0.0.0
+      - PORT=8000
+      - PYTHONUNBUFFERED=1
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
