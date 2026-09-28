@@ -20,7 +20,9 @@ async def seed_data():
             if res.status_code == 201:
                 data = res.json()
                 print(
-                    f"[{i}/{NUM_RECORDS}] Sent {payload['device_id']}: Voltage={payload['voltage']}V, Current={payload['current']}A -> Created (ID: {data['id']})"
+                    f"[{i}/{NUM_RECORDS}] Sent {payload['device_id']}: "
+                    f"Voltage={payload['voltage']}V, "
+                    f"Current={payload['current']}A -> Created (ID: {data['id']})"
                 )
             else:
                 print(f"[{i}/{NUM_RECORDS}] Error: {res.status_code} - {res.text}")
