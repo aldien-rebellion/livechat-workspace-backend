@@ -30,11 +30,15 @@ async def register(user_in: UserCreate, db: AsyncSession = Depends(get_db)):
     # Hash the password
     hashed_password = get_password_hash(user_in.password)
 
-    # Determine role (for demo purposes, first user or 'admin' gets admin role, others viewer)
+    # Determine role (for demo purposes: first user or 'admin' gets admin role)
     role = "admin" if "admin" in user_in.username.lower() else "viewer"
 
     # Create new user
-    new_user = User(username=user_in.username, password_hash=hashed_password, role=role)
+    new_user = User(
+        username=user_in.username,
+        password_hash=hashed_password,
+        role=role,
+    )
     db.add(new_user)
     await db.commit()
     await db.refresh(new_user)

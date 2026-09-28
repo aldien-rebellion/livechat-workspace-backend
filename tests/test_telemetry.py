@@ -5,7 +5,7 @@ from unittest.mock import AsyncMock, MagicMock
 import pytest
 from httpx import ASGITransport, AsyncClient
 
-from app.core.redis import get_redis
+from app.config.redis import get_redis
 from app.db.session import get_db
 from app.main import app
 

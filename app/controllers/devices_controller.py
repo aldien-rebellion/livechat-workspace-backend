@@ -84,5 +84,7 @@ async def send_device_command(
             status_code=status.HTTP_400_BAD_REQUEST, detail="Unsupported command"
         )
     return {
-        "message": f"Command '{payload.command}' sent successfully to device {device_id}"
+        "message": (
+            f"Command '{payload.command}' sent successfully to device {device_id}"
+        )
     }
