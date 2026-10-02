@@ -39,6 +39,13 @@ def mock_db():
 
 @pytest.fixture
 async def async_client(mock_db, mock_redis):
+    mock_user = User(
+        id=uuid.uuid4(),
+        username="testuser",
+        password_hash="mockhash",
+        role="viewer",
+    )
+
     async def override_get_db():
         yield mock_db
 
@@ -46,7 +53,7 @@ async def async_client(mock_db, mock_redis):
         return mock_redis
 
     async def override_get_current_user():
-        return User(id=1, username="testuser", password_hash="dummy", role="admin")
+        return mock_user
 
     app.dependency_overrides[get_db] = override_get_db
     app.dependency_overrides[get_redis] = override_get_redis

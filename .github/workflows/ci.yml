@@ -100,14 +100,5 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Set up Docker Buildx
-        uses: actions/setup-buildx-action@v3
-
       - name: Build Docker Image
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          push: false
-          tags: livechat-api:latest
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+        run: docker build -t livechat-api:latest .

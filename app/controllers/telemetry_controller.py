@@ -26,4 +26,13 @@ async def create_telemetry(
     cache_key = get_device_status_key(db_obj.device_id)
     await redis.set(cache_key, telemetry_response.model_dump_json())
 
+    if telemetry_in.voltage > 250:
+        from app.services.rabbitmq_service import publish_alert_email
+
+        await publish_alert_email(
+            device_id=telemetry_in.device_id,
+            voltage=telemetry_in.voltage,
+            timestamp=str(db_obj.timestamp),
+        )
+
     return db_obj

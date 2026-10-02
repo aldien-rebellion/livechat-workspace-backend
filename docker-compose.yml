@@ -91,6 +91,18 @@ services:
     depends_on:
       - api
 
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile.worker
+    container_name: livechat_worker
+    restart: always
+    environment:
+      - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672/
+      - PYTHONUNBUFFERED=1
+    depends_on:
+      - rabbitmq
+
 volumes:
   postgres_data:
   redis_data:
