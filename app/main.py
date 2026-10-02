@@ -56,9 +56,12 @@ async def root():
     return {
         "message": f"Welcome to {settings.PROJECT_NAME}",
         "docs": f"{settings.API_V1_STR}/docs",
+        "platform_ui": "/platform",
     }
 
 
+@app.get("/platform", response_class=HTMLResponse)
+@app.get("/chat", response_class=HTMLResponse)
 @app.get("/e2e", response_class=HTMLResponse)
 async def get_e2e_client():
     client_path = (
@@ -66,7 +69,7 @@ async def get_e2e_client():
     )
     if client_path.exists():
         return HTMLResponse(content=client_path.read_text(encoding="utf-8"))
-    return HTMLResponse(content="<h1>E2E Test Client not found</h1>", status_code=404)
+    return HTMLResponse(content="<h1>Platform Client not found</h1>", status_code=404)
 
 
 if __name__ == "__main__":
