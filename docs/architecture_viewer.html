@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workshop 10: The Architecture Board - LiveChat Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Sarabun:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Sarabun', 'Plus Jakarta Sans', sans-serif;
+        }
+        code, pre, .mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .dashed-box {
+            border: 2.5px dashed #3b82f6;
+            background: rgba(239, 246, 255, 0.5);
+        }
+        .flow-line {
+            stroke-dasharray: 6;
+            animation: dash 1.5s linear infinite;
+        }
+        @keyframes dash {
+            to {
+                stroke-dashoffset: -12;
+            }
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen">
+    <!-- Header -->
+    <header class="border-b border-slate-800 bg-slate-950/80 backdrop-blur sticky top-0 z-50 px-6 py-4">
+        <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-4">
+            <div class="flex items-center space-x-3">
+                <div class="h-10 w-10 rounded-xl bg-gradient-to-tr from-blue-600 via-indigo-500 to-cyan-400 flex items-center justify-center font-bold text-white shadow-lg shadow-blue-500/20">
+                    W10
+                </div>
+                <div>
+                    <h1 class="font-bold text-lg text-white leading-tight">Workshop 10: The Architecture Board</h1>
+                    <p class="text-xs text-slate-400">01204425 Internet Programming • LiveChat Workspace Platform (with IoT Telemetry)</p>
+                </div>
+            </div>
+
+            <!-- Tab Buttons -->
+            <nav class="flex items-center bg-slate-900 border border-slate-800 rounded-xl p-1 text-sm font-medium">
+                <button onclick="switchTab('diagram')" id="tab-btn-diagram" class="px-4 py-2 rounded-lg bg-blue-600 text-white shadow transition-all">1. Architecture Visualization</button>
+                <button onclick="switchTab('pitch')" id="tab-btn-pitch" class="px-4 py-2 rounded-lg text-slate-400 hover:text-white transition-all">2. Pitch & What-If</button>
+                <button onclick="switchTab('kanban')" id="tab-btn-kanban" class="px-4 py-2 rounded-lg text-slate-400 hover:text-white transition-all">3. Refactoring Action Plan</button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-6 py-8">
+        <!-- TAB 1: Architecture Visualization -->
+        <section id="tab-diagram" class="space-y-6">
+            <div class="flex flex-wrap items-center justify-between gap-4">
+                <div>
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-blue-500/10 text-blue-400 border border-blue-500/20 mb-2">
+                        Activity 1 • System Architecture Map
+                    </span>
+                    <h2 class="text-2xl font-bold text-white">Full-Stack Real-Time Platform Architecture</h2>
+                    <p class="text-sm text-slate-400">Dashed line indicates Docker Compose boundary. Click any component below for deep-dive specifications.</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="inline-flex items-center gap-2 text-xs bg-slate-800 text-slate-300 px-3 py-1.5 rounded-lg border border-slate-700">
+                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span> Docker Bridge Network (livechat_net)
+                    </span>
+                    <a href="architecture_diagram.excalidraw" download class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white transition">
+                        📥 Download Excalidraw JSON
+                    </a>
+                </div>
+            </div>
+
+            <!-- SVG Architecture Canvas -->
+            <div class="bg-slate-950 border border-slate-800 rounded-2xl p-6 shadow-2xl overflow-x-auto">
+                <svg viewBox="0 0 1180 620" class="w-full min-w-[1000px] h-auto select-none">
+                    <!-- Definitions -->
+                    <defs>
+                        <linearGradient id="gradIngress" x1="0" y1="0" x2="1" y2="1">
+                            <stop offset="0%" stop-color="#059669"/>
+                            <stop offset="100%" stop-color="#10b981"/>
+                        </linearGradient>
+                        <linearGradient id="gradApi" x1="0" y1="0" x2="1" y2="1">
+                            <stop offset="0%" stop-color="#4f46e5"/>
+                            <stop offset="100%" stop-color="#6366f1"/>
+                        </linearGradient>
+                        <linearGradient id="gradDb" x1="0" y1="0" x2="1" y2="1">
+                            <stop offset="0%" stop-color="#1d4ed8"/>
+                            <stop offset="100%" stop-color="#3b82f6"/>
+                        </linearGradient>
+                        <linearGradient id="gradRedis" x1="0" y1="0" x2="1" y2="1">
+                            <stop offset="0%" stop-color="#b91c1c"/>
+                            <stop offset="100%" stop-color="#ef4444"/>
+                        </linearGradient>
+                        <linearGradient id="gradRabbit" x1="0" y1="0" x2="1" y2="1">
+                            <stop offset="0%" stop-color="#c2410c"/>
+                            <stop offset="100%" stop-color="#f97316"/>
+                        </linearGradient>
+                        <linearGradient id="gradWorker" x1="0" y1="0" x2="1" y2="1">
+                            <stop offset="0%" stop-color="#4d7c0f"/>
+                            <stop offset="100%" stop-color="#84cc16"/>
+                        </linearGradient>
+                        <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                            <path d="M 0 1 L 10 5 L 0 9 z" fill="#64748b" />
+                        </marker>
+                        <marker id="arrow-blue" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                            <path d="M 0 1 L 10 5 L 0 9 z" fill="#38bdf8" />
+                        </marker>
+                    </defs>
+
+                    <!-- Client Side Background -->
+                    <rect x="20" y="30" width="220" height="560" rx="16" fill="#0f172a" stroke="#1e293b" stroke-width="1.5" />
+                    <text x="130" y="60" text-anchor="middle" fill="#94a3b8" font-size="13" font-weight="700">CLIENTS & DEVICES</text>
+
+                    <!-- Web Client -->
+                    <g class="cursor-pointer" onclick="selectComponent('web')">
+                        <rect x="35" y="80" width="190" height="95" rx="12" fill="#1e293b" stroke="#334155" stroke-width="2" class="hover:stroke-cyan-400 transition" />
+                        <text x="130" y="112" text-anchor="middle" fill="#f8fafc" font-size="14" font-weight="700">💻 Web Client</text>
+                        <text x="130" y="132" text-anchor="middle" fill="#94a3b8" font-size="11">Chat UI (/platform, /e2e)</text>
+                        <text x="130" y="152" text-anchor="middle" fill="#38bdf8" font-size="10" font-family="JetBrains Mono">REST + WebSocket (WSS)</text>
+                    </g>
+
+                    <!-- Mobile Client -->
+                    <g class="cursor-pointer" onclick="selectComponent('mobile')">
+                        <rect x="35" y="195" width="190" height="85" rx="12" fill="#1e293b" stroke="#334155" stroke-width="2" class="hover:stroke-cyan-400 transition" />
+                        <text x="130" y="225" text-anchor="middle" fill="#f8fafc" font-size="14" font-weight="700">📱 Mobile Client</text>
+                        <text x="130" y="245" text-anchor="middle" fill="#94a3b8" font-size="11">App / Playwright e2e</text>
+                        <text x="130" y="262" text-anchor="middle" fill="#38bdf8" font-size="10" font-family="JetBrains Mono">REST + WebSocket</text>
+                    </g>
+
+                    <!-- Pi Pico -->
+                    <g class="cursor-pointer" onclick="selectComponent('pico')">
+                        <rect x="35" y="300" width="190" height="95" rx="12" fill="#1e293b" stroke="#b45309" stroke-width="2" class="hover:stroke-amber-400 transition" />
+                        <text x="130" y="330" text-anchor="middle" fill="#fbbf24" font-size="14" font-weight="700">📟 Pi Pico W (IoT)</text>
+                        <text x="130" y="350" text-anchor="middle" fill="#d97706" font-size="11">Sensor Telemetry Ingest</text>
+                        <text x="130" y="372" text-anchor="middle" fill="#cbd5e1" font-size="10" font-family="JetBrains Mono">POST /api/v1/telemetry</text>
+                    </g>
+
+                    <!-- Raspberry Pi 5 -->
+                    <g class="cursor-pointer" onclick="selectComponent('rpi5')">
+                        <rect x="35" y="415" width="190" height="95" rx="12" fill="#1e293b" stroke="#b45309" stroke-width="2" class="hover:stroke-amber-400 transition" />
+                        <text x="130" y="445" text-anchor="middle" fill="#fbbf24" font-size="14" font-weight="700">🖥️ Raspberry Pi 5</text>
+                        <text x="130" y="465" text-anchor="middle" fill="#d97706" font-size="11">Dashboard & Actuators</text>
+                        <text x="130" y="487" text-anchor="middle" fill="#cbd5e1" font-size="10" font-family="JetBrains Mono">Control Commands</text>
+                    </g>
+
+                    <!-- DOCKER COMPOSE CONTAINER BOUNDARY (DASHED LINE) -->
+                    <rect x="280" y="30" width="875" height="560" rx="20" fill="#0b1329" stroke="#3b82f6" stroke-width="2.5" stroke-dasharray="8 8" />
+
+                    <!-- Boundary Label Banner -->
+                    <rect x="300" y="18" width="460" height="26" rx="6" fill="#1d4ed8" />
+                    <text x="530" y="35" text-anchor="middle" fill="#ffffff" font-size="12" font-weight="700" letter-spacing="0.5">
+                        📦 DOCKER COMPOSE CONTAINER BOUNDARY (Private Network: livechat_net)
+                    </text>
+
+                    <!-- Ingress / Nginx -->
+                    <g class="cursor-pointer" onclick="selectComponent('nginx')">
+                        <rect x="310" y="160" width="170" height="310" rx="14" fill="url(#gradIngress)" fill-opacity="0.2" stroke="#10b981" stroke-width="2" class="hover:stroke-emerald-300 transition" />
+                        <text x="395" y="195" text-anchor="middle" fill="#34d399" font-size="15" font-weight="800">🌐 Nginx Ingress</text>
+                        <text x="395" y="215" text-anchor="middle" fill="#a7f3d0" font-size="11">Reverse Proxy & SSL</text>
+                        <text x="395" y="235" text-anchor="middle" fill="#6ee7b7" font-size="10" font-family="JetBrains Mono">Port: 80 / 443</text>
+
+                        <line x1="330" y1="255" x2="460" y2="255" stroke="#047857" stroke-width="1"/>
+                        <text x="395" y="275" text-anchor="middle" fill="#e2e8f0" font-size="11">Upstream Balancing</text>
+                        <text x="395" y="295" text-anchor="middle" fill="#e2e8f0" font-size="11">WSS Upgrade Tunnel</text>
+                        <text x="395" y="315" text-anchor="middle" fill="#e2e8f0" font-size="11">Rate Limit Zone (30r/s)</text>
+                        <text x="395" y="335" text-anchor="middle" fill="#e2e8f0" font-size="11">Static & Uploads Cache</text>
+
+                        <rect x="325" y="370" width="140" height="80" rx="8" fill="#064e3b" stroke="#059669" stroke-width="1"/>
+                        <text x="395" y="392" text-anchor="middle" fill="#6ee7b7" font-size="10" font-weight="700">ROUTING RULES</text>
+                        <text x="335" y="412" fill="#cbd5e1" font-size="10" font-family="JetBrains Mono">/api/v1/ws/* -> WS</text>
+                        <text x="335" y="430" fill="#cbd5e1" font-size="10" font-family="JetBrains Mono">/api/v1/*    -> REST</text>
+                    </g>
+
+                    <!-- Core API (FastAPI Cluster) -->
+                    <g class="cursor-pointer" onclick="selectComponent('api')">
+                        <rect x="525" y="80" width="230" height="470" rx="14" fill="url(#gradApi)" fill-opacity="0.15" stroke="#6366f1" stroke-width="2" class="hover:stroke-indigo-300 transition" />
+                        <text x="640" y="115" text-anchor="middle" fill="#818cf8" font-size="16" font-weight="800">⚡ Core API (FastAPI)</text>
+                        <text x="640" y="135" text-anchor="middle" fill="#c7d2fe" font-size="11">Async Uvicorn Multi-Workers</text>
+
+                        <!-- Middleware Badge -->
+                        <rect x="545" y="150" width="190" height="155" rx="10" fill="#1e1b4b" stroke="#4338ca" stroke-width="1.5" />
+                        <text x="640" y="172" text-anchor="middle" fill="#a5b4fc" font-size="11" font-weight="700">🛡️ MIDDLEWARE STACK</text>
+                        <text x="555" y="195" fill="#e0e7ff" font-size="10">✓ JWT Bearer Auth (python-jose)</text>
+                        <text x="555" y="215" fill="#e0e7ff" font-size="10">✓ RBAC: Owner / Admin / Member</text>
+                        <text x="555" y="235" fill="#e0e7ff" font-size="10">✓ CORS Middleware (Allowed Hosts)</text>
+                        <text x="555" y="255" fill="#e0e7ff" font-size="10">✓ Prometheus Instrumentator (/metrics)</text>
+                        <text x="555" y="275" fill="#e0e7ff" font-size="10">✓ Pydantic Payload Validator</text>
+                        <text x="555" y="295" fill="#e0e7ff" font-size="10">✓ Exception & Fallback Handler</text>
+
+                        <!-- Services & Controllers -->
+                        <rect x="545" y="320" width="190" height="210" rx="10" fill="#0f172a" stroke="#334155" stroke-width="1" />
+                        <text x="640" y="342" text-anchor="middle" fill="#94a3b8" font-size="11" font-weight="700">SERVICES & CONTROLLERS</text>
+                        <text x="555" y="365" fill="#cbd5e1" font-size="10">• Auth & User Profile</text>
+                        <text x="555" y="385" fill="#cbd5e1" font-size="10">• Workspace & Channels (DM/Group)</text>
+                        <text x="555" y="405" fill="#cbd5e1" font-size="10">• Real-Time Chat WebSocket</text>
+                        <text x="555" y="425" fill="#cbd5e1" font-size="10">• Read Receipt Service</text>
+                        <text x="555" y="445" fill="#cbd5e1" font-size="10">• Presence Tracker</text>
+                        <text x="555" y="465" fill="#cbd5e1" font-size="10">• File Upload (LocalStorageService)</text>
+                        <text x="555" y="485" fill="#cbd5e1" font-size="10">• IoT Telemetry & Alert Publisher</text>
+                        <text x="555" y="505" fill="#cbd5e1" font-size="10">• Health & Diagnostics Checks</text>
+                    </g>
+
+                    <!-- PostgreSQL Database -->
+                    <g class="cursor-pointer" onclick="selectComponent('postgres')">
+                        <rect x="795" y="80" width="200" height="190" rx="12" fill="url(#gradDb)" fill-opacity="0.15" stroke="#3b82f6" stroke-width="2" class="hover:stroke-blue-300 transition" />
+                        <text x="895" y="110" text-anchor="middle" fill="#60a5fa" font-size="14" font-weight="800">🐘 PostgreSQL 15</text>
+                        <text x="895" y="128" text-anchor="middle" fill="#93c5fd" font-size="10" font-family="JetBrains Mono">SQLAlchemy 2.0 (asyncpg)</text>
+                        <line x1="810" y1="140" x2="980" y2="140" stroke="#1d4ed8" stroke-width="1"/>
+                        <text x="815" y="160" fill="#e2e8f0" font-size="10">• users & credentials</text>
+                        <text x="815" y="180" fill="#e2e8f0" font-size="10">• workspaces & members</text>
+                        <text x="815" y="200" fill="#e2e8f0" font-size="10">• channels & channel_members</text>
+                        <text x="815" y="220" fill="#e2e8f0" font-size="10">• messages & message_reads</text>
+                        <text x="815" y="240" fill="#e2e8f0" font-size="10">• telemetry & devices (IoT)</text>
+                        <text x="815" y="258" fill="#38bdf8" font-size="9" font-family="JetBrains Mono">Port: 5432 (Internal Network Only)</text>
+                    </g>
+
+                    <!-- Redis Cache & Presence -->
+                    <g class="cursor-pointer" onclick="selectComponent('redis')">
+                        <rect x="795" y="285" width="200" height="155" rx="12" fill="url(#gradRedis)" fill-opacity="0.15" stroke="#ef4444" stroke-width="2" class="hover:stroke-red-300 transition" />
+                        <text x="895" y="312" text-anchor="middle" fill="#f87171" font-size="14" font-weight="800">⚡ Redis 7 (Cache & PubSub)</text>
+                        <text x="895" y="330" text-anchor="middle" fill="#fca5a5" font-size="10" font-family="JetBrains Mono">In-Memory Engine & AOF</text>
+                        <line x1="810" y1="340" x2="980" y2="340" stroke="#b91c1c" stroke-width="1"/>
+                        <text x="815" y="358" fill="#fed7aa" font-size="9" font-family="JetBrains Mono">pubsub:channel:{ch_id}</text>
+                        <text x="815" y="375" fill="#fecaca" font-size="9" font-family="JetBrains Mono">presence:user:{uid} (TTL 60s)</text>
+                        <text x="815" y="392" fill="#fecaca" font-size="9" font-family="JetBrains Mono">presence:ws:{id}:online (Set)</text>
+                        <text x="815" y="409" fill="#fecaca" font-size="9" font-family="JetBrains Mono">cache:user / cache:channel</text>
+                        <text x="815" y="426" fill="#f87171" font-size="9" font-family="JetBrains Mono">Port: 6379 (Internal Network Only)</text>
+                    </g>
+
+                    <!-- RabbitMQ Broker -->
+                    <g class="cursor-pointer" onclick="selectComponent('rabbitmq')">
+                        <rect x="795" y="455" width="160" height="95" rx="12" fill="url(#gradRabbit)" fill-opacity="0.15" stroke="#f97316" stroke-width="2" class="hover:stroke-orange-300 transition" />
+                        <text x="875" y="482" text-anchor="middle" fill="#fb923c" font-size="13" font-weight="800">🐇 RabbitMQ Broker</text>
+                        <text x="805" y="505" fill="#fdba74" font-size="10">• Queue: alert_emails</text>
+                        <text x="805" y="522" fill="#fdba74" font-size="10">• Durable: True (on Disk)</text>
+                        <text x="805" y="539" fill="#fed7aa" font-size="9" font-family="JetBrains Mono">Port: 5672 (Internal)</text>
+                    </g>
+
+                    <!-- Background Worker -->
+                    <g class="cursor-pointer" onclick="selectComponent('worker')">
+                        <rect x="970" y="455" width="165" height="95" rx="12" fill="url(#gradWorker)" fill-opacity="0.15" stroke="#84cc16" stroke-width="2" class="hover:stroke-lime-300 transition" />
+                        <text x="1052" y="482" text-anchor="middle" fill="#a3e635" font-size="13" font-weight="800">👷 Background Worker</text>
+                        <text x="980" y="505" fill="#d9f99d" font-size="10">• scripts/worker.py</text>
+                        <text x="980" y="522" fill="#d9f99d" font-size="10">• aio-pika connect_robust</text>
+                        <text x="980" y="539" fill="#bef264" font-size="10">• Email / Webhook Alerts</text>
+                    </g>
+
+                    <!-- Monitoring (Prometheus & Grafana) -->
+                    <g class="cursor-pointer" onclick="selectComponent('monitoring')">
+                        <rect x="1015" y="80" width="120" height="360" rx="12" fill="#581c87" fill-opacity="0.2" stroke="#a855f7" stroke-width="1.5" class="hover:stroke-purple-300 transition" />
+                        <text x="1075" y="110" text-anchor="middle" fill="#c084fc" font-size="13" font-weight="800">📊 Observability</text>
+                        <line x1="1025" y1="125" x2="1125" y2="125" stroke="#7e22ce" stroke-width="1"/>
+                        <text x="1075" y="150" text-anchor="middle" fill="#e9d5ff" font-size="11" font-weight="700">Prometheus</text>
+                        <text x="1075" y="170" text-anchor="middle" fill="#d8b4fe" font-size="9">Scrapes :8000/metrics</text>
+                        <text x="1075" y="190" text-anchor="middle" fill="#d8b4fe" font-size="9">Every 15s</text>
+
+                        <line x1="1025" y1="210" x2="1125" y2="210" stroke="#7e22ce" stroke-width="1"/>
+                        <text x="1075" y="235" text-anchor="middle" fill="#e9d5ff" font-size="11" font-weight="700">Grafana</text>
+                        <text x="1075" y="255" text-anchor="middle" fill="#d8b4fe" font-size="9">Port: 3000</text>
+                        <text x="1075" y="275" text-anchor="middle" fill="#d8b4fe" font-size="9">• Active WS gauge</text>
+                        <text x="1075" y="295" text-anchor="middle" fill="#d8b4fe" font-size="9">• Message RPS</text>
+                        <text x="1075" y="315" text-anchor="middle" fill="#d8b4fe" font-size="9">• p95 Latency</text>
+                    </g>
+
+                    <!-- CONNECTING ARROWS -->
+                    <!-- Clients to Nginx -->
+                    <path d="M 225 125 L 310 200" stroke="#38bdf8" stroke-width="2" marker-end="url(#arrow-blue)" />
+                    <path d="M 225 240 L 310 270" stroke="#38bdf8" stroke-width="2" marker-end="url(#arrow-blue)" />
+                    <path d="M 225 350 L 310 350" stroke="#fbbf24" stroke-width="2" marker-end="url(#arrow)" />
+                    <path d="M 225 460 L 310 400" stroke="#fbbf24" stroke-width="2" marker-end="url(#arrow)" />
+
+                    <!-- Nginx to API -->
+                    <path d="M 480 300 L 525 300" stroke="#10b981" stroke-width="3" marker-end="url(#arrow)" />
+
+                    <!-- API to PostgreSQL -->
+                    <path d="M 755 180 L 795 180" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrow)" />
+
+                    <!-- API to Redis -->
+                    <path d="M 755 350 L 795 350" stroke="#ef4444" stroke-width="2" marker-end="url(#arrow)" />
+
+                    <!-- API to RabbitMQ -->
+                    <path d="M 755 490 L 795 490" stroke="#f97316" stroke-width="2" marker-end="url(#arrow)" />
+
+                    <!-- RabbitMQ to Worker -->
+                    <path d="M 955 500 L 970 500" stroke="#84cc16" stroke-width="2" marker-end="url(#arrow)" />
+
+                    <!-- API to Prometheus -->
+                    <path d="M 755 130 C 850 130, 950 120, 1015 130" stroke="#a855f7" stroke-dasharray="4 4" stroke-width="1.5" marker-end="url(#arrow)" />
+                </svg>
+            </div>
+
+            <!-- Interactive Detail Drawer -->
+            <div id="component-detail" class="bg-slate-950 border border-slate-800 rounded-2xl p-6 transition-all">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center gap-3">
+                        <span id="detail-icon" class="text-3xl">🌐</span>
+                        <div>
+                            <h3 id="detail-title" class="text-xl font-bold text-white">Nginx Ingress Reverse Proxy</h3>
+                            <p id="detail-subtitle" class="text-xs text-slate-400 font-mono">Ports: 80 / 443 • High-Performance SSL & WebSocket Gateway</p>
+                        </div>
+                    </div>
+                    <span id="detail-badge" class="px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                        Ingress Boundary
+                    </span>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm">
+                    <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl">
+                        <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">หน้าที่หลัก (Primary Role)</h4>
+                        <p id="detail-role" class="text-slate-200 leading-relaxed">
+                            ทำหน้าที่เป็นด่านหน้าตัวเดียวที่เปิดพอร์ตออกสู่สาธารณะ รับภาระการทำ SSL Termination, Load Balancing ไปยัง FastAPI instances และจัดการ WebSocket Upgrade Tunnel
+                        </p>
+                    </div>
+                    <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl">
+                        <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">กลไกความปลอดภัย (Security & Defense)</h4>
+                        <p id="detail-security" class="text-slate-200 leading-relaxed">
+                            ใช้ Ingress Rate Limiting (<code class="text-cyan-400">limit_req_zone</code> 30r/s) สกัดกั้น DoS และขยะจาก Client ไม่ให้หลุดเข้ามาถึง Core Application
+                        </p>
+                    </div>
+                    <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl">
+                        <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">ไฟล์และคอนฟิกที่เกี่ยวข้อง (Source Files)</h4>
+                        <ul id="detail-files" class="space-y-1 font-mono text-xs text-blue-400">
+                            <li>• nginx/nginx.conf</li>
+                            <li>• docker-compose.yml</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 2: Pitch & What-If Challenge -->
+        <section id="tab-pitch" class="hidden space-y-6">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Pitch Presentation Guide (Left Column) -->
+                <div class="lg:col-span-1 bg-slate-950 border border-slate-800 rounded-2xl p-6 space-y-6">
+                    <div>
+                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 mb-2">
+                            Activity 2 • Pitch Guide
+                        </span>
+                        <h3 class="text-xl font-bold text-white">5-7 Min Presentation Pitch</h3>
+                        <p class="text-xs text-slate-400">บทนำเสนอโครงงานต่ออาจารย์และวิศวกรอาวุโส</p>
+                    </div>
+
+                    <!-- Timer Widget -->
+                    <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 text-center">
+                        <p class="text-xs text-slate-400 mb-1">Presentation Timer</p>
+                        <div id="pitch-timer" class="text-3xl font-bold font-mono text-cyan-400 mb-3">05:00</div>
+                        <div class="flex items-center justify-center gap-2">
+                            <button onclick="startTimer()" id="btn-timer-start" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-blue-600 hover:bg-blue-500 text-white">Start</button>
+                            <button onclick="pauseTimer()" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300">Pause</button>
+                            <button onclick="resetTimer()" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-400">Reset</button>
+                        </div>
+                    </div>
+
+                    <!-- Script Stages -->
+                    <div class="space-y-4 text-xs text-slate-300">
+                        <div class="border-l-2 border-blue-500 pl-3">
+                            <span class="font-bold text-white">0:00 - 1:00 Intro & Problem Statement</span>
+                            <p class="text-slate-400 mt-1">แนะนำทีมและจุดยืน: สถาปัตยกรรม LiveChat Platform ผสานระบบ Telemetry IoT เพื่อความพร้อมขึ้น Cloud</p>
+                        </div>
+                        <div class="border-l-2 border-indigo-500 pl-3">
+                            <span class="font-bold text-white">1:00 - 3:00 Core Architecture Breakdown</span>
+                            <p class="text-slate-400 mt-1">ชูประเด็น Nginx Ingress, FastAPI Async Cluster, และ Dual Messaging (Redis Pub/Sub vs RabbitMQ Durable Queue)</p>
+                        </div>
+                        <div class="border-l-2 border-emerald-500 pl-3">
+                            <span class="font-bold text-white">3:00 - 5:00 Production Benchmarks & Security</span>
+                            <p class="text-slate-400 mt-1">สรุปผล k6 Load Testing (10k Concurrency p95 < 35ms) และการซ่อนพอร์ต Database ภายใน Docker Network</p>
+                        </div>
+                        <div class="border-l-2 border-amber-500 pl-3">
+                            <span class="font-bold text-white">5:00 - 6:00 Sign-off Request & Q&A Open</span>
+                            <p class="text-slate-400 mt-1">ขออนุมัติการ Deploy พร้อมเปิดรับข้อซักถาม What-If จากผู้บริหารและทีมผู้ฟัง</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- What-If Challenge Simulator (Right Column) -->
+                <div class="lg:col-span-2 space-y-4">
+                    <div>
+                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-400 border border-amber-500/20 mb-2">
+                            Interactive What-If Defense Matrix
+                        </span>
+                        <h3 class="text-xl font-bold text-white">"What If...?" Technical Defense</h3>
+                        <p class="text-xs text-slate-400">คลิกที่คำถามเพื่อดูคำตอบแก้ต่างเชิงเทคนิคอย่างเป็นมืออาชีพ</p>
+                    </div>
+
+                    <!-- Question 1 -->
+                    <div class="bg-slate-950 border border-slate-800 rounded-xl overflow-hidden">
+                        <button onclick="toggleFaq('faq-1')" class="w-full text-left p-4 flex items-center justify-between hover:bg-slate-900 transition">
+                            <div class="flex items-center gap-3">
+                                <span class="px-2 py-0.5 rounded bg-red-500/20 text-red-400 text-xs font-bold">จากอาจารย์</span>
+                                <span class="font-semibold text-sm text-slate-200">ถ้า Pi Pico ติดลูป ส่งข้อมูลขยะเข้ามาวินาทีละ 1,000 ครั้ง Database จะทนได้ไหม? หรือมี Rate Limiting ดักตรงไหน?</span>
+                            </div>
+                            <span id="faq-1-icon" class="text-slate-400 text-sm">▼</span>
+                        </button>
+                        <div id="faq-1" class="hidden p-4 bg-slate-900/60 border-t border-slate-800 text-xs text-slate-300 space-y-2 leading-relaxed">
+                            <p><strong class="text-cyan-400">1. Nginx Ingress Rate Limit:</strong> สกัดกั้นที่ขอบเครือข่ายด้วย directive <code class="text-amber-300">limit_req_zone $binary_remote_addr zone=api:10m rate=30r/s;</code> ตัดคำขอเกินทิ้งทันทีด้วย HTTP 429</p>
+                            <p><strong class="text-cyan-400">2. Async Connection Pooling:</strong> กำหนด <code class="text-amber-300">pool_size=10, max_overflow=20</code> บน asyncpg ป้องกัน Database Thread Starvation</p>
+                            <p><strong class="text-cyan-400">3. Redis Batch Buffer:</strong> หากความถี่สูงมาก ระบบสามารถรับพักไว้ใน Redis Stream ก่อนทำ Bulk Insert เพื่อลด I/O load</p>
+                        </div>
+                    </div>
+
+                    <!-- Question 2 -->
+                    <div class="bg-slate-950 border border-slate-800 rounded-xl overflow-hidden">
+                        <button onclick="toggleFaq('faq-2')" class="w-full text-left p-4 flex items-center justify-between hover:bg-slate-900 transition">
+                            <div class="flex items-center gap-3">
+                                <span class="px-2 py-0.5 rounded bg-red-500/20 text-red-400 text-xs font-bold">จากอาจารย์</span>
+                                <span class="font-semibold text-sm text-slate-200">ถ้าเซิร์ฟเวอร์ไฟดับกะทันหัน ข้อมูลแจ้งเตือน (Alert) ใน RabbitMQ แต่ยังไม่ได้ส่งอีเมล จะหายไปหรือไม่?</span>
+                            </div>
+                            <span id="faq-2-icon" class="text-slate-400 text-sm">▼</span>
+                        </button>
+                        <div id="faq-2" class="hidden p-4 bg-slate-900/60 border-t border-slate-800 text-xs text-slate-300 space-y-2 leading-relaxed">
+                            <p><strong class="text-cyan-400">1. Durable Queue:</strong> คิว <code class="text-amber-300">alert_emails</code> ถูกสร้างด้วย <code class="text-amber-300">durable=True</code> บันทึกโครงสร้างลงดิสก์</p>
+                            <p><strong class="text-cyan-400">2. Persistent Message Delivery:</strong> ทุกข้อความ Alert ส่งด้วย <code class="text-amber-300">delivery_mode=PERSISTENT (2)</code> บันทึกลง Disk Storage Volume ทันที</p>
+                            <p><strong class="text-cyan-400">3. Manual Acknowledgment:</strong> Worker (<code class="text-amber-300">scripts/worker.py</code>) ทำงานภายใต้ <code class="text-amber-300">async with message.process():</code> หากไฟดับก่อนส่งอีเมลเสร็จ ข้อความจะไม่ถูก Ack และ RabbitMQ จะ Redeliver ใหม่เมื่อเปิดเครื่อง</p>
+                        </div>
+                    </div>
+
+                    <!-- Question 3 -->
+                    <div class="bg-slate-950 border border-slate-800 rounded-xl overflow-hidden">
+                        <button onclick="toggleFaq('faq-3')" class="w-full text-left p-4 flex items-center justify-between hover:bg-slate-900 transition">
+                            <div class="flex items-center gap-3">
+                                <span class="px-2 py-0.5 rounded bg-red-500/20 text-red-400 text-xs font-bold">จากอาจารย์</span>
+                                <span class="font-semibold text-sm text-slate-200">ถ้าผมรู้ IP ของเซิร์ฟเวอร์คุณ ผมสามารถใช้ Postman ยิงตรงเข้าพอร์ต 5432 ของ Postgres หรือ 6379 ของ Redis ได้ไหม?</span>
+                            </div>
+                            <span id="faq-3-icon" class="text-slate-400 text-sm">▼</span>
+                        </button>
+                        <div id="faq-3" class="hidden p-4 bg-slate-900/60 border-t border-slate-800 text-xs text-slate-300 space-y-2 leading-relaxed">
+                            <p><strong class="text-cyan-400">1. Docker Private Bridge Network:</strong> ใน Docker Compose บน Production เราใช้คำสั่ง <code class="text-amber-300">expose</code> แทน <code class="text-amber-300">ports</code> หรือ bind เฉพาะ <code class="text-amber-300">127.0.0.1</code> สำหรับ Development</p>
+                            <p><strong class="text-cyan-400">2. No Public Port Exposure:</strong> มีเพียงพอร์ต 80 และ 443 ของ Nginx เท่านั้นที่เปิดรับ Traffic จากภายนอก</p>
+                            <p><strong class="text-cyan-400">3. Host VPC Firewall:</strong> กฎ Security Group ของ VPS ปิด Inbound Ports 5432, 6379, 5672 จาก IP สาธารณะทั้งหมด</p>
+                        </div>
+                    </div>
+
+                    <!-- Question 4 -->
+                    <div class="bg-slate-950 border border-slate-800 rounded-xl overflow-hidden">
+                        <button onclick="toggleFaq('faq-4')" class="w-full text-left p-4 flex items-center justify-between hover:bg-slate-900 transition">
+                            <div class="flex items-center gap-3">
+                                <span class="px-2 py-0.5 rounded bg-blue-500/20 text-blue-400 text-xs font-bold">จากทีมอื่น</span>
+                                <span class="font-semibold text-sm text-slate-200">ถ้า Redis Server เกิดล่มกะทันหัน ระบบแชทและประวัติข้อความจะพังไปทั้งหมดหรือไม่?</span>
+                            </div>
+                            <span id="faq-4-icon" class="text-slate-400 text-sm">▼</span>
+                        </button>
+                        <div id="faq-4" class="hidden p-4 bg-slate-900/60 border-t border-slate-800 text-xs text-slate-300 space-y-2 leading-relaxed">
+                            <p><strong class="text-cyan-400">1. PostgreSQL Write-Ahead:</strong> ข้อความแชททุกข้อความถูกบันทึกสำเร็จลง PostgreSQL ก่อนเสมอ จึงไม่สูญหายแม้แต่วินาทีเดียว</p>
+                            <p><strong class="text-cyan-400">2. Graceful Fallback:</strong> การดึงประวัติแชทและโปรไฟล์ผู้ใช้จะ fallback จาก Redis Cache ไปดึงจาก Database โดยตรงแบบอัตโนมัติ</p>
+                        </div>
+                    </div>
+
+                    <!-- Question 5: To Ask Other Teams -->
+                    <div class="bg-indigo-950/40 border border-indigo-800/60 rounded-xl p-4 mt-6">
+                        <h4 class="text-xs font-bold text-indigo-400 uppercase tracking-wider mb-2">🎯 คำถามที่เตรียมไว้ใช้ยิงถามทีมอื่น (Challenger Questions)</h4>
+                        <p class="text-xs text-slate-300 mb-2"><strong>คำถาม:</strong> <em>"ถ้าระบบของคุณมีผู้ใช้งานพร้อมกัน 5,000 คนในห้องเดียวกัน แล้วมีคนส่งรูปภาพขนาดใหญ่ 10MB พร้อมกัน 50 คน เครื่อง Server ของคุณจะเกิด Out of Memory (OOM) ไหม? และมีกลไกจำกัด Request Body Size หรือย้ายการอัปโหลดไปที่ Object Storage อย่างไร?"</em></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 3: Refactoring Action Plan -->
+        <section id="tab-kanban" class="hidden space-y-6">
+            <div class="flex flex-wrap items-center justify-between gap-4">
+                <div>
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 mb-2">
+                        Activity 3 • GitHub Projects Kanban
+                    </span>
+                    <h2 class="text-2xl font-bold text-white">Refactoring Action Plan</h2>
+                    <p class="text-sm text-slate-400">การแปลงข้อเสนอแนะและช่องโหว่จากการ Pitch สู่ Actionable GitHub Issues</p>
+                </div>
+            </div>
+
+            <!-- Kanban Board Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Column: To Do -->
+                <div class="bg-slate-950 border border-slate-800 rounded-2xl p-4 space-y-4">
+                    <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+                        <div class="flex items-center gap-2">
+                            <span class="w-3 h-3 rounded-full bg-slate-500"></span>
+                            <h3 class="font-bold text-sm text-slate-200">To Do</h3>
+                        </div>
+                        <span class="px-2 py-0.5 rounded text-xs bg-slate-800 text-slate-400 font-mono">2</span>
+                    </div>
+
+                    <!-- Task 101 -->
+                    <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 space-y-3 hover:border-slate-700 transition">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-mono text-blue-400">#101</span>
+                            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-red-500/10 text-red-400 border border-red-500/20">Critical (P0)</span>
+                        </div>
+                        <h4 class="text-sm font-semibold text-white">ซ่อนพอร์ต PostgreSQL และ Redis ใน docker-compose.yml</h4>
+                        <p class="text-xs text-slate-400">เปลี่ยนพอร์ต binding จาก 0.0.0.0 สู่ internal expose หรือ 127.0.0.1 เพื่อปิดกั้นการเข้าถึงจากภายนอก Host</p>
+                        <div class="flex items-center justify-between pt-2 border-t border-slate-800 text-[11px] text-slate-400">
+                            <span>Labels: <span class="text-amber-400">security</span>, <span class="text-cyan-400">docker</span></span>
+                            <span>👤 DevOps</span>
+                        </div>
+                    </div>
+
+                    <!-- Task 103 -->
+                    <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 space-y-3 hover:border-slate-700 transition">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-mono text-blue-400">#103</span>
+                            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500/10 text-amber-400 border border-amber-500/20">Medium (P2)</span>
+                        </div>
+                        <h4 class="text-sm font-semibold text-white">เพิ่ม Dead Letter Queue (DLQ) ใน RabbitMQ Alert Worker</h4>
+                        <p class="text-xs text-slate-400">สร้าง queue สำรองสำหรับเก็บ alert messages ที่ส่งล้มเหลวเกิน 3 ครั้ง ป้องกัน message loss</p>
+                        <div class="flex items-center justify-between pt-2 border-t border-slate-800 text-[11px] text-slate-400">
+                            <span>Labels: <span class="text-purple-400">refactor</span>, <span class="text-orange-400">worker</span></span>
+                            <span>👤 Distributed Dev</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Column: In Progress -->
+                <div class="bg-slate-950 border border-slate-800 rounded-2xl p-4 space-y-4">
+                    <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+                        <div class="flex items-center gap-2">
+                            <span class="w-3 h-3 rounded-full bg-amber-500 animate-pulse"></span>
+                            <h3 class="font-bold text-sm text-slate-200">In Progress</h3>
+                        </div>
+                        <span class="px-2 py-0.5 rounded text-xs bg-slate-800 text-slate-400 font-mono">1</span>
+                    </div>
+
+                    <!-- Task 102 -->
+                    <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 space-y-3 hover:border-slate-700 transition">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-mono text-blue-400">#102</span>
+                            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-500/10 text-blue-400 border border-blue-500/20">High (P1)</span>
+                        </div>
+                        <h4 class="text-sm font-semibold text-white">เพิ่ม Graceful Fallback Logic กรณีดึง Cache จาก Redis ไม่ได้</h4>
+                        <p class="text-xs text-slate-400">ห่อหุ้มคำสั่ง Redis ด้วย try/except RedisError แล้ว fallback ไป Query ตรงจาก PostgreSQL แทน</p>
+                        <div class="flex items-center justify-between pt-2 border-t border-slate-800 text-[11px] text-slate-400">
+                            <span>Labels: <span class="text-purple-400">refactor</span>, <span class="text-emerald-400">resilience</span></span>
+                            <span>👤 Backend Dev</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Column: Done -->
+                <div class="bg-slate-950 border border-slate-800 rounded-2xl p-4 space-y-4">
+                    <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+                        <div class="flex items-center gap-2">
+                            <span class="w-3 h-3 rounded-full bg-emerald-500"></span>
+                            <h3 class="font-bold text-sm text-slate-200">Done</h3>
+                        </div>
+                        <span class="px-2 py-0.5 rounded text-xs bg-slate-800 text-slate-400 font-mono">1</span>
+                    </div>
+
+                    <!-- Task 104 -->
+                    <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 space-y-3 border-emerald-900/40">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-mono text-emerald-400">#104</span>
+                            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Verified</span>
+                        </div>
+                        <h4 class="text-sm font-semibold text-white">เพิ่ม Unit Test ตรวจสอบ Malformed JSON และ Empty Payload</h4>
+                        <p class="text-xs text-slate-400">เพิ่ม Test Cases ครอบคลุมการส่ง JSON ผิดรูปแบบทาง WebSocket และ REST โดยระบบตอบกลับ Error Envelope ชัดเจน</p>
+                        <div class="flex items-center justify-between pt-2 border-t border-slate-800 text-[11px] text-slate-400">
+                            <span>Labels: <span class="text-cyan-400">testing</span>, <span class="text-emerald-400">security</span></span>
+                            <span>👤 QA Engineer</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Tab switching logic
+        function switchTab(tabId) {
+            document.querySelectorAll('main > section').forEach(el => el.classList.add('hidden'));
+            document.getElementById('tab-' + tabId).classList.remove('hidden');
+
+            ['diagram', 'pitch', 'kanban'].forEach(t => {
+                const btn = document.getElementById('tab-btn-' + t);
+                if (t === tabId) {
+                    btn.className = 'px-4 py-2 rounded-lg bg-blue-600 text-white shadow transition-all';
+                } else {
+                    btn.className = 'px-4 py-2 rounded-lg text-slate-400 hover:text-white transition-all';
+                }
+            });
+        }
+
+        // Component Detail Data
+        const componentsData = {
+            web: {
+                icon: '💻',
+                title: 'Web Client / Dashboard UI',
+                subtitle: 'Browser-based Chat Interface (/platform, /e2e) • Single Page Application',
+                badge: 'Client Tier',
+                role: 'แสดงผลห้องแชทแบบ Real-Time, จัดการส่งข้อความ, Typing Indicator, Granular Read Receipts, และอัปโหลดไฟล์แนบ',
+                security: 'จัดเก็บ JWT Token ในหน่วยความจำหรือ Secure Storage และแนบไปกับ Authorization Header ในทุกการเชื่อมต่อ WebSocket และ REST',
+                files: ['tests/e2e/client.html', 'app/main.py']
+            },
+            mobile: {
+                icon: '📱',
+                title: 'Mobile Client & Test Runner',
+                subtitle: 'Flutter / React Native Client & Playwright E2E Multi-User Simulator',
+                badge: 'Client Tier',
+                role: 'เชื่อมต่อ WebSocket สตรีมมิ่งข้อความ และจำลองการสนทนาข้ามอุปกรณ์พร้อมกัน',
+                security: 'รองรับการ Reconnect อัตโนมัติด้วย Exponential Backoff และส่ง Heartbeat Ping ทุก 30 วินาที',
+                files: ['tests/e2e/test_chat_e2e.py']
+            },
+            pico: {
+                icon: '📟',
+                title: 'Raspberry Pi Pico W (IoT Edge)',
+                subtitle: 'Microcontroller Edge Sensor • Telemetry Producer',
+                badge: 'IoT Edge Tier',
+                role: 'อ่านค่าอุณหภูมิและความชื้นจากเซนเซอร์ แล้วยิง HTTP POST ส่งข้อมูลเข้า /api/v1/telemetry เพื่อตรวจสอบสภาวะฉุกเฉิน',
+                security: 'ส่งผ่าน Token หรือ API Key ประจำอุปกรณ์ พร้อมการควบคุม Rate Limiting ที่ขอบ Ingress Gateway',
+                files: ['scripts/seed_telemetry.py', 'app/controllers/telemetry_controller.py']
+            },
+            rpi5: {
+                icon: '🖥️',
+                title: 'Raspberry Pi 5 (Edge Gateway)',
+                subtitle: 'Edge Node Display & Industrial Actuator Controller',
+                badge: 'Edge Gateway Tier',
+                role: 'แสดงผล Dashboard สรุปสถานะอุปกรณ์ และรับคำสั่งจากเซิร์ฟเวอร์เพื่อสั่งเปิด/ปิด Relay หรือไซเรนเตือนภัย',
+                security: 'เข้ารหัสการสื่อสารผ่าน mTLS / HTTPS และรับคำสั่งเฉพาะผู้ใช้ระดับ Admin ใน Workspace',
+                files: ['app/controllers/devices_controller.py']
+            },
+            nginx: {
+                icon: '🌐',
+                title: 'Nginx Ingress Reverse Proxy',
+                subtitle: 'Ports: 80 / 443 • High-Performance SSL & WebSocket Gateway',
+                badge: 'Ingress Boundary',
+                role: 'ทำหน้าที่เป็นด่านหน้าตัวเดียวที่เปิดพอร์ตออกสู่สาธารณะ รับภาระการทำ SSL Termination, Load Balancing ไปยัง FastAPI instances และจัดการ WebSocket Upgrade Tunnel',
+                security: 'ใช้ Ingress Rate Limiting (limit_req_zone 30r/s) สกัดกั้น DoS และขยะจาก Client ไม่ให้หลุดเข้ามาถึง Core Application',
+                files: ['nginx/nginx.conf', 'docker-compose.yml']
+            },
+            api: {
+                icon: '⚡',
+                title: 'FastAPI Core Application Cluster',
+                subtitle: 'Python 3.11+ Asyncio ASGI Framework • Scalable Multi-Worker',
+                badge: 'Core API Cluster',
+                role: 'ประมวลผลคำขอทางธุรกิจ, การยืนยันสิทธิ์ JWT, จัดการห้องแชท, ข้อความ, ความพร้อมของผู้ใช้ (Presence), และส่งต่อ Event ข้ามเครื่องผ่าน Redis Pub/Sub',
+                security: 'ใช้ Pydantic V2 ตรวจสอบ Schema อย่างเข้มงวด, ครอบคลุม JWT OAuth2 Password Bearer, และมี Prometheus Metrics จับตาดูทุก Request',
+                files: ['app/main.py', 'app/controllers/chat_websocket_controller.py', 'app/services/channel_service.py']
+            },
+            postgres: {
+                icon: '🐘',
+                title: 'PostgreSQL 15 Persistent Database',
+                subtitle: 'Relational ACID Storage • SQLAlchemy 2.0 Async via asyncpg',
+                badge: 'Persistence Tier',
+                role: 'จัดเก็บข้อมูลหลักของระบบอย่างถาวร: บัญชีผู้ใช้, สิทธิ์ Workspace, ช่องแชท, ประวัติข้อความ, ใบตอบรับการอ่าน, และบันทึกประวัติ IoT Telemetry',
+                security: 'พอร์ต 5432 ถูกซ่อนอยู่ใน Private Docker Bridge Network เท่านั้น ไม่อนุญาตให้เชื่อมต่อตรงจากภายนอก Host',
+                files: ['app/models/user.py', 'app/models/message.py', 'app/db/session.py']
+            },
+            redis: {
+                icon: '⚡',
+                title: 'Redis 7 In-Memory Cache & Pub/Sub',
+                subtitle: 'Sub-Millisecond Event Broker & High-Speed Sliding Window Cache',
+                badge: 'Cache & Pub/Sub Tier',
+                role: 'กระจายข้อความแชทข้ามเครื่องแบบ Pub/Sub (pubsub:channel:*), ติดตามสถานะ Online/Offline (TTL 60s), และแคชโปรไฟล์ผู้ใช้เพื่อลดภาระ Database',
+                security: 'เปิดใช้งานโหมด AOF (Append-Only File) เพื่อความทนทาน และซ่อนพอร์ต 6379 ภายใน Docker Network',
+                files: ['app/services/redis_pubsub.py', 'app/services/presence_service.py']
+            },
+            rabbitmq: {
+                icon: '🐇',
+                title: 'RabbitMQ Message Broker',
+                subtitle: 'AMQP 0-9-1 Reliable Task Queue • At-Least-Once Delivery',
+                badge: 'Message Queue Tier',
+                role: 'รับงานแจ้งเตือนฉุกเฉิน (Critical Alert Emails / Push Notifications) แบบ Asynchronous โดยไม่ทำให้ API ผู้ส่งต้องรอนาน',
+                security: 'คิว alert_emails มีคุณสมบัติ Durable=True และข้อความ Persistent Delivery ป้องกันข้อมูลสูญหายเมื่อเครื่องดับ',
+                files: ['scripts/worker.py', 'app/services/rabbitmq_service.py']
+            },
+            worker: {
+                icon: '👷',
+                title: 'Background Notification Worker',
+                subtitle: 'Independent Worker Container (Dockerfile.worker)',
+                badge: 'Worker Tier',
+                role: 'ดึงงานจาก RabbitMQ มาประมวลผลส่ง Email แจ้งเตือนไปยัง Admin และส่ง Webhook แจ้งเตือน พร้อมระบบ Auto-ack เมื่อเสร็จสิ้น',
+                security: 'เชื่อมต่อ RabbitMQ ด้วย aio-pika connect_robust() เพื่อ Reconnect อัตโนมัติหาก Network ชั่วคราวมีปัญหา',
+                files: ['scripts/worker.py', 'Dockerfile.worker']
+            },
+            monitoring: {
+                icon: '📊',
+                title: 'Observability (Prometheus & Grafana)',
+                subtitle: 'Metrics Scraping & Real-Time Visualization Dashboards',
+                badge: 'Observability Tier',
+                role: 'ดึงข้อมูลสถิติจาก /metrics ทุก 15 วินาที เช่น จำนวนผู้เชื่อมต่อ WebSocket, Message Throughput ต่อวินาที, และ p95 Response Time',
+                security: 'ช่วยให้วิศวกรตรวจจับความผิดปกติและคอขวด (Bottlenecks) ได้ทันทีก่อนที่ระบบจะล่มบน Production',
+                files: ['monitoring/prometheus/prometheus.yml', 'app/config/metrics.py', 'docker-compose.monitoring.yml']
+            }
+        };
+
+        function selectComponent(key) {
+            const comp = componentsData[key];
+            if (!comp) return;
+
+            document.getElementById('detail-icon').textContent = comp.icon;
+            document.getElementById('detail-title').textContent = comp.title;
+            document.getElementById('detail-subtitle').textContent = comp.subtitle;
+            document.getElementById('detail-badge').textContent = comp.badge;
+            document.getElementById('detail-role').textContent = comp.role;
+            document.getElementById('detail-security').textContent = comp.security;
+
+            const filesList = document.getElementById('detail-files');
+            filesList.innerHTML = '';
+            comp.files.forEach(f => {
+                const li = document.createElement('li');
+                li.textContent = '• ' + f;
+                filesList.appendChild(li);
+            });
+
+            document.getElementById('component-detail').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        // Toggle FAQ / What-If
+        function toggleFaq(id) {
+            const el = document.getElementById(id);
+            const icon = document.getElementById(id + '-icon');
+            if (el.classList.contains('hidden')) {
+                el.classList.remove('hidden');
+                icon.textContent = '▲';
+            } else {
+                el.classList.add('hidden');
+                icon.textContent = '▼';
+            }
+        }
+
+        // Pitch Timer
+        let timerSeconds = 300;
+        let timerInterval = null;
+
+        function updateTimerDisplay() {
+            const mins = Math.floor(timerSeconds / 60);
+            const secs = timerSeconds % 60;
+            document.getElementById('pitch-timer').textContent =
+                `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        function startTimer() {
+            if (timerInterval) return;
+            timerInterval = setInterval(() => {
+                if (timerSeconds > 0) {
+                    timerSeconds--;
+                    updateTimerDisplay();
+                } else {
+                    clearInterval(timerInterval);
+                    timerInterval = null;
+                    alert("⏰ Pitch Time's up! Open floor for What-If questions.");
+                }
+            }, 1000);
+        }
+
+        function pauseTimer() {
+            clearInterval(timerInterval);
+            timerInterval = null;
+        }
+
+        function resetTimer() {
+            pauseTimer();
+            timerSeconds = 300;
+            updateTimerDisplay();
+        }
+    </script>
+</body>
+</html>

@@ -89,3 +89,16 @@ def test_websocket_chat_flow(client: TestClient):
         assert bcast_res["data"]["id"] == msg_id
         assert bcast_res["data"]["content"] == "Hello real-time WebSocket!"
         assert bcast_res["data"]["user"]["id"] == str(user_id)
+
+        # Test Empty Content Validation (Refactoring Plan Task #104)
+        ws.send_json(
+            {
+                "event": "message:send",
+                "data": {
+                    "content": "",
+                },
+            }
+        )
+        err_res = ws.receive_json()
+        assert err_res.get("event") == "error"
+        assert "Content cannot be empty" in err_res.get("data", {}).get("message", "")

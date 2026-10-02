@@ -7,8 +7,9 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: livechat_db
+    # Security: Bind to 127.0.0.1 only to prevent direct external access (Workshop 10 Task #101)
     ports:
-      - "5432:5432"
+      - "127.0.0.1:5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
@@ -22,8 +23,9 @@ services:
     container_name: livechat_redis
     restart: always
     command: ["redis-server", "--appendonly", "yes"]
+    # Security: Bind to 127.0.0.1 only to prevent direct external access (Workshop 10 Task #101)
     ports:
-      - "6379:6379"
+      - "127.0.0.1:6379:6379"
     volumes:
       - redis_data:/data
     healthcheck:
@@ -36,9 +38,10 @@ services:
     image: rabbitmq:3-management-alpine
     container_name: livechat_rabbitmq
     restart: always
+    # Security: Bind to 127.0.0.1 only to prevent direct external access (Workshop 10 Task #101)
     ports:
-      - "5672:5672"
-      - "15672:15672"
+      - "127.0.0.1:5672:5672"
+      - "127.0.0.1:15672:15672"
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
     healthcheck:
@@ -71,8 +74,9 @@ services:
         condition: service_healthy
     volumes:
       - uploads_data:/app/uploads
+    # Security: Bind to 127.0.0.1; public traffic must route through Nginx (port 80)
     ports:
-      - "8000:8000"
+      - "127.0.0.1:8000:8000"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
       interval: 10s
