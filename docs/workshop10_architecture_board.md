@@ -34,9 +34,8 @@
 flowchart TD
     %% Clients Section
     subgraph Clients ["  Clients & Applications (ภายนอก Container)  "]
-        Web["💻 Web / Desktop App<br/>(React / Next.js / Electron UI: /platform, /chat)"]
-        Mobile["📱 Mobile Client<br/>(iOS & Android / Flutter / React Native REST & WSS)"]
-        TestBot["🤖 Automated Test & Bot Client<br/>(Playwright Multi-User Simulation & Webhook Bots)"]
+        Web["💻 Web & Desktop Client<br/>(React / Next.js / Electron UI: /platform, /chat)"]
+        TestBot["🤖 Automated Test & Bot Client<br/>(Playwright Multi-User Simulation & k6 Load Tester)"]
     end
 
     %% Container Boundary (Docker Compose)
@@ -90,7 +89,6 @@ flowchart TD
 
     %% Network Connections
     Web -->|HTTP / REST & WSS| Nginx
-    Mobile -->|HTTP / REST & WSS| Nginx
     TestBot -->|Automated REST / WS| Nginx
 
     Nginx -->|Proxy Pass HTTP/WS| API1
@@ -105,7 +103,7 @@ flowchart TD
     API1 & API2 -->|Save Uploaded Media| Storage
 
     RabbitMQ -->|Consume Tasks| NotificationWorker
-    NotificationWorker -->|Dispatch Push / Email Alert| Web & Mobile
+    NotificationWorker -->|Dispatch Email Digest Alert| Web
 
     Prom -->|Scrape Metrics| API1 & API2
     Graf -->|Query Timeseries| Prom
@@ -117,7 +115,7 @@ flowchart TD
 
 | องค์ประกอบ | เทคโนโลยี / โมดูล | หน้าที่และรายละเอียดเชิงเทคนิค |
 | :--- | :--- | :--- |
-| **Clients** | 1. Web Client / Desktop App<br/>2. Mobile App (Flutter / React Native)<br/>3. Automated E2E Clients & Bots (Playwright) | • เชื่อมต่อผ่าน HTTP/REST สำหรับการยืนยันตัวตนและการจัดการ Workspace/Channels<br/>• สตรีมมิ่งข้อมูลแบบ Full-Duplex ผ่าน WebSocket (`/api/v1/ws/channels/{id}`)<br/>• รองรับ Real-time Message Broadcasting, Typing Indicators, Granular Read Receipts, และ File Attachments |
+| **Clients** | 1. Web & Desktop Client (/platform, /chat)<br/>2. Automated Test & Bot Client (Playwright & k6) | • เชื่อมต่อผ่าน HTTP/REST สำหรับการยืนยันตัวตนและการจัดการ Workspace/Channels<br/>• สตรีมมิ่งข้อมูลแบบ Full-Duplex ผ่าน WebSocket (`/api/v1/ws/channels/{id}`)<br/>• รองรับ Real-time Message Broadcasting, Typing Indicators, Granular Read Receipts, และ File Attachments |
 | **API Gateway / Core API** | Nginx Reverse Proxy + FastAPI Cluster (Uvicorn Async) | • **Nginx (Ingress):** Reverse Proxy, SSL Termination, Load Balancing ไปยัง FastAPI Instance 1 & 2, จัดการ WebSocket Upgrade (`Connection: upgrade`), และสกัดกั้น DoS ด้วย Rate Limiting Zone (`30r/s`)<br/>• **Middleware Stack:**<br/>  - `AuthMiddleware` / `get_current_user`: ถอดรหัส JWT Bearer Token ด้วย `python-jose` (HS256)<br/>  - `CORSMiddleware`: ป้องกัน Cross-Origin Attack กำหนด Allowed Origins<br/>  - `PrometheusFastAPIInstrumentator`: บันทึก Request Count, Latency Histogram, และ Active WebSocket Gauge (`/metrics`)<br/>  - `Pydantic Schema Validation`: ตรวจสอบความถูกต้องของ Message Payload ทุก Request |
 | **Databases** | **PostgreSQL 15**<br/>(Async SQLAlchemy 2.0 + asyncpg) | **ตารางหลักสำหรับระบบ Live Chat Workspace:**<br/>• `users`: บัญชีผู้ใช้, อีเมล, รหัสผ่านแฮช (bcrypt), avatar_url<br/>• `workspaces` & `workspace_members`: โครงสร้างองค์กร, บทบาท (owner, admin, member)<br/>• `channels` & `channel_members`: ห้องแชทกลุ่มและ 1-on-1 DM (PUBLIC, PRIVATE, DIRECT_MESSAGE)<br/>• `messages`: ข้อความ, เธรดตอบกลับ (`parent_id`), ลิงก์ไฟล์แนบ (`file_url`), Soft delete (`is_deleted`)<br/>• `message_reads`: ใบตอบรับการอ่าน (Composite PK: `message_id` + `user_id`) |
 | **In-Memory Cache & Presence** | **Redis 7 (Alpine)** | **โครงสร้าง Key และ Pattern การทำงาน:**<br/>• `presence:user:{user_id}`: String, TTL 60s (Sliding window จาก Ping Heartbeat)<br/>• `presence:user:{user_id}:meta`: Hash (`last_seen`, `device_count`, `custom_status`)<br/>• `presence:workspace:{workspace_id}:online`: Set เก็บ User IDs ที่กำลัง Online ในแต่ละ Workspace<br/>• `pubsub:channel:{channel_id}`: Pub/Sub Channel สำหรับกระจายข้อความแชทข้าม FastAPI Instance<br/>• `cache:user:{user_id}`: String JSON, TTL 300s (User Profile Cache)<br/>• `cache:channel:{channel_id}`: String JSON, TTL 600s (Channel Metadata Cache) |
