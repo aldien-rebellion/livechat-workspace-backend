@@ -52,39 +52,43 @@ winget install HashiCorp.Terraform
 terraform -v
 ```
 
-### Step 2 — Provision the Cloud Server with Terraform
+### Step 2 — Provision the Cloud Server with Terraform (AWS)
+
+Make sure you have your AWS credentials set up locally:
+- **If using AWS Academy (Learner Lab):** Click **AWS Details** in the Learner Lab, copy the **AWS CLI credentials** block, and paste it into `~/.aws/credentials`. (Region is `us-east-1`, Key Pair name is usually `vockey`).
+- **If using Personal AWS Account:** Run `aws configure` and input your `AWS Access Key ID`, `Secret Access Key`, and default region (e.g. `us-east-1` or `ap-southeast-1`).
 
 ```bash
 cd infrastructure/
 
-# 1. Initialise providers
+# 1. Initialise Terraform and download AWS provider
 terraform init
 
 # 2. Preview what will be created
-terraform plan \
-  -var="do_token=<YOUR_DIGITALOCEAN_TOKEN>" \
-  -var="ssh_key_fingerprint=<YOUR_SSH_KEY_FINGERPRINT>"
+# If using AWS Academy:
+terraform plan -var="aws_region=us-east-1" -var="key_name=vockey"
 
-# 3. Apply – create the Droplet + Firewall
-terraform apply \
-  -var="do_token=<YOUR_DIGITALOCEAN_TOKEN>" \
-  -var="ssh_key_fingerprint=<YOUR_SSH_KEY_FINGERPRINT>"
+# Or if you have a custom key pair name in AWS Console:
+# terraform plan -var="aws_region=ap-southeast-1" -var="key_name=your-key-name"
+
+# 3. Apply – create the EC2 Instance + Security Group
+terraform apply -var="aws_region=us-east-1" -var="key_name=vockey"
 
 # Note the PUBLIC IP printed in the outputs:
-#   public_ip    = "xxx.xxx.xxx.xxx"
-#   ssh_command  = "ssh ubuntu@xxx.xxx.xxx.xxx"
+#   public_ip    = "54.xxx.xxx.xxx"
+#   ssh_command  = "ssh ubuntu@54.xxx.xxx.xxx"
 ```
 
 > [!TIP]
-> Use a `terraform.tfvars` file (never commit it!) to avoid typing `-var` flags every time:
+> You can also create a `terraform.tfvars` file inside `infrastructure/` to avoid typing variables:
 > ```hcl
-> do_token            = "dop_v1_..."
-> ssh_key_fingerprint = "aa:bb:cc:..."
+> aws_region = "us-east-1"
+> key_name   = "vockey"
 > ```
 
-To destroy the server when no longer needed:
+To destroy the server when finished:
 ```bash
-terraform destroy -var="do_token=..." -var="ssh_key_fingerprint=..."
+terraform destroy -var="aws_region=us-east-1" -var="key_name=vockey"
 ```
 
 ---
