@@ -1,9 +1,11 @@
 from contextlib import asynccontextmanager
+from json.decoder import JSONDecodeError
 from pathlib import Path
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request, status
+from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, JSONResponse
 from prometheus_fastapi_instrumentator import Instrumentator
 
 from app.config.settings import settings
@@ -34,6 +36,41 @@ app = FastAPI(
     redoc_url=f"{settings.API_V1_STR}/redoc",
     lifespan=lifespan,
 )
+
+
+# Exception handlers for invalid JSON payloads
+@app.exception_handler(RequestValidationError)
+async def validation_exception_handler(request: Request, exc: RequestValidationError):
+    for err in exc.errors():
+        if err.get("type") == "json_invalid":
+            error_message = (
+                err.get("ctx", {}).get("error") or err.get("msg") or "Invalid JSON"
+            )
+            return JSONResponse(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                content={
+                    "error": "Bad Request",
+                    "detail": "Invalid JSON format",
+                    "message": str(error_message),
+                },
+            )
+    return JSONResponse(
+        status_code=422,
+        content={"detail": exc.errors()},
+    )
+
+
+@app.exception_handler(JSONDecodeError)
+async def json_decode_error_handler(request: Request, exc: JSONDecodeError):
+    return JSONResponse(
+        status_code=status.HTTP_400_BAD_REQUEST,
+        content={
+            "error": "Bad Request",
+            "detail": "Invalid JSON format",
+            "message": str(exc),
+        },
+    )
+
 
 # CORS middleware
 app.add_middleware(
