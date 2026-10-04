@@ -3,122 +3,1017 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LiveChat E2E Test Client</title>
+    <title>Serendale LiveChat — Next-Gen AI & Real-Time Messaging Platform</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --bg-pitch: #06070a;
+            --bg-card: rgba(13, 16, 28, 0.72);
+            --bg-card-hover: rgba(20, 25, 42, 0.85);
+            --border-glass: rgba(255, 255, 255, 0.08);
+            --border-glow: rgba(168, 85, 247, 0.35);
+            --neon-pink: #ff2a85;
+            --neon-purple: #a855f7;
+            --neon-cyan: #00f0ff;
+            --neon-blue: #3b82f6;
+            --neon-green: #10b981;
+            --neon-red: #ef4444;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --text-dim: #64748b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            margin: 20px;
-            background: #f4f6f8;
-            color: #333;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg-pitch);
+            color: var(--text-main);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            background-image:
+                radial-gradient(circle at 15% 15%, rgba(236, 72, 153, 0.12) 0%, transparent 40%),
+                radial-gradient(circle at 85% 25%, rgba(6, 182, 212, 0.12) 0%, transparent 45%),
+                radial-gradient(circle at 50% 65%, rgba(168, 85, 247, 0.08) 0%, transparent 50%);
+            background-attachment: fixed;
         }
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            background: #fff;
-            padding: 24px;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+
+        /* Ambient Glow Highlights */
+        .ambient-glow {
+            position: absolute;
+            pointer-events: none;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.45;
+            z-index: 0;
         }
-        h2 { margin-top: 0; }
-        .form-group {
-            margin-bottom: 12px;
+        .glow-1 {
+            width: 450px;
+            height: 450px;
+            background: #ff2a85;
+            top: 50px;
+            left: -100px;
+        }
+        .glow-2 {
+            width: 500px;
+            height: 500px;
+            background: #00f0ff;
+            top: 150px;
+            right: -100px;
+        }
+        .glow-3 {
+            width: 600px;
+            height: 400px;
+            background: #7928ca;
+            bottom: 100px;
+            left: 20%;
+        }
+
+        /* Serendale Navigation Bar */
+        nav.serendale-nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
             display: flex;
-            gap: 8px;
             align-items: center;
+            justify-content: space-between;
+            padding: 16px 40px;
+            background: rgba(6, 7, 10, 0.8);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border-glass);
         }
-        input[type="text"], input[type="password"] {
-            padding: 8px 12px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            flex: 1;
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: #fff;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
         }
-        button {
-            padding: 8px 16px;
-            background: #2563eb;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
+
+        .logo-symbol {
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #ff2a85, #7928ca, #00f0ff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 15px rgba(168, 85, 247, 0.5);
         }
-        button:hover { background: #1d4ed8; }
-        button:disabled { background: #9ca3af; cursor: not-allowed; }
-        #connection-status {
-            font-weight: bold;
-            display: inline-block;
-            margin-left: 10px;
+
+        .logo-symbol svg {
+            width: 20px;
+            height: 20px;
+            fill: #fff;
         }
-        .status-connected { color: #16a34a; }
-        .status-disconnected { color: #dc2626; }
-        #messages-list {
-            height: 300px;
-            overflow-y: auto;
-            border: 1px solid #e5e7eb;
-            border-radius: 4px;
-            padding: 12px;
-            margin-bottom: 12px;
-            background: #f9fafb;
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 32px;
             list-style: none;
         }
-        .message-item {
-            padding: 6px 0;
-            border-bottom: 1px solid #eee;
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.2s ease;
         }
-        .msg-sender { font-weight: 600; color: #1f2937; }
-        .msg-content { margin-left: 8px; }
-        .msg-meta { font-size: 11px; color: #6b7280; margin-left: 8px; }
-        #typing-indicator {
-            min-height: 20px;
+
+        .nav-links a:hover {
+            color: #fff;
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .nav-social-btn {
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+        .nav-social-btn:hover {
+            color: #fff;
+            transform: translateY(-1px);
+        }
+
+        .nav-cta {
+            padding: 8px 18px;
+            border-radius: 9999px;
+            font-size: 13px;
+            font-weight: 600;
+            background: linear-gradient(135deg, #ff2a85, #8b5cf6);
+            color: #fff;
+            text-decoration: none;
+            box-shadow: 0 0 15px rgba(236, 72, 153, 0.4);
+            transition: all 0.25s ease;
+        }
+        .nav-cta:hover {
+            box-shadow: 0 0 25px rgba(236, 72, 153, 0.7);
+            transform: scale(1.02);
+        }
+
+        /* Hero Showcase Section */
+        .hero-section {
+            position: relative;
+            z-index: 10;
+            padding: 70px 24px 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 9999px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--neon-cyan);
+            margin-bottom: 24px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.15);
+        }
+
+        .hero-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(40px, 6vw, 68px);
+            font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -1.5px;
+            margin-bottom: 16px;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #ff3b8f 0%, #c084fc 45%, #38bdf8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 40px rgba(192, 132, 252, 0.25);
+        }
+
+        .hero-title .white-text {
+            color: #ffffff;
+            display: block;
+        }
+
+        .hero-subtitle {
+            max-width: 640px;
+            margin: 0 auto 36px;
+            font-size: 16px;
+            line-height: 1.6;
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        .hero-cta-group {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 30px;
+        }
+
+        .btn-gradient {
+            padding: 12px 28px;
+            border-radius: 9999px;
+            font-size: 15px;
+            font-weight: 600;
+            color: #fff;
+            background: linear-gradient(135deg, #2563eb, #7c3aed, #ec4899);
+            background-size: 200% 200%;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 0 25px rgba(124, 58, 237, 0.5);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-gradient:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 35px rgba(236, 72, 153, 0.65);
+        }
+
+        .btn-glass {
+            padding: 12px 28px;
+            border-radius: 9999px;
+            font-size: 15px;
+            font-weight: 600;
+            color: #fff;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            backdrop-filter: blur(12px);
+            cursor: pointer;
+            transition: all 0.25s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-glass:hover {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(255, 255, 255, 0.35);
+            transform: translateY(-2px);
+        }
+
+        /* Hero Graphic Illustration (Wireframe Wave & Glowing Infinity) */
+        .hero-graphic-container {
+            position: relative;
+            width: 100%;
+            max-width: 1100px;
+            margin: 0 auto 30px;
+            height: 240px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border-radius: 20px;
+            background: linear-gradient(180deg, rgba(255,255,255,0.02) 0%, rgba(0,0,0,0.4) 100%);
+            border: 1px solid var(--border-glass);
+        }
+
+        .wireframe-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            opacity: 0.85;
+        }
+
+        .infinity-emblem {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .glowing-infinity {
+            font-size: 72px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 300;
+            background: linear-gradient(135deg, #00f0ff, #8b5cf6, #ff2a85);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 25px rgba(139, 92, 246, 0.7));
+            animation: pulse-glow 3s infinite alternate;
+        }
+
+        @keyframes pulse-glow {
+            0% { transform: scale(1); filter: drop-shadow(0 0 20px rgba(0, 240, 255, 0.5)); }
+            100% { transform: scale(1.04); filter: drop-shadow(0 0 35px rgba(255, 42, 133, 0.8)); }
+        }
+
+        .graphic-badge {
             font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--neon-cyan);
+            font-weight: 700;
+            text-shadow: 0 0 8px rgba(0, 240, 255, 0.6);
+        }
+
+        /* Main Workspace & Chat Platform Console */
+        .platform-wrapper {
+            position: relative;
+            z-index: 10;
+            max-width: 1240px;
+            margin: 0 auto 60px;
+            padding: 0 20px;
+        }
+
+        .console-container {
+            display: grid;
+            grid-template-columns: 360px 1fr;
+            gap: 20px;
+            background: var(--bg-card);
+            backdrop-filter: blur(28px);
+            border: 1px solid var(--border-glass);
+            border-radius: 24px;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8);
+            overflow: hidden;
+        }
+
+        @media (max-width: 900px) {
+            .console-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Left Sidebar: Auth & Channel Management */
+        .sidebar {
+            background: rgba(10, 12, 20, 0.65);
+            border-right: 1px solid var(--border-glass);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .card-title {
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--neon-cyan);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .card-title svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+
+        .section-box {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 16px;
+            padding: 16px;
+            transition: border-color 0.2s ease;
+        }
+        .section-box:hover {
+            border-color: rgba(255, 255, 255, 0.12);
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .input-wrap {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 11px 14px;
+            background: rgba(5, 7, 12, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: #fff;
+            font-size: 14px;
+            font-family: inherit;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        input[type="text"]:focus, input[type="password"]:focus {
+            border-color: var(--neon-cyan);
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.25);
+            background: rgba(8, 11, 20, 0.9);
+        }
+
+        input[type="text"]::placeholder, input[type="password"]::placeholder {
+            color: var(--text-dim);
+        }
+
+        button {
+            padding: 11px 18px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-action-primary {
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            color: #fff;
+            box-shadow: 0 0 12px rgba(124, 58, 237, 0.35);
+        }
+        .btn-action-primary:hover:not(:disabled) {
+            background: linear-gradient(135deg, #1d4ed8, #6d28d9);
+            box-shadow: 0 0 20px rgba(124, 58, 237, 0.55);
+            transform: translateY(-1px);
+        }
+
+        .btn-action-secondary {
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--text-main);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .btn-action-secondary:hover:not(:disabled) {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(255, 255, 255, 0.25);
+        }
+
+        .btn-action-danger {
+            background: rgba(239, 68, 68, 0.15);
+            color: #fca5a5;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+        .btn-action-danger:hover:not(:disabled) {
+            background: rgba(239, 68, 68, 0.25);
+            color: #fff;
+            box-shadow: 0 0 15px rgba(239, 68, 68, 0.4);
+        }
+
+        button:disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
+            filter: grayscale(0.8);
+            transform: none !important;
+            box-shadow: none !important;
+        }
+
+        .quick-users {
+            display: flex;
+            gap: 8px;
+            margin-top: 6px;
+        }
+        .quick-user-tag {
+            padding: 4px 10px;
+            font-size: 11px;
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .quick-user-tag:hover {
+            color: var(--neon-cyan);
+            border-color: var(--neon-cyan);
+            background: rgba(0, 240, 255, 0.08);
+        }
+
+        .token-info {
+            font-size: 11px;
+            color: var(--text-dim);
+            margin-top: 10px;
+            word-break: break-all;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .token-info code {
+            color: var(--neon-purple);
+            font-family: monospace;
+            background: rgba(168, 85, 247, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        /* Status Pills */
+        #connection-status {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            padding: 4px 10px;
+            border-radius: 9999px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .status-connected {
+            background: rgba(16, 185, 129, 0.12);
+            color: #34d399;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            box-shadow: 0 0 12px rgba(16, 185, 129, 0.25);
+        }
+        .status-connected::before {
+            content: '';
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #10b981;
+            box-shadow: 0 0 8px #10b981;
+            animation: pulse-dot 1.5s infinite;
+        }
+
+        .status-disconnected {
+            background: rgba(239, 68, 68, 0.12);
+            color: #f87171;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+        .status-disconnected::before {
+            content: '';
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #ef4444;
+        }
+
+        @keyframes pulse-dot {
+            0% { transform: scale(0.9); opacity: 0.8; }
+            50% { transform: scale(1.3); opacity: 1; }
+            100% { transform: scale(0.9); opacity: 0.8; }
+        }
+
+        /* Right Panel: Chat Stream Room */
+        .chat-main {
+            display: flex;
+            flex-direction: column;
+            height: 640px;
+            background: rgba(7, 9, 15, 0.4);
+        }
+
+        .chat-header {
+            padding: 18px 24px;
+            border-bottom: 1px solid var(--border-glass);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(13, 16, 28, 0.4);
+        }
+
+        .chat-channel-meta {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .channel-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, rgba(255, 42, 133, 0.2), rgba(0, 240, 255, 0.2));
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--neon-cyan);
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        .channel-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #fff;
+        }
+        .channel-desc {
+            font-size: 12px;
+            color: var(--text-dim);
+        }
+
+        /* Message Stream */
+        #messages-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px 24px;
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            scroll-behavior: smooth;
+        }
+
+        #messages-list::-webkit-scrollbar {
+            width: 6px;
+        }
+        #messages-list::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        #messages-list::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.12);
+            border-radius: 4px;
+        }
+        #messages-list::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        .message-item {
+            display: flex;
+            flex-direction: column;
+            background: rgba(18, 22, 38, 0.55);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 10px 14px;
+            max-width: 85%;
+            word-wrap: break-word;
+            animation: fadeInMsg 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+        }
+
+        @keyframes fadeInMsg {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .message-top-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 4px;
+        }
+
+        .msg-sender {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--neon-cyan);
+            letter-spacing: -0.2px;
+        }
+
+        .msg-content {
+            font-size: 14px;
+            line-height: 1.5;
+            color: #f1f5f9;
+        }
+
+        .msg-meta {
+            font-size: 11px;
+            color: var(--text-dim);
+            margin-top: 4px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .read-receipt-badge {
+            color: #38bdf8;
+            font-weight: 600;
+        }
+
+        /* Typing Indicator */
+        #typing-indicator {
+            min-height: 22px;
+            padding: 0 24px;
+            font-size: 12px;
+            color: var(--neon-purple);
             font-style: italic;
-            color: #6b7280;
-            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Chat Input Bar */
+        .chat-input-bar {
+            padding: 16px 24px;
+            border-top: 1px solid var(--border-glass);
+            background: rgba(11, 14, 24, 0.8);
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .input-inner-flex {
+            flex: 1;
+            position: relative;
+        }
+
+        #message-input {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(6, 8, 15, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 12px;
+            color: #fff;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+        #message-input:focus {
+            border-color: var(--neon-purple);
+            box-shadow: 0 0 15px rgba(168, 85, 247, 0.3);
+        }
+
+        .chat-actions-btn-group {
+            display: flex;
+            gap: 8px;
+        }
+
+        /* Footer Telemetry Banner */
+        .footer-telemetry {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 36px;
+            padding: 24px;
+            border-top: 1px solid var(--border-glass);
+            color: var(--text-dim);
+            font-size: 12px;
+            flex-wrap: wrap;
+        }
+
+        .telemetry-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .telemetry-val {
+            color: #fff;
+            font-weight: 700;
+            font-family: 'Space Grotesk', sans-serif;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h2>LiveChat Test Client</h2>
 
-        <!-- Auth Section -->
-        <div id="auth-section">
-            <div class="form-group">
-                <input type="text" id="username-input" placeholder="Username" />
-                <input type="password" id="password-input" placeholder="Password" />
-                <button id="login-btn">Log In</button>
+    <!-- Ambient Glowing Nebulas -->
+    <div class="ambient-glow glow-1"></div>
+    <div class="ambient-glow glow-2"></div>
+    <div class="ambient-glow glow-3"></div>
+
+    <!-- Serendale Navigation -->
+    <nav class="serendale-nav">
+        <a href="/" class="nav-logo">
+            <div class="logo-symbol">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+                </svg>
             </div>
-            <div style="font-size: 12px; color: #6b7280; margin-bottom: 16px;">
-                Token: <span id="token-display">None</span>
-            </div>
+            <span>Serendale<span style="color: var(--neon-cyan)">.ai</span></span>
+        </a>
+
+        <ul class="nav-links">
+            <li><a href="#console">LiveChat Platform</a></li>
+            <li><a href="#console">Workspaces</a></li>
+            <li><a href="#console">Channels</a></li>
+            <li><a href="/api/v1/docs" target="_blank">API Docs</a></li>
+            <li><a href="/metrics" target="_blank">Telemetry</a></li>
+        </ul>
+
+        <div class="nav-actions">
+            <a href="https://github.com/aldien-rebellion/livechat-workspace-backend" target="_blank" class="nav-social-btn" title="GitHub Repository">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+                </svg>
+            </a>
+            <a href="#console" class="nav-cta">Launch Console</a>
+        </div>
+    </nav>
+
+    <!-- Serendale Hero Section -->
+    <section class="hero-section">
+        <div class="hero-badge">
+            <span>✦</span> REAL-TIME ENGINE • HIGH CONCURRENCY PUB/SUB
         </div>
 
-        <hr style="margin: 16px 0; border: 0; border-top: 1px solid #e5e7eb;">
+        <h1 class="hero-title">
+            <span class="gradient-text">A Fast Blockchain.</span>
+            <span class="white-text">Scalable AI.</span>
+        </h1>
 
-        <!-- Channel & WebSocket Connection Section -->
-        <div id="channel-section">
-            <div class="form-group">
-                <input type="text" id="channel-id-input" placeholder="Channel UUID" />
-                <button id="connect-btn" disabled>Connect WS</button>
-                <button id="disconnect-btn" disabled>Disconnect</button>
-                <span id="connection-status" class="status-disconnected">DISCONNECTED</span>
-            </div>
+        <p class="hero-subtitle">
+            Distributed multi-tenant messaging infrastructure powered by FastAPI, Redis Pub/Sub horizontal fanout, and sub-100ms WebSocket synchronization.
+        </p>
+
+        <div class="hero-cta-group">
+            <a href="#console" class="btn-gradient">
+                <span>Get started</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+            </a>
+            <a href="/api/v1/docs" target="_blank" class="btn-glass">
+                <span>Ecosystem API</span>
+            </a>
         </div>
 
-        <hr style="margin: 16px 0; border: 0; border-top: 1px solid #e5e7eb;">
-
-        <!-- Chat Stream Section -->
-        <div id="chat-section">
-            <ul id="messages-list"></ul>
-            <div id="typing-indicator"></div>
-
-            <div class="form-group">
-                <input type="text" id="message-input" placeholder="Type a message..." disabled />
-                <button id="send-btn" disabled>Send</button>
-                <button id="typing-btn" disabled>Typing</button>
-                <button id="mark-read-btn" disabled>Mark Last Read</button>
+        <!-- Serendale Wireframe Wave & Infinity Emblem Canvas -->
+        <div class="hero-graphic-container">
+            <canvas id="wireframe-canvas" class="wireframe-canvas"></canvas>
+            <div class="infinity-emblem">
+                <div class="glowing-infinity">∞</div>
+                <div class="graphic-badge">SERENDALE CONCURRENCY MESH</div>
             </div>
         </div>
-    </div>
+    </section>
 
+    <!-- Main Platform & Chat Console -->
+    <main id="console" class="platform-wrapper">
+        <div class="console-container">
+
+            <!-- Sidebar Controls -->
+            <aside class="sidebar">
+
+                <!-- 1. Authentication Card -->
+                <div id="auth-section" class="section-box">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                            <span>Authentication</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="input-wrap">
+                            <input type="text" id="username-input" placeholder="Username (e.g. alice)" />
+                        </div>
+                        <div class="input-wrap">
+                            <input type="password" id="password-input" placeholder="Password (Password123!)" />
+                        </div>
+                    </div>
+
+                    <div style="display: flex; gap: 8px;">
+                        <button id="login-btn" class="btn-action-primary" style="flex: 1;">Log In</button>
+                        <button id="register-btn" class="btn-action-secondary">Register</button>
+                    </div>
+
+                    <div class="quick-users">
+                        <span style="font-size: 11px; color: var(--text-dim); align-self: center;">Quick fill:</span>
+                        <span class="quick-user-tag" onclick="quickFill('alice')">Alice</span>
+                        <span class="quick-user-tag" onclick="quickFill('bob')">Bob</span>
+                    </div>
+
+                    <div class="token-info">
+                        <span>Token:</span>
+                        <code id="token-display">None</code>
+                    </div>
+                </div>
+
+                <!-- 2. Workspace & Channel Connection -->
+                <div id="channel-section" class="section-box">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14h-2v-4H6v-2h4V7h2v4h4v2h-4v4z"/></svg>
+                            <span>Channel Connect</span>
+                        </div>
+                        <span id="connection-status" class="status-disconnected">DISCONNECTED</span>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="input-wrap">
+                            <input type="text" id="channel-id-input" placeholder="Channel UUID" />
+                        </div>
+                    </div>
+
+                    <div style="display: flex; gap: 8px;">
+                        <button id="connect-btn" class="btn-action-primary" style="flex: 1;" disabled>Connect WS</button>
+                        <button id="disconnect-btn" class="btn-action-danger" disabled>Disconnect</button>
+                    </div>
+
+                    <button id="fetch-channels-btn" class="btn-action-secondary" style="width: 100%; margin-top: 10px; font-size: 12px;" disabled>
+                        <span>Auto-Discover Channels</span>
+                    </button>
+                </div>
+
+                <!-- Channel Quick Info / Switcher -->
+                <div class="section-box">
+                    <div class="card-header">
+                        <div class="card-title" style="color: var(--neon-purple);">
+                            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/></svg>
+                            <span>Architecture Highlights</span>
+                        </div>
+                    </div>
+                    <p style="font-size: 12px; color: var(--text-dim); line-height: 1.6;">
+                        • PostgreSQL Database-First Persistence<br>
+                        • Redis Cluster Pub/Sub Horizontal Fanout<br>
+                        • Sliding TTL Presence Tracking (60s)<br>
+                        • Granular Per-User Read Receipts
+                    </p>
+                </div>
+
+            </aside>
+
+            <!-- Main Chat Stream Room -->
+            <section id="chat-section" class="chat-main">
+
+                <!-- Header Info Bar -->
+                <div class="chat-header">
+                    <div class="chat-channel-meta">
+                        <div class="channel-avatar">#</div>
+                        <div>
+                            <div class="channel-title" id="active-channel-name">Live Channel Stream</div>
+                            <div class="channel-desc" id="active-channel-desc">Select or connect to a WebSocket channel to begin.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Message Stream -->
+                <ul id="messages-list">
+                    <li style="text-align: center; color: var(--text-dim); font-size: 13px; margin: auto; list-style: none;">
+                        Welcome to Serendale LiveChat. Log in and connect to start real-time messaging.
+                    </li>
+                </ul>
+
+                <!-- Real-Time Typing Indicator -->
+                <div id="typing-indicator"></div>
+
+                <!-- Interactive Chat Input Controls -->
+                <div class="chat-input-bar">
+                    <div class="input-inner-flex">
+                        <input type="text" id="message-input" placeholder="Type a message..." disabled />
+                    </div>
+                    <div class="chat-actions-btn-group">
+                        <button id="send-btn" class="btn-action-primary" disabled>
+                            <span>Send</span>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+                            </svg>
+                        </button>
+                        <button id="typing-btn" class="btn-action-secondary" disabled>Typing</button>
+                        <button id="mark-read-btn" class="btn-action-secondary" disabled>Mark Last Read</button>
+                    </div>
+                </div>
+
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer Observability Telemetry -->
+    <footer class="footer-telemetry">
+        <div class="telemetry-item">
+            <span>Engine:</span>
+            <span class="telemetry-val">FastAPI + Asyncpg</span>
+        </div>
+        <div class="telemetry-item">
+            <span>Broker:</span>
+            <span class="telemetry-val">Redis 7 Pub/Sub</span>
+        </div>
+        <div class="telemetry-item">
+            <span>Latency:</span>
+            <span class="telemetry-val">&lt; 100ms</span>
+        </div>
+        <div class="telemetry-item">
+            <span>Persistence:</span>
+            <span class="telemetry-val">PostgreSQL 15</span>
+        </div>
+    </footer>
+
+    <!-- Interactive Client & Canvas Wave Logic -->
     <script>
         let accessToken = null;
         let socket = null;
@@ -127,11 +1022,13 @@
         const usernameInput = document.getElementById('username-input');
         const passwordInput = document.getElementById('password-input');
         const loginBtn = document.getElementById('login-btn');
+        const registerBtn = document.getElementById('register-btn');
         const tokenDisplay = document.getElementById('token-display');
 
         const channelIdInput = document.getElementById('channel-id-input');
         const connectBtn = document.getElementById('connect-btn');
         const disconnectBtn = document.getElementById('disconnect-btn');
+        const fetchChannelsBtn = document.getElementById('fetch-channels-btn');
         const connectionStatus = document.getElementById('connection-status');
 
         const messagesList = document.getElementById('messages-list');
@@ -140,8 +1037,15 @@
         const sendBtn = document.getElementById('send-btn');
         const typingBtn = document.getElementById('typing-btn');
         const markReadBtn = document.getElementById('mark-read-btn');
+        const activeChannelName = document.getElementById('active-channel-name');
+        const activeChannelDesc = document.getElementById('active-channel-desc');
 
-        // 1. Auth Flow
+        function quickFill(name) {
+            usernameInput.value = name;
+            passwordInput.value = 'Password123!';
+        }
+
+        // 1. Auth Flow: Login
         loginBtn.addEventListener('click', async () => {
             const username = usernameInput.value.trim();
             const password = passwordInput.value.trim();
@@ -158,11 +1062,67 @@
                     accessToken = data.access_token;
                     tokenDisplay.textContent = accessToken.substring(0, 15) + '...';
                     connectBtn.disabled = false;
+                    fetchChannelsBtn.disabled = false;
                 } else {
                     alert('Login failed: ' + (data.detail || JSON.stringify(data)));
                 }
             } catch (err) {
                 alert('Login error: ' + err.message);
+            }
+        });
+
+        // Register Flow
+        registerBtn.addEventListener('click', async () => {
+            const username = usernameInput.value.trim();
+            const password = passwordInput.value.trim();
+            if (!username || !password) {
+                alert('Please enter username and password');
+                return;
+            }
+
+            try {
+                const res = await fetch('/api/v1/auth/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        username: username,
+                        email: `${username}@example.com`,
+                        password: password
+                    })
+                });
+                const data = await res.json();
+                if (res.ok) {
+                    alert('Registration successful! Click Log In now.');
+                } else {
+                    alert('Register failed: ' + (data.detail || JSON.stringify(data)));
+                }
+            } catch (err) {
+                alert('Register error: ' + err.message);
+            }
+        });
+
+        // Auto Discover Channels
+        fetchChannelsBtn.addEventListener('click', async () => {
+            if (!accessToken) return;
+            try {
+                const wsRes = await fetch('/api/v1/workspaces', {
+                    headers: { 'Authorization': `Bearer ${accessToken}` }
+                });
+                const workspaces = await wsRes.json();
+                if (workspaces && workspaces.length > 0) {
+                    const wsId = workspaces[0].id;
+                    const chRes = await fetch(`/api/v1/workspaces/${wsId}/channels`, {
+                        headers: { 'Authorization': `Bearer ${accessToken}` }
+                    });
+                    const channels = await chRes.json();
+                    if (channels && channels.length > 0) {
+                        channelIdInput.value = channels[0].id;
+                        activeChannelName.textContent = `#${channels[0].name}`;
+                        activeChannelDesc.textContent = `Workspace: ${workspaces[0].name} • ID: ${channels[0].id}`;
+                    }
+                }
+            } catch (e) {
+                console.log('Auto discover channels note:', e);
             }
         });
 
@@ -185,6 +1145,7 @@
                 sendBtn.disabled = false;
                 typingBtn.disabled = false;
                 markReadBtn.disabled = false;
+                activeChannelDesc.textContent = `Connected to Channel ${channelId.substring(0, 8)}...`;
             };
 
             socket.onmessage = (event) => {
@@ -201,6 +1162,7 @@
                 sendBtn.disabled = true;
                 typingBtn.disabled = true;
                 markReadBtn.disabled = true;
+                activeChannelDesc.textContent = 'Disconnected from stream.';
             };
 
             socket.onerror = (err) => {
@@ -221,13 +1183,25 @@
 
             if (evt === 'message:broadcast') {
                 lastReceivedMsgId = data.id;
+
+                // Clear placeholder if first message
+                const emptyNotice = messagesList.querySelector('li[style*="list-style: none"]');
+                if (emptyNotice) {
+                    emptyNotice.remove();
+                }
+
                 const li = document.createElement('li');
                 li.className = 'message-item';
                 li.setAttribute('data-msg-id', data.id);
 
+                const topRow = document.createElement('div');
+                topRow.className = 'message-top-row';
+
                 const sender = document.createElement('span');
                 sender.className = 'msg-sender';
                 sender.textContent = (data.user && data.user.username) || 'Unknown';
+
+                topRow.appendChild(sender);
 
                 const content = document.createElement('span');
                 content.className = 'msg-content';
@@ -238,9 +1212,10 @@
                 meta.id = `meta-${data.id}`;
                 meta.textContent = `(id: ${data.id.substring(0, 6)})`;
 
-                li.appendChild(sender);
+                li.appendChild(topRow);
                 li.appendChild(content);
                 li.appendChild(meta);
+
                 messagesList.appendChild(li);
                 messagesList.scrollTop = messagesList.scrollHeight;
             } else if (evt === 'typing:indicator' || evt === 'typing:start') {
@@ -253,7 +1228,7 @@
                 const readerId = data.read_by ? data.read_by.user_id : 'someone';
                 for (const mid of messageIds) {
                     const targetMeta = document.getElementById(`meta-${mid}`);
-                    if (targetMeta && !targetMeta.textContent.includes('Read')) {
+                    if (targetMeta && !targetMeta.textContent.includes('Read by')) {
                         targetMeta.textContent += ` [Read by ${readerId.substring(0, 6)}]`;
                     }
                 }
@@ -294,6 +1269,62 @@
                 data: { message_ids: [lastReceivedMsgId] }
             }));
         });
+
+        // 7. Serendale Geometric Wireframe Wave Rendering
+        const canvas = document.getElementById('wireframe-canvas');
+        if (canvas) {
+            const ctx = canvas.getContext('2d');
+            let width, height;
+
+            function resizeCanvas() {
+                width = canvas.width = canvas.parentElement.clientWidth;
+                height = canvas.height = canvas.parentElement.clientHeight;
+            }
+            window.addEventListener('resize', resizeCanvas);
+            resizeCanvas();
+
+            let time = 0;
+            function drawWave() {
+                ctx.clearRect(0, 0, width, height);
+
+                const lines = 18;
+                const points = 32;
+                const stepX = width / (points - 1);
+
+                for (let l = 0; l < lines; l++) {
+                    const progress = l / lines;
+                    ctx.beginPath();
+
+                    // Gradient stroke from neon pink to cyan
+                    const grad = ctx.createLinearGradient(0, 0, width, 0);
+                    grad.addColorStop(0, `rgba(255, 42, 133, ${0.15 + (1 - progress) * 0.45})`);
+                    grad.addColorStop(0.5, `rgba(168, 85, 247, ${0.15 + (1 - progress) * 0.45})`);
+                    grad.addColorStop(1, `rgba(0, 240, 255, ${0.15 + (1 - progress) * 0.45})`);
+
+                    ctx.strokeStyle = grad;
+                    ctx.lineWidth = 1.2;
+
+                    for (let p = 0; p < points; p++) {
+                        const x = p * stepX;
+                        const wave1 = Math.sin(p * 0.25 + time + l * 0.15) * 35;
+                        const wave2 = Math.cos(p * 0.15 - time * 0.8 + l * 0.1) * 20;
+                        const baseY = height * 0.45 + (l * 8);
+                        const y = baseY + wave1 + wave2;
+
+                        if (p === 0) {
+                            ctx.moveTo(x, y);
+                        } else {
+                            ctx.lineTo(x, y);
+                        }
+                    }
+                    ctx.stroke();
+                }
+
+                time += 0.015;
+                requestAnimationFrame(drawWave);
+            }
+            drawWave();
+        }
     </script>
 </body>
 </html>
