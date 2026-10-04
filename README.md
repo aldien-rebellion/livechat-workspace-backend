@@ -4,11 +4,11 @@
 
 ---
 
-## 📌 Project Overview
+## ≡ƒôî Project Overview
 
 This project is a distributed, multi-tenant real-time messaging platform designed for team communication, direct messaging, and workspace collaboration. It utilizes modern async Python patterns (SQLAlchemy 2.0 asyncpg, asyncio) coupled with Redis Pub/Sub for horizontal scalability across multiple server instances, ensuring sub-100ms message delivery, sliding TTL presence tracking, and granular per-message read receipts.
 
-### 🛠️ Technology Stack
+### ≡ƒ¢á∩╕Å Technology Stack
 
 | Layer | Technologies |
 | :--- | :--- |
@@ -23,37 +23,37 @@ This project is a distributed, multi-tenant real-time messaging platform designe
 
 ---
 
-## 🏛️ System Architecture
+## ≡ƒÅ¢∩╕Å System Architecture
 
 ```
-                  ┌─────────────────────────────────────────┐
-                  │          Clients / Web Browsers          │
-                  └────────────────────┬────────────────────┘
-                                       │ HTTP / WebSockets
-                                       ▼
-                  ┌─────────────────────────────────────────┐
-                  │              Nginx Proxy                │
-                  │   Port 80/443 (SSL, WS Upgrade, Uploads)│
-                  └────────────────────┬────────────────────┘
-                                       │
-                      ┌────────────────┴────────────────┐
-                      ▼                                 ▼
-         ┌─────────────────────────┐       ┌─────────────────────────┐
-         │     FastAPI Worker 1    │       │     FastAPI Worker 2    │
-         │   (WebSocket / REST)    │       │   (WebSocket / REST)    │
-         └────────────┬────────────┘       └────────────┬────────────┘
-                      │                                 │
-           ┌──────────┴──────────────┬──────────────────┴──────────┐
-           ▼                         ▼                             ▼
-┌───────────────────────┐ ┌───────────────────────┐ ┌───────────────────────┐
-│     PostgreSQL 15     │ │     Redis 7 Cache     │ │ Prometheus & Grafana  │
-│  (Persistent Storage) │ │ (Pub/Sub & Presence)  │ │ (Metrics & Dashboard) │
-└───────────────────────┘ └───────────────────────┘ └───────────────────────┘
+                  ΓöîΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÉ
+                  Γöé          Clients / Web Browsers          Γöé
+                  ΓööΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö¼ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÿ
+                                       Γöé HTTP / WebSockets
+                                       Γû╝
+                  ΓöîΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÉ
+                  Γöé              Nginx Proxy                Γöé
+                  Γöé   Port 80/443 (SSL, WS Upgrade, Uploads)Γöé
+                  ΓööΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö¼ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÿ
+                                       Γöé
+                      ΓöîΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö┤ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÉ
+                      Γû╝                                 Γû╝
+         ΓöîΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÉ       ΓöîΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÉ
+         Γöé     FastAPI Worker 1    Γöé       Γöé     FastAPI Worker 2    Γöé
+         Γöé   (WebSocket / REST)    Γöé       Γöé   (WebSocket / REST)    Γöé
+         ΓööΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö¼ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÿ       ΓööΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö¼ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÿ
+                      Γöé                                 Γöé
+           ΓöîΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö┤ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö¼ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö┤ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÉ
+           Γû╝                         Γû╝                             Γû╝
+ΓöîΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÉ ΓöîΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÉ ΓöîΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÉ
+Γöé     PostgreSQL 15     Γöé Γöé     Redis 7 Cache     Γöé Γöé Prometheus & Grafana  Γöé
+Γöé  (Persistent Storage) Γöé Γöé (Pub/Sub & Presence)  Γöé Γöé (Metrics & Dashboard) Γöé
+ΓööΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÿ ΓööΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÿ ΓööΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÿ
 ```
 
 ---
 
-## ✨ Core Features
+## Γ£¿ Core Features
 
 1. **Multi-Tenant Workspaces & Channels:**
    - Workspaces with role-based member management (`OWNER`, `ADMIN`, `MEMBER`).
@@ -81,7 +81,7 @@ This project is a distributed, multi-tenant real-time messaging platform designe
 
 ---
 
-## 🚀 Quick Start Guide
+## ≡ƒÜÇ Quick Start Guide
 
 ### 1. Prerequisites
 - **Python 3.11+**
@@ -116,7 +116,7 @@ uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload
 
 ---
 
-## 🌐 Application Endpoints
+## ≡ƒîÉ Application Endpoints
 
 | Endpoint | Method | Description |
 | :--- | :--- | :--- |
@@ -135,7 +135,7 @@ uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload
 
 ---
 
-## 🧪 Testing & Verification
+## ≡ƒº¬ Testing & Verification
 
 The project includes unit tests, integration tests, and Playwright 2-user interactive E2E tests:
 
@@ -165,7 +165,7 @@ k6 run tests/load_testing/ws_stress_test.js
 
 ---
 
-## 🐳 Docker Deployment
+## ≡ƒÉ│ Docker Deployment
 
 ### Run Full Production Stack
 ```bash
@@ -188,5 +188,45 @@ Access points:
 
 ---
 
-## 📄 License
+## ≡ƒôä License
 This project is developed for educational and academic project submission purposes.
+
+
+---
+
+# Workshop 12: Cloud Deployment Guide (Terraform + AWS EC2 + GitHub Actions)
+
+> **Stack:** FastAPI · Uvicorn · Docker · Terraform · GitHub Actions · AWS (EC2 Ubuntu 22.04 LTS)
+
+## 📁 Infrastructure & Deployment Structure
+
+```
+.
+├── .github/
+│   └── workflows/
+│       ├── ci.yml                  # CI: Lint, Test, Docker build verify
+│       └── cd.yml                  # CD: Build→Push (Docker Hub) → Deploy (SSH to AWS EC2)
+├── infrastructure/
+│   └── main.tf                     # Terraform – provisions AWS EC2 + Security Group
+├── docker-compose.prod.yml         # Production stack (runs on cloud server)
+├── app/
+│   └── main.py                     # +GET /health endpoint
+└── tests/
+    └── test_health.py              # +test_health_endpoint()
+```
+
+## 🚀 Quick Deployment Guide
+
+### Step 1 — Provision the Cloud Server with Terraform
+```bash
+cd infrastructure/
+terraform init
+$pubKey = Get-Content "$HOME\.ssh\id_rsa_deploy.pub" -Raw
+terraform apply -var="aws_region=ap-southeast-2" -var="instance_type=t3.micro" -var="public_key=$pubKey"
+```
+
+### Step 2 — Verify Health Endpoint
+```bash
+curl http://<PUBLIC_IP>:8000/health
+# Response: {"status":"ok","message":"Hello Sakon Nakhon Cloud!"}
+```
