@@ -80,10 +80,21 @@ async def login(
     else:
         try:
             body = await request.json()
-            username = body.get("username")
-            password = body.get("password")
-        except Exception:
-            pass
+            if isinstance(body, dict):
+                username = body.get("username")
+                password = body.get("password")
+            else:
+                raise HTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    detail="Invalid JSON format: expected JSON object",
+                )
+        except HTTPException:
+            raise
+        except Exception as e:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"Invalid JSON format: {str(e)}",
+            )
 
     if not username or not password:
         raise HTTPException(
