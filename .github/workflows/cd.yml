@@ -57,6 +57,9 @@ jobs:
             # Move to app directory (try absolute path first, fallback to ~/app)
             cd /home/ubuntu/app || cd ~/app
 
+            # Ensure .env exists
+            touch .env
+
             # Pull the freshly-built image from Docker Hub
             docker pull ${{ secrets.DOCKERHUB_USERNAME }}/iot-api:latest
 
