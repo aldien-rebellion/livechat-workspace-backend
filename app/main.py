@@ -1,4 +1,3 @@
-import os, sys  # แกล้ง import มาแต่ไม่ได้ใช้ ให้ flake8 ฟ้อง
 from contextlib import asynccontextmanager
 from pathlib import Path
 
