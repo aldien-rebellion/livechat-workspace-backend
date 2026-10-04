@@ -60,6 +60,15 @@ async def root():
     }
 
 
+# ---------------------------------------------------------------------------
+# Workshop 12 – Simple health probe (no DB / Redis dependency)
+# ---------------------------------------------------------------------------
+@app.get("/health", tags=["Health"])
+async def health():
+    """Lightweight liveness endpoint used by Docker HEALTHCHECK and CD pipeline."""
+    return {"status": "ok", "message": "Hello Sakon Nakhon Cloud!"}
+
+
 @app.get("/platform", response_class=HTMLResponse)
 @app.get("/chat", response_class=HTMLResponse)
 @app.get("/e2e", response_class=HTMLResponse)
