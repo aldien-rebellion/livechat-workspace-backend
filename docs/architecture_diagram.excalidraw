@@ -62,7 +62,7 @@
       "strokeColor": "#115e59",
       "fontSize": 14,
       "fontFamily": 1,
-      "text": "💻 Web & Desktop App\n(React / Next.js / Electron)\nLiveChat UI (/platform, /chat)\nHTTP/REST + WSS",
+      "text": "💻 Web & Desktop App\n(HTML5 + Modern CSS + Vanilla JS ES6+)\nLiveChat Client (/platform, /chat)\nHTTP/REST + WSS",
       "textAlign": "center",
       "verticalAlign": "middle"
     },

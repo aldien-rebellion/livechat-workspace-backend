@@ -34,7 +34,7 @@
 flowchart TD
     %% Clients Section
     subgraph Clients ["  Clients & Applications (ภายนอก Container)  "]
-        Web["💻 Web & Desktop Client<br/>(React / Next.js / Electron UI: /platform, /chat)"]
+        Web["💻 Web & Desktop Client<br/>(HTML5 + Modern CSS + Vanilla JavaScript ES6+: /platform, /chat)"]
         TestBot["🤖 Automated Test Client<br/>(Playwright Multi-User Simulation & k6 Load Tester)"]
     end
 
@@ -99,7 +99,7 @@ flowchart TD
 
 | องค์ประกอบ | เทคโนโลยี / โมดูล | หน้าที่และรายละเอียดเชิงเทคนิค |
 | :--- | :--- | :--- |
-| **Clients** | 1. Web & Desktop Client (/platform, /chat)<br/>2. Automated Test Client (Playwright & k6) | • เชื่อมต่อผ่าน HTTP/REST สำหรับการยืนยันตัวตนและการจัดการ Workspace/Channels<br/>• สตรีมมิ่งข้อมูลแบบ Full-Duplex ผ่าน WebSocket (`/api/v1/ws/channels/{id}`)<br/>• รองรับ Real-time Message Broadcasting, Typing Indicators, Granular Read Receipts, และ File Attachments |
+| **Clients** | 1. Web & Desktop Client (HTML5 + Modern CSS + Vanilla JavaScript ES6+: `/platform`, `/chat`)<br/>2. Automated Test Client (Playwright & k6) | • เชื่อมต่อผ่าน HTTP/REST สำหรับการยืนยันตัวตนและการจัดการ Workspace/Channels<br/>• สตรีมมิ่งข้อมูลแบบ Full-Duplex ผ่าน WebSocket (`/api/v1/ws/channels/{id}`)<br/>• รองรับ Real-time Message Broadcasting, Typing Indicators, Granular Read Receipts, และ File Attachments |
 | **API Gateway / Core API** | Nginx Reverse Proxy + FastAPI Cluster (Uvicorn Async) | • **Nginx (Ingress):** Reverse Proxy, SSL Termination, Load Balancing ไปยัง FastAPI Instance 1 & 2, จัดการ WebSocket Upgrade (`Connection: upgrade`), และสกัดกั้น DoS ด้วย Rate Limiting Zone (`30r/s`)<br/>• **Middleware Stack:**<br/>  - `AuthMiddleware` / `get_current_user`: ถอดรหัส JWT Bearer Token ด้วย `python-jose` (HS256)<br/>  - `CORSMiddleware`: ป้องกัน Cross-Origin Attack กำหนด Allowed Origins<br/>  - `PrometheusFastAPIInstrumentator`: บันทึก Request Count, Latency Histogram, และ Active WebSocket Gauge (`/metrics`)<br/>  - `Pydantic Schema Validation`: ตรวจสอบความถูกต้องของ Message Payload ทุก Request |
 | **Databases**<br/>*(จัดกลุ่ม PostgreSQL และ Redis ร่วมกันใน Data Tier)* | **1. PostgreSQL 15**<br/>(Async SQLAlchemy 2.0 + asyncpg)<br/><br/>**2. Redis 7**<br/>(In-Memory Key-Value & Pub/Sub Engine) | **PostgreSQL (ตารางหลักๆ สำหรับระบบ Live Chat):**<br/>• `users`: บัญชีผู้ใช้, อีเมล, รหัสผ่านแฮช (bcrypt), avatar_url<br/>• `workspaces` & `workspace_members`: โครงสร้างองค์กร, บทบาท (owner, admin, member)<br/>• `channels` & `channel_members`: ห้องแชทกลุ่มและ 1-on-1 DM (PUBLIC, PRIVATE, DIRECT_MESSAGE)<br/>• `messages`: ข้อความ, เธรดตอบกลับ (`parent_id`), ลิงก์ไฟล์แนบ (`file_url`), Soft delete (`is_deleted`)<br/>• `message_reads`: ใบตอบรับการอ่าน (Composite PK: `message_id` + `user_id`)<br/><br/>**Redis (โครงสร้าง Key และ Pattern การจัดเก็บ):**<br/>• `pubsub:channel:{channel_id}`: Real-Time Message Fanout กระจายข้อความข้ามเครื่องด้วย Latency < 1ms<br/>• `presence:user:{user_id}`: String, TTL 60s (Sliding window จาก Ping Heartbeat)<br/>• `presence:user:{user_id}:meta`: Hash (`last_seen`, `device_count`, `custom_status`)<br/>• `presence:workspace:{workspace_id}:online`: Set เก็บ User IDs ที่กำลัง Online ในแต่ละ Workspace<br/>• `cache:user:{user_id}`: String JSON, TTL 300s (User Profile Cache)<br/>• `cache:channel:{channel_id}`: String JSON, TTL 600s (Channel Metadata Cache) |
 | **Container Boundary** | Docker Compose (`livechat_net`) | ทุก Service ภายในกรอบประ (Nginx, FastAPI Cluster, PostgreSQL, Redis, Prometheus, Grafana) ทำงานบน Docker Private Bridge Network ซ่อนพอร์ต Database จากภายนอก Host |
