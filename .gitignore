@@ -219,3 +219,8 @@ __marimo__/
 
 uploads/
 /uploads
+
+# Terraform
+**/.terraform/
+*.tfstate
+*.tfstate.*

@@ -63,7 +63,7 @@
 
             <!-- SVG Architecture Canvas -->
             <div class="bg-slate-950 border border-slate-800 rounded-2xl p-6 shadow-2xl overflow-x-auto">
-                <svg viewBox="0 0 1180 620" class="w-full min-w-[1000px] h-auto select-none">
+                <svg viewBox="0 0 1180 580" class="w-full min-w-[1000px] h-auto select-none">
                     <!-- Definitions -->
                     <defs>
                         <linearGradient id="gradIngress" x1="0" y1="0" x2="1" y2="1">
@@ -82,14 +82,6 @@
                             <stop offset="0%" stop-color="#b91c1c"/>
                             <stop offset="100%" stop-color="#ef4444"/>
                         </linearGradient>
-                        <linearGradient id="gradRabbit" x1="0" y1="0" x2="1" y2="1">
-                            <stop offset="0%" stop-color="#c2410c"/>
-                            <stop offset="100%" stop-color="#f97316"/>
-                        </linearGradient>
-                        <linearGradient id="gradWorker" x1="0" y1="0" x2="1" y2="1">
-                            <stop offset="0%" stop-color="#4d7c0f"/>
-                            <stop offset="100%" stop-color="#84cc16"/>
-                        </linearGradient>
                         <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
                             <path d="M 0 1 L 10 5 L 0 9 z" fill="#64748b" />
                         </marker>
@@ -99,172 +91,166 @@
                     </defs>
 
                     <!-- Client Side Background -->
-                    <rect x="20" y="30" width="220" height="560" rx="16" fill="#0f172a" stroke="#1e293b" stroke-width="1.5" />
+                    <rect x="20" y="30" width="220" height="520" rx="16" fill="#0f172a" stroke="#1e293b" stroke-width="1.5" />
                     <text x="130" y="60" text-anchor="middle" fill="#94a3b8" font-size="13" font-weight="700">CLIENTS & APPS</text>
 
                     <!-- Web Client -->
                     <g class="cursor-pointer" onclick="selectComponent('web')">
-                        <rect x="35" y="100" width="190" height="180" rx="14" fill="#1e293b" stroke="#334155" stroke-width="2" class="hover:stroke-cyan-400 transition" />
-                        <text x="130" y="145" text-anchor="middle" fill="#f8fafc" font-size="15" font-weight="700">💻 Web & Desktop</text>
-                        <text x="130" y="170" text-anchor="middle" fill="#94a3b8" font-size="12">React / Electron</text>
-                        <text x="130" y="195" text-anchor="middle" fill="#94a3b8" font-size="11">LiveChat UI (/platform)</text>
-                        <line x1="50" y1="215" x2="210" y2="215" stroke="#334155" stroke-width="1"/>
-                        <text x="130" y="240" text-anchor="middle" fill="#38bdf8" font-size="10" font-family="JetBrains Mono">REST + WebSocket (WSS)</text>
-                        <text x="130" y="260" text-anchor="middle" fill="#6ee7b7" font-size="10">Real-Time Messaging</text>
+                        <rect x="35" y="80" width="190" height="200" rx="14" fill="#1e293b" stroke="#0f766e" stroke-width="2" class="hover:stroke-cyan-400 transition" />
+                        <text x="130" y="120" text-anchor="middle" fill="#f8fafc" font-size="15" font-weight="700">💻 Web & Desktop</text>
+                        <text x="130" y="145" text-anchor="middle" fill="#94a3b8" font-size="12">React / Electron</text>
+                        <text x="130" y="170" text-anchor="middle" fill="#94a3b8" font-size="11">LiveChat UI (/platform, /chat)</text>
+                        <line x1="50" y1="190" x2="210" y2="190" stroke="#334155" stroke-width="1"/>
+                        <text x="130" y="215" text-anchor="middle" fill="#38bdf8" font-size="10" font-family="JetBrains Mono">REST + WebSocket (WSS)</text>
+                        <text x="130" y="235" text-anchor="middle" fill="#6ee7b7" font-size="10">Real-Time Messaging</text>
+                        <text x="130" y="255" text-anchor="middle" fill="#a5b4fc" font-size="10">Presence & Receipts</text>
                     </g>
 
                     <!-- Automated Test & Bot Client -->
                     <g class="cursor-pointer" onclick="selectComponent('testbot')">
-                        <rect x="35" y="320" width="190" height="180" rx="14" fill="#1e293b" stroke="#4338ca" stroke-width="2" class="hover:stroke-indigo-400 transition" />
-                        <text x="130" y="365" text-anchor="middle" fill="#a5b4fc" font-size="15" font-weight="700">🤖 Automated Bots</text>
-                        <text x="130" y="390" text-anchor="middle" fill="#818cf8" font-size="12">Playwright Multi-User E2E</text>
-                        <text x="130" y="415" text-anchor="middle" fill="#94a3b8" font-size="11">k6 Concurrency Simulator</text>
-                        <line x1="50" y1="435" x2="210" y2="435" stroke="#4338ca" stroke-opacity="0.5" stroke-width="1"/>
-                        <text x="130" y="460" text-anchor="middle" fill="#cbd5e1" font-size="10" font-family="JetBrains Mono">Automated Verification</text>
-                        <text x="130" y="480" text-anchor="middle" fill="#a5b4fc" font-size="10">High-Load Benchmarking</text>
+                        <rect x="35" y="305" width="190" height="200" rx="14" fill="#1e293b" stroke="#4338ca" stroke-width="2" class="hover:stroke-indigo-400 transition" />
+                        <text x="130" y="345" text-anchor="middle" fill="#a5b4fc" font-size="15" font-weight="700">🤖 Automated Bots</text>
+                        <text x="130" y="370" text-anchor="middle" fill="#818cf8" font-size="12">Playwright Multi-User E2E</text>
+                        <text x="130" y="395" text-anchor="middle" fill="#94a3b8" font-size="11">k6 Concurrency Simulator</text>
+                        <line x1="50" y1="415" x2="210" y2="415" stroke="#4338ca" stroke-opacity="0.5" stroke-width="1"/>
+                        <text x="130" y="440" text-anchor="middle" fill="#cbd5e1" font-size="10" font-family="JetBrains Mono">Automated Verification</text>
+                        <text x="130" y="460" text-anchor="middle" fill="#a5b4fc" font-size="10">High-Load Benchmarking</text>
+                        <text x="130" y="480" text-anchor="middle" fill="#34d399" font-size="10">p95 Latency & Soak Tests</text>
                     </g>
 
                     <!-- DOCKER COMPOSE CONTAINER BOUNDARY (DASHED LINE) -->
-                    <rect x="280" y="30" width="875" height="560" rx="20" fill="#0b1329" stroke="#3b82f6" stroke-width="2.5" stroke-dasharray="8 8" />
+                    <rect x="270" y="30" width="890" height="520" rx="20" fill="#0b1329" stroke="#3b82f6" stroke-width="2.5" stroke-dasharray="8 8" />
 
                     <!-- Boundary Label Banner -->
-                    <rect x="300" y="18" width="460" height="26" rx="6" fill="#1d4ed8" />
-                    <text x="530" y="35" text-anchor="middle" fill="#ffffff" font-size="12" font-weight="700" letter-spacing="0.5">
+                    <rect x="290" y="18" width="460" height="26" rx="6" fill="#1d4ed8" />
+                    <text x="520" y="35" text-anchor="middle" fill="#ffffff" font-size="12" font-weight="700" letter-spacing="0.5">
                         📦 DOCKER COMPOSE CONTAINER BOUNDARY (Private Network: livechat_net)
                     </text>
 
                     <!-- Ingress / Nginx -->
                     <g class="cursor-pointer" onclick="selectComponent('nginx')">
-                        <rect x="310" y="160" width="170" height="310" rx="14" fill="url(#gradIngress)" fill-opacity="0.2" stroke="#10b981" stroke-width="2" class="hover:stroke-emerald-300 transition" />
-                        <text x="395" y="195" text-anchor="middle" fill="#34d399" font-size="15" font-weight="800">🌐 Nginx Ingress</text>
-                        <text x="395" y="215" text-anchor="middle" fill="#a7f3d0" font-size="11">Reverse Proxy & SSL</text>
-                        <text x="395" y="235" text-anchor="middle" fill="#6ee7b7" font-size="10" font-family="JetBrains Mono">Ports: 80 / 443</text>
+                        <rect x="295" y="130" width="165" height="330" rx="14" fill="url(#gradIngress)" fill-opacity="0.2" stroke="#10b981" stroke-width="2" class="hover:stroke-emerald-300 transition" />
+                        <text x="377" y="165" text-anchor="middle" fill="#34d399" font-size="15" font-weight="800">🌐 Nginx Ingress</text>
+                        <text x="377" y="185" text-anchor="middle" fill="#a7f3d0" font-size="11">Reverse Proxy & SSL</text>
+                        <text x="377" y="205" text-anchor="middle" fill="#6ee7b7" font-size="10" font-family="JetBrains Mono">Ports: 80 / 443</text>
 
-                        <line x1="330" y1="255" x2="460" y2="255" stroke="#047857" stroke-width="1"/>
-                        <text x="395" y="275" text-anchor="middle" fill="#e2e8f0" font-size="11">Upstream Balancing</text>
-                        <text x="395" y="295" text-anchor="middle" fill="#e2e8f0" font-size="11">WSS Upgrade Tunnel</text>
-                        <text x="395" y="315" text-anchor="middle" fill="#e2e8f0" font-size="11">Rate Limit Zone (30r/s)</text>
-                        <text x="395" y="335" text-anchor="middle" fill="#e2e8f0" font-size="11">Static & Uploads Cache</text>
+                        <line x1="315" y1="225" x2="440" y2="225" stroke="#047857" stroke-width="1"/>
+                        <text x="377" y="245" text-anchor="middle" fill="#e2e8f0" font-size="11">Upstream Balancing</text>
+                        <text x="377" y="265" text-anchor="middle" fill="#e2e8f0" font-size="11">WSS Upgrade Tunnel</text>
+                        <text x="377" y="285" text-anchor="middle" fill="#e2e8f0" font-size="11">Rate Limit Zone (30r/s)</text>
+                        <text x="377" y="305" text-anchor="middle" fill="#e2e8f0" font-size="11">Static & Uploads Cache</text>
 
-                        <rect x="325" y="370" width="140" height="80" rx="8" fill="#064e3b" stroke="#059669" stroke-width="1"/>
-                        <text x="395" y="392" text-anchor="middle" fill="#6ee7b7" font-size="10" font-weight="700">ROUTING RULES</text>
-                        <text x="335" y="412" fill="#cbd5e1" font-size="10" font-family="JetBrains Mono">/api/v1/ws/* -> WS</text>
-                        <text x="335" y="430" fill="#cbd5e1" font-size="10" font-family="JetBrains Mono">/api/v1/*    -> REST</text>
+                        <rect x="310" y="340" width="135" height="95" rx="8" fill="#064e3b" stroke="#059669" stroke-width="1"/>
+                        <text x="377" y="362" text-anchor="middle" fill="#6ee7b7" font-size="10" font-weight="700">ROUTING RULES</text>
+                        <text x="320" y="382" fill="#cbd5e1" font-size="10" font-family="JetBrains Mono">/api/v1/ws/* -> WS</text>
+                        <text x="320" y="400" fill="#cbd5e1" font-size="10" font-family="JetBrains Mono">/api/v1/*    -> REST</text>
+                        <text x="320" y="418" fill="#cbd5e1" font-size="10" font-family="JetBrains Mono">/uploads/*   -> Static</text>
                     </g>
 
                     <!-- Core API (FastAPI Cluster) -->
                     <g class="cursor-pointer" onclick="selectComponent('api')">
-                        <rect x="525" y="80" width="230" height="470" rx="14" fill="url(#gradApi)" fill-opacity="0.15" stroke="#6366f1" stroke-width="2" class="hover:stroke-indigo-300 transition" />
-                        <text x="640" y="115" text-anchor="middle" fill="#818cf8" font-size="16" font-weight="800">⚡ Core API (FastAPI)</text>
-                        <text x="640" y="135" text-anchor="middle" fill="#c7d2fe" font-size="11">Async Uvicorn Multi-Workers</text>
+                        <rect x="495" y="70" width="230" height="450" rx="14" fill="url(#gradApi)" fill-opacity="0.15" stroke="#6366f1" stroke-width="2" class="hover:stroke-indigo-300 transition" />
+                        <text x="610" y="105" text-anchor="middle" fill="#818cf8" font-size="16" font-weight="800">⚡ Core API (FastAPI)</text>
+                        <text x="610" y="125" text-anchor="middle" fill="#c7d2fe" font-size="11">Async Uvicorn Multi-Workers</text>
 
                         <!-- Middleware Badge -->
-                        <rect x="545" y="150" width="190" height="155" rx="10" fill="#1e1b4b" stroke="#4338ca" stroke-width="1.5" />
-                        <text x="640" y="172" text-anchor="middle" fill="#a5b4fc" font-size="11" font-weight="700">🛡️ MIDDLEWARE STACK</text>
-                        <text x="555" y="195" fill="#e0e7ff" font-size="10">✓ JWT Bearer Auth (python-jose)</text>
-                        <text x="555" y="215" fill="#e0e7ff" font-size="10">✓ RBAC: Owner / Admin / Member</text>
-                        <text x="555" y="235" fill="#e0e7ff" font-size="10">✓ CORS Middleware (Allowed Hosts)</text>
-                        <text x="555" y="255" fill="#e0e7ff" font-size="10">✓ Prometheus Instrumentator (/metrics)</text>
-                        <text x="555" y="275" fill="#e0e7ff" font-size="10">✓ Pydantic Payload Validator</text>
-                        <text x="555" y="295" fill="#e0e7ff" font-size="10">✓ Exception & Fallback Handler</text>
+                        <rect x="510" y="140" width="200" height="150" rx="10" fill="#1e1b4b" stroke="#4338ca" stroke-width="1.5" />
+                        <text x="610" y="162" text-anchor="middle" fill="#a5b4fc" font-size="11" font-weight="700">🛡️ MIDDLEWARE STACK</text>
+                        <text x="520" y="185" fill="#e0e7ff" font-size="10">✓ JWT Bearer Auth (python-jose)</text>
+                        <text x="520" y="205" fill="#e0e7ff" font-size="10">✓ RBAC: Owner / Admin / Member</text>
+                        <text x="520" y="225" fill="#e0e7ff" font-size="10">✓ CORS Middleware (Allowed Hosts)</text>
+                        <text x="520" y="245" fill="#e0e7ff" font-size="10">✓ Prometheus Instrumentator (/metrics)</text>
+                        <text x="520" y="265" fill="#e0e7ff" font-size="10">✓ Pydantic Payload Validator</text>
 
                         <!-- Services & Controllers -->
-                        <rect x="545" y="320" width="190" height="210" rx="10" fill="#0f172a" stroke="#334155" stroke-width="1" />
-                        <text x="640" y="342" text-anchor="middle" fill="#94a3b8" font-size="11" font-weight="700">LIVECHAT SERVICES</text>
-                        <text x="555" y="365" fill="#cbd5e1" font-size="10">• Auth & User Profile</text>
-                        <text x="555" y="385" fill="#cbd5e1" font-size="10">• Workspaces & Membership RBAC</text>
-                        <text x="555" y="405" fill="#cbd5e1" font-size="10">• Group Channels & Direct Messages</text>
-                        <text x="555" y="425" fill="#cbd5e1" font-size="10">• Chat WebSocket (/ws/channels/*)</text>
-                        <text x="555" y="445" fill="#cbd5e1" font-size="10">• Read Receipt Service (Granular)</text>
-                        <text x="555" y="465" fill="#cbd5e1" font-size="10">• Real-Time Presence Tracker</text>
-                        <text x="555" y="485" fill="#cbd5e1" font-size="10">• LocalStorage File Uploads</text>
-                        <text x="555" y="505" fill="#cbd5e1" font-size="10">• Offline Notification Dispatcher</text>
+                        <rect x="510" y="305" width="200" height="195" rx="10" fill="#0f172a" stroke="#334155" stroke-width="1" />
+                        <text x="610" y="327" text-anchor="middle" fill="#94a3b8" font-size="11" font-weight="700">LIVECHAT SERVICES</text>
+                        <text x="520" y="350" fill="#cbd5e1" font-size="10">• Auth & User Profile</text>
+                        <text x="520" y="370" fill="#cbd5e1" font-size="10">• Workspaces & Membership RBAC</text>
+                        <text x="520" y="390" fill="#cbd5e1" font-size="10">• Group Channels & Direct Messages</text>
+                        <text x="520" y="410" fill="#cbd5e1" font-size="10">• Chat WebSocket (/ws/channels/*)</text>
+                        <text x="520" y="430" fill="#cbd5e1" font-size="10">• Read Receipt Service (Granular)</text>
+                        <text x="520" y="450" fill="#cbd5e1" font-size="10">• Real-Time Presence Tracker</text>
+                        <text x="520" y="470" fill="#cbd5e1" font-size="10">• LocalStorage File Uploads</text>
+                        <text x="520" y="490" fill="#cbd5e1" font-size="10">• Redis Pub/Sub Broadcast Engine</text>
                     </g>
 
-                    <!-- PostgreSQL Database -->
-                    <g class="cursor-pointer" onclick="selectComponent('postgres')">
-                        <rect x="795" y="80" width="200" height="190" rx="12" fill="url(#gradDb)" fill-opacity="0.15" stroke="#3b82f6" stroke-width="2" class="hover:stroke-blue-300 transition" />
-                        <text x="895" y="110" text-anchor="middle" fill="#60a5fa" font-size="14" font-weight="800">🐘 PostgreSQL 15</text>
-                        <text x="895" y="128" text-anchor="middle" fill="#93c5fd" font-size="10" font-family="JetBrains Mono">SQLAlchemy 2.0 (asyncpg)</text>
-                        <line x1="810" y1="140" x2="980" y2="140" stroke="#1d4ed8" stroke-width="1"/>
-                        <text x="815" y="160" fill="#e2e8f0" font-size="10">• users (Credentials, Avatars)</text>
-                        <text x="815" y="180" fill="#e2e8f0" font-size="10">• workspaces & workspace_members</text>
-                        <text x="815" y="200" fill="#e2e8f0" font-size="10">• channels & channel_members</text>
-                        <text x="815" y="220" fill="#e2e8f0" font-size="10">• messages (History & Threads)</text>
-                        <text x="815" y="240" fill="#e2e8f0" font-size="10">• message_reads (Receipts)</text>
-                        <text x="815" y="258" fill="#38bdf8" font-size="9" font-family="JetBrains Mono">🔒 Port: 5432 (Internal Network Only)</text>
-                    </g>
+                    <!-- UNIFIED DATABASES TIER CONTAINER -->
+                    <g>
+                        <!-- Container Box -->
+                        <rect x="755" y="70" width="245" height="450" rx="16" fill="#032042" fill-opacity="0.35" stroke="#0284c7" stroke-width="2" />
+                        <!-- Group Header -->
+                        <rect x="770" y="58" width="215" height="24" rx="6" fill="#0369a1" />
+                        <text x="877" y="74" text-anchor="middle" fill="#ffffff" font-size="11" font-weight="700" letter-spacing="0.5">
+                            🗄️ DATABASES TIER
+                        </text>
 
-                    <!-- Redis Cache & Presence -->
-                    <g class="cursor-pointer" onclick="selectComponent('redis')">
-                        <rect x="795" y="285" width="200" height="155" rx="12" fill="url(#gradRedis)" fill-opacity="0.15" stroke="#ef4444" stroke-width="2" class="hover:stroke-red-300 transition" />
-                        <text x="895" y="312" text-anchor="middle" fill="#f87171" font-size="14" font-weight="800">⚡ Redis 7 (Cache & PubSub)</text>
-                        <text x="895" y="330" text-anchor="middle" fill="#fca5a5" font-size="10" font-family="JetBrains Mono">In-Memory Engine & AOF</text>
-                        <line x1="810" y1="340" x2="980" y2="340" stroke="#b91c1c" stroke-width="1"/>
-                        <text x="815" y="358" fill="#fed7aa" font-size="9" font-family="JetBrains Mono">pubsub:channel:{ch_id}</text>
-                        <text x="815" y="375" fill="#fecaca" font-size="9" font-family="JetBrains Mono">presence:user:{uid} (TTL 60s)</text>
-                        <text x="815" y="392" fill="#fecaca" font-size="9" font-family="JetBrains Mono">presence:ws:{id}:online (Set)</text>
-                        <text x="815" y="409" fill="#fecaca" font-size="9" font-family="JetBrains Mono">cache:user / cache:channel</text>
-                        <text x="815" y="426" fill="#f87171" font-size="9" font-family="JetBrains Mono">🔒 Port: 6379 (Internal Network Only)</text>
-                    </g>
+                        <!-- PostgreSQL Database -->
+                        <g class="cursor-pointer" onclick="selectComponent('postgres')">
+                            <rect x="770" y="95" width="215" height="190" rx="12" fill="url(#gradDb)" fill-opacity="0.2" stroke="#3b82f6" stroke-width="1.8" class="hover:stroke-blue-300 transition" />
+                            <text x="877" y="122" text-anchor="middle" fill="#60a5fa" font-size="14" font-weight="800">🐘 PostgreSQL 15</text>
+                            <text x="877" y="139" text-anchor="middle" fill="#93c5fd" font-size="10" font-family="JetBrains Mono">SQLAlchemy 2.0 (asyncpg)</text>
+                            <line x1="785" y1="148" x2="970" y2="148" stroke="#1d4ed8" stroke-width="1"/>
+                            <text x="785" y="166" fill="#bfdbfe" font-size="10" font-weight="700">CORE TABLES:</text>
+                            <text x="785" y="184" fill="#e2e8f0" font-size="10">• users (Credentials, Avatars)</text>
+                            <text x="785" y="202" fill="#e2e8f0" font-size="10">• workspaces & members (RBAC)</text>
+                            <text x="785" y="220" fill="#e2e8f0" font-size="10">• channels & members (Public/DM)</text>
+                            <text x="785" y="238" fill="#e2e8f0" font-size="10">• messages (History & Threads)</text>
+                            <text x="785" y="256" fill="#e2e8f0" font-size="10">• message_reads (Receipts)</text>
+                            <text x="785" y="274" fill="#38bdf8" font-size="9" font-family="JetBrains Mono">🔒 Port: 5432 (Internal Network)</text>
+                        </g>
 
-                    <!-- RabbitMQ Broker -->
-                    <g class="cursor-pointer" onclick="selectComponent('rabbitmq')">
-                        <rect x="795" y="455" width="160" height="95" rx="12" fill="url(#gradRabbit)" fill-opacity="0.15" stroke="#f97316" stroke-width="2" class="hover:stroke-orange-300 transition" />
-                        <text x="875" y="482" text-anchor="middle" fill="#fb923c" font-size="13" font-weight="800">🐇 RabbitMQ Broker</text>
-                        <text x="805" y="505" fill="#fdba74" font-size="10">• chat_notifications queue</text>
-                        <text x="805" y="522" fill="#fdba74" font-size="10">• Durable: True (on Disk)</text>
-                        <text x="805" y="539" fill="#fed7aa" font-size="9" font-family="JetBrains Mono">🔒 Port: 5672 (Internal)</text>
-                    </g>
-
-                    <!-- Background Worker -->
-                    <g class="cursor-pointer" onclick="selectComponent('worker')">
-                        <rect x="970" y="455" width="165" height="95" rx="12" fill="url(#gradWorker)" fill-opacity="0.15" stroke="#84cc16" stroke-width="2" class="hover:stroke-lime-300 transition" />
-                        <text x="1052" y="482" text-anchor="middle" fill="#a3e635" font-size="13" font-weight="800">👷 Notification Worker</text>
-                        <text x="980" y="505" fill="#d9f99d" font-size="10">• scripts/worker.py</text>
-                        <text x="980" y="522" fill="#d9f99d" font-size="10">• aio-pika connect_robust</text>
-                        <text x="980" y="539" fill="#bef264" font-size="10">• Push / Email Digests</text>
+                        <!-- Redis Cache & PubSub -->
+                        <g class="cursor-pointer" onclick="selectComponent('redis')">
+                            <rect x="770" y="300" width="215" height="205" rx="12" fill="url(#gradRedis)" fill-opacity="0.2" stroke="#ef4444" stroke-width="1.8" class="hover:stroke-red-300 transition" />
+                            <text x="877" y="327" text-anchor="middle" fill="#f87171" font-size="14" font-weight="800">⚡ Redis 7 (Cache & PubSub)</text>
+                            <text x="877" y="344" text-anchor="middle" fill="#fca5a5" font-size="10" font-family="JetBrains Mono">In-Memory Engine & AOF</text>
+                            <line x1="785" y1="353" x2="970" y2="353" stroke="#b91c1c" stroke-width="1"/>
+                            <text x="785" y="371" fill="#fecaca" font-size="10" font-weight="700">KEY PATTERNS:</text>
+                            <text x="785" y="389" fill="#fed7aa" font-size="9" font-family="JetBrains Mono">• pubsub:channel:{ch_id}</text>
+                            <text x="785" y="407" fill="#fecaca" font-size="9" font-family="JetBrains Mono">• presence:user:{uid} (TTL 60s)</text>
+                            <text x="785" y="425" fill="#fecaca" font-size="9" font-family="JetBrains Mono">• presence:ws:{id}:online (Set)</text>
+                            <text x="785" y="443" fill="#fecaca" font-size="9" font-family="JetBrains Mono">• cache:user:{id} (TTL 300s)</text>
+                            <text x="785" y="461" fill="#fecaca" font-size="9" font-family="JetBrains Mono">• cache:channel:{id} (TTL 600s)</text>
+                            <text x="785" y="479" fill="#fecaca" font-size="9" font-family="JetBrains Mono">• ratelimit:ws:{uid} (Sliding)</text>
+                            <text x="785" y="497" fill="#f87171" font-size="9" font-family="JetBrains Mono">🔒 Port: 6379 (Internal Network)</text>
+                        </g>
                     </g>
 
                     <!-- Monitoring (Prometheus & Grafana) -->
                     <g class="cursor-pointer" onclick="selectComponent('monitoring')">
-                        <rect x="1015" y="80" width="120" height="360" rx="12" fill="#581c87" fill-opacity="0.2" stroke="#a855f7" stroke-width="1.5" class="hover:stroke-purple-300 transition" />
-                        <text x="1075" y="110" text-anchor="middle" fill="#c084fc" font-size="13" font-weight="800">📊 Observability</text>
-                        <line x1="1025" y1="125" x2="1125" y2="125" stroke="#7e22ce" stroke-width="1"/>
-                        <text x="1075" y="150" text-anchor="middle" fill="#e9d5ff" font-size="11" font-weight="700">Prometheus</text>
-                        <text x="1075" y="170" text-anchor="middle" fill="#d8b4fe" font-size="9">Scrapes :8000/metrics</text>
-                        <text x="1075" y="190" text-anchor="middle" fill="#d8b4fe" font-size="9">Every 15s</text>
+                        <rect x="1030" y="70" width="115" height="450" rx="14" fill="#581c87" fill-opacity="0.2" stroke="#a855f7" stroke-width="1.8" class="hover:stroke-purple-300 transition" />
+                        <text x="1087" y="105" text-anchor="middle" fill="#c084fc" font-size="13" font-weight="800">📊 Observability</text>
+                        <line x1="1040" y1="120" x2="1135" y2="120" stroke="#7e22ce" stroke-width="1"/>
+                        <text x="1087" y="145" text-anchor="middle" fill="#e9d5ff" font-size="11" font-weight="700">Prometheus</text>
+                        <text x="1087" y="165" text-anchor="middle" fill="#d8b4fe" font-size="9">Scrapes :8000</text>
+                        <text x="1087" y="185" text-anchor="middle" fill="#d8b4fe" font-size="9">/metrics (15s)</text>
+                        <text x="1087" y="205" text-anchor="middle" fill="#d8b4fe" font-size="9">WS Gauges</text>
 
-                        <line x1="1025" y1="210" x2="1125" y2="210" stroke="#7e22ce" stroke-width="1"/>
-                        <text x="1075" y="235" text-anchor="middle" fill="#e9d5ff" font-size="11" font-weight="700">Grafana</text>
-                        <text x="1075" y="255" text-anchor="middle" fill="#d8b4fe" font-size="9">Port: 3000</text>
-                        <text x="1075" y="275" text-anchor="middle" fill="#d8b4fe" font-size="9">• Active WS gauge</text>
-                        <text x="1075" y="295" text-anchor="middle" fill="#d8b4fe" font-size="9">• Message RPS</text>
-                        <text x="1075" y="315" text-anchor="middle" fill="#d8b4fe" font-size="9">• p95 Latency</text>
+                        <line x1="1040" y1="230" x2="1135" y2="230" stroke="#7e22ce" stroke-width="1"/>
+                        <text x="1087" y="255" text-anchor="middle" fill="#e9d5ff" font-size="11" font-weight="700">Grafana</text>
+                        <text x="1087" y="275" text-anchor="middle" fill="#d8b4fe" font-size="9">Port: 3000</text>
+                        <text x="1087" y="295" text-anchor="middle" fill="#d8b4fe" font-size="9">• Active WS</text>
+                        <text x="1087" y="315" text-anchor="middle" fill="#d8b4fe" font-size="9">• Message RPS</text>
+                        <text x="1087" y="335" text-anchor="middle" fill="#d8b4fe" font-size="9">• p95 Latency</text>
+                        <text x="1087" y="355" text-anchor="middle" fill="#d8b4fe" font-size="9">• Error Rates</text>
+                        <text x="1087" y="375" text-anchor="middle" fill="#d8b4fe" font-size="9">• DB Pool State</text>
                     </g>
 
                     <!-- CONNECTING ARROWS -->
                     <!-- Clients to Nginx -->
-                    <path d="M 225 190 L 310 240" stroke="#38bdf8" stroke-width="2.5" marker-end="url(#arrow-blue)" />
-                    <path d="M 225 410 L 310 360" stroke="#818cf8" stroke-width="2.5" marker-end="url(#arrow-blue)" />
+                    <path d="M 225 180 L 295 240" stroke="#38bdf8" stroke-width="2.5" marker-end="url(#arrow-blue)" />
+                    <path d="M 225 400 L 295 350" stroke="#818cf8" stroke-width="2.5" marker-end="url(#arrow-blue)" />
 
                     <!-- Nginx to API -->
-                    <path d="M 480 300 L 525 300" stroke="#10b981" stroke-width="3" marker-end="url(#arrow)" />
+                    <path d="M 460 295 L 495 295" stroke="#10b981" stroke-width="3" marker-end="url(#arrow)" />
 
-                    <!-- API to PostgreSQL -->
-                    <path d="M 755 180 L 795 180" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrow)" />
-
-                    <!-- API to Redis -->
-                    <path d="M 755 350 L 795 350" stroke="#ef4444" stroke-width="2" marker-end="url(#arrow)" />
-
-                    <!-- API to RabbitMQ -->
-                    <path d="M 755 490 L 795 490" stroke="#f97316" stroke-width="2" marker-end="url(#arrow)" />
-
-                    <!-- RabbitMQ to Worker -->
-                    <path d="M 955 500 L 970 500" stroke="#84cc16" stroke-width="2" marker-end="url(#arrow)" />
+                    <!-- API to Databases (Postgres & Redis) -->
+                    <path d="M 725 190 L 770 190" stroke="#3b82f6" stroke-width="2.5" marker-end="url(#arrow)" />
+                    <path d="M 725 400 L 770 400" stroke="#ef4444" stroke-width="2.5" marker-end="url(#arrow)" />
 
                     <!-- API to Prometheus -->
-                    <path d="M 755 130 C 850 130, 950 120, 1015 130" stroke="#a855f7" stroke-dasharray="4 4" stroke-width="1.5" marker-end="url(#arrow)" />
+                    <path d="M 725 120 C 830 120, 930 110, 1030 120" stroke="#a855f7" stroke-dasharray="4 4" stroke-width="1.5" marker-end="url(#arrow)" />
                 </svg>
             </div>
 
@@ -337,12 +323,12 @@
                             <p class="text-slate-400 mt-1">แนะนำทีม: สถาปัตยกรรม LiveChat Workspace Platform ที่ออกแบบมาเพื่อรองรับ Real-time Messaging ประสิทธิภาพสูงและเสถียรภาพระดับองค์กร</p>
                         </div>
                         <div class="border-l-2 border-indigo-500 pl-3">
-                            <span class="font-bold text-white">1:00 - 3:00 Core Architecture Breakdown</span>
-                            <p class="text-slate-400 mt-1">Nginx Ingress, FastAPI Async Cluster, และ Dual Messaging (Redis Pub/Sub สำหรับ instant chat vs RabbitMQ สำหรับ offline notification)</p>
+                            <span class="font-bold text-white">1:00 - 3:00 Architecture & Unified Databases Tier</span>
+                            <p class="text-slate-400 mt-1">Nginx Ingress, FastAPI Async Cluster, และ Databases Tier ที่จัดกลุ่ม PostgreSQL (Persistent ACID Storage) กับ Redis (Sub-millisecond Pub/Sub & Presence Cache)</p>
                         </div>
                         <div class="border-l-2 border-emerald-500 pl-3">
                             <span class="font-bold text-white">3:00 - 5:00 Production Benchmarks & Security</span>
-                            <p class="text-slate-400 mt-1">สรุปผล k6 Load Testing (10k Concurrency p95 < 35ms) และการซ่อนพอร์ต Database ภายใน Docker Network</p>
+                            <p class="text-slate-400 mt-1">สรุปผล k6 Load Testing (10k Concurrency p95 < 35ms), การซ่อนพอร์ต Database 127.0.0.1, และ Rate Limiting ป้องกัน Spambots</p>
                         </div>
                         <div class="border-l-2 border-amber-500 pl-3">
                             <span class="font-bold text-white">5:00 - 6:00 Sign-off Request & Q&A Open</span>
@@ -382,15 +368,14 @@
                         <button onclick="toggleFaq('faq-2')" class="w-full text-left p-4 flex items-center justify-between hover:bg-slate-900 transition">
                             <div class="flex items-center gap-3">
                                 <span class="px-2 py-0.5 rounded bg-red-500/20 text-red-400 text-xs font-bold">จากอาจารย์</span>
-                                <span class="font-semibold text-sm text-slate-200">ถ้าเซิร์ฟเวอร์ไฟดับกะทันหัน ข้อความแจ้งเตือน (Offline Notification / Email Digest) ใน RabbitMQ หรือข้อความแชทในระบบ จะหายไปหรือไม่?</span>
+                                <span class="font-semibold text-sm text-slate-200">ถ้าเซิร์ฟเวอร์ไฟดับหรือเครื่อง Restart กะทันหัน ข้อความแชทในระบบที่กำลังรับส่งจะสูญหายหรือไม่? และระบบฟื้นตัวอย่างไร?</span>
                             </div>
                             <span id="faq-2-icon" class="text-slate-400 text-sm">▼</span>
                         </button>
                         <div id="faq-2" class="hidden p-4 bg-slate-900/60 border-t border-slate-800 text-xs text-slate-300 space-y-2 leading-relaxed">
-                            <p><strong class="text-cyan-400">1. Zero Message Loss (PostgreSQL First):</strong> ข้อความแชทถูกเขียนลง PostgreSQL (Write-Ahead Log) ก่อนเสมอ จึงปลอดภัยบนดิสก์</p>
-                            <p><strong class="text-cyan-400">2. Durable Queue:</strong> คิว <code class="text-amber-300">chat_notifications</code> ถูกสร้างด้วย <code class="text-amber-300">durable=True</code> บันทึกโครงสร้างลงดิสก์</p>
-                            <p><strong class="text-cyan-400">3. Persistent Message Delivery:</strong> ทุก Task ใน RabbitMQ ส่งด้วย <code class="text-amber-300">delivery_mode=PERSISTENT (2)</code> บันทึกลง Disk Storage Volume ทันที</p>
-                            <p><strong class="text-cyan-400">4. Manual Acknowledgment:</strong> Worker ทำงานภายใต้ <code class="text-amber-300">async with message.process():</code> หากไฟดับก่อนส่งเสร็จ ข้อความจะไม่ถูก Ack และ RabbitMQ จะ Redeliver ใหม่เมื่อเปิดเครื่อง</p>
+                            <p><strong class="text-cyan-400">1. Zero Message Loss (PostgreSQL Write-Ahead Logging):</strong> ข้อความแชททุกข้อความผ่าน SQLAlchemy async session และบันทึกลงดิสก์ถาวรผ่าน WAL (Write-Ahead Log) ก่อนที่ระบบจะส่ง ACK ยืนยันกลับไปยัง Client</p>
+                            <p><strong class="text-cyan-400">2. Redis Persistence (AOF & RDB):</strong> Redis ถูกเปิดใช้งาน Append-Only File (AOF) ทำให้เมื่อฟื้นตัวสามารถกู้คืน State ของห้องแชทและ Session ที่จำเป็นได้ทันที</p>
+                            <p><strong class="text-cyan-400">3. Automatic Reconnect & Idempotency:</strong> WebSocket Client มีระบบ Reconnect Backoff พร้อมส่ง Client-Generated Message ID (<code class="text-amber-300">temp_id</code>) เพื่อป้องกันการบันทึกข้อความซ้ำซ้อน (Deduplication)</p>
                         </div>
                     </div>
 
@@ -404,9 +389,9 @@
                             <span id="faq-3-icon" class="text-slate-400 text-sm">▼</span>
                         </button>
                         <div id="faq-3" class="hidden p-4 bg-slate-900/60 border-t border-slate-800 text-xs text-slate-300 space-y-2 leading-relaxed">
-                            <p><strong class="text-cyan-400">1. Docker Private Bridge Network:</strong> พอร์ตของ Database และ Cache ถูกผูกไว้กับ <code class="text-amber-300">127.0.0.1</code> เท่านั้น</p>
-                            <p><strong class="text-cyan-400">2. No Public Port Exposure:</strong> มีเพียงพอร์ต 80 และ 443 ของ Nginx เท่านั้นที่เปิดรับ Traffic จากภายนอก</p>
-                            <p><strong class="text-cyan-400">3. Host VPC Firewall:</strong> กฎ Security Group ของ VPS ปิด Inbound Ports 5432, 6379, 5672 จาก IP สาธารณะทั้งหมด</p>
+                            <p><strong class="text-cyan-400">1. Docker Private Bridge Network:</strong> พอร์ต 5432 (Postgres) และ 6379 (Redis) ถูก bind กับ <code class="text-amber-300">127.0.0.1</code> เท่านั้นใน <code class="text-amber-300">docker-compose.yml</code></p>
+                            <p><strong class="text-cyan-400">2. No Public Port Exposure:</strong> มีเพียงพอร์ต 80 และ 443 ของ Nginx Ingress เท่านั้นที่เปิดรับ Traffic จากภายนอก</p>
+                            <p><strong class="text-cyan-400">3. Host VPC Firewall:</strong> กฎ Security Group ของ VPS ปิด Inbound Ports 5432 และ 6379 จาก IP สาธารณะทั้งหมด</p>
                         </div>
                     </div>
 
@@ -420,8 +405,9 @@
                             <span id="faq-4-icon" class="text-slate-400 text-sm">▼</span>
                         </button>
                         <div id="faq-4" class="hidden p-4 bg-slate-900/60 border-t border-slate-800 text-xs text-slate-300 space-y-2 leading-relaxed">
-                            <p><strong class="text-cyan-400">1. PostgreSQL Write-Ahead:</strong> ข้อความแชททุกข้อความถูกบันทึกสำเร็จลง PostgreSQL ก่อนเสมอ จึงไม่สูญหายแม้แต่วินาทีเดียว</p>
+                            <p><strong class="text-cyan-400">1. PostgreSQL Independent Storage:</strong> ข้อความแชททุกข้อความถูกบันทึกสำเร็จลง PostgreSQL ก่อนเสมอ จึงไม่สูญหายแม้แต่วินาทีเดียว</p>
                             <p><strong class="text-cyan-400">2. Graceful Fallback:</strong> การดึงประวัติแชทและโปรไฟล์ผู้ใช้จะ fallback จาก Redis Cache ไปดึงจาก Database โดยตรงแบบอัตโนมัติ</p>
+                            <p><strong class="text-cyan-400">3. In-Memory Local Broadcast:</strong> เมื่อ Redis Pub/Sub ดับ แต่ละ Worker Node ยังสามารถส่งข้อความให้ Client ที่ต่ออยู่กับ Worker เดียวกันได้โดยไม่ Crash</p>
                         </div>
                     </div>
 
@@ -478,11 +464,11 @@
                             <span class="text-xs font-mono text-blue-400">#103</span>
                             <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500/10 text-amber-400 border border-amber-500/20">Medium (P2)</span>
                         </div>
-                        <h4 class="text-sm font-semibold text-white">เพิ่ม Dead Letter Queue (DLQ) ใน RabbitMQ Notification Worker</h4>
-                        <p class="text-xs text-slate-400">สร้าง queue สำรองสำหรับเก็บ notification tasks ที่ส่งล้มเหลวเกิน 3 ครั้ง ป้องกัน task loss</p>
+                        <h4 class="text-sm font-semibold text-white">เพิ่ม WebSocket Message Rate Limiting ด้วย Redis Token Bucket</h4>
+                        <p class="text-xs text-slate-400">สร้าง Token Bucket Throttler ใน WebSocket Controller จำกัดสูงสุด 10 msg/s ต่อ Channel/User ป้องกัน Spambot</p>
                         <div class="flex items-center justify-between pt-2 border-t border-slate-800 text-[11px] text-slate-400">
-                            <span>Labels: <span class="text-purple-400">refactor</span>, <span class="text-orange-400">worker</span></span>
-                            <span>👤 Distributed Dev</span>
+                            <span>Labels: <span class="text-purple-400">performance</span>, <span class="text-orange-400">security</span></span>
+                            <span>👤 Backend Dev</span>
                         </div>
                     </div>
                 </div>
@@ -596,39 +582,21 @@
             },
             postgres: {
                 icon: '🐘',
-                title: 'PostgreSQL 15 Persistent Database',
+                title: 'PostgreSQL 15 (Databases Tier - Persistent Storage)',
                 subtitle: 'Relational ACID Storage • SQLAlchemy 2.0 Async via asyncpg',
-                badge: 'Persistence Tier',
-                role: 'จัดเก็บข้อมูลหลักของระบบอย่างถาวร: บัญชีผู้ใช้, สิทธิ์ Workspace, ช่องแชท, ประวัติข้อความ, และใบตอบรับการอ่าน (Read Receipts)',
-                security: 'พอร์ต 5432 ถูกซ่อนอยู่ใน Private Docker Bridge Network เท่านั้น ไม่อนุญาตให้เชื่อมต่อตรงจากภายนอก Host',
+                badge: 'Databases Tier',
+                role: 'จัดเก็บข้อมูลหลักของระบบอย่างถาวร: ตาราง users (Credentials, Avatars), workspaces & workspace_members (RBAC), channels & channel_members, messages (History & Threads), และ message_reads (Read Receipts)',
+                security: 'พอร์ต 5432 ถูกซ่อนอยู่ใน Private Docker Bridge Network (127.0.0.1) เท่านั้น ไม่อนุญาตให้เชื่อมต่อตรงจากภายนอก Host',
                 files: ['app/models/user.py', 'app/models/message.py', 'app/db/session.py']
             },
             redis: {
                 icon: '⚡',
-                title: 'Redis 7 In-Memory Cache & Pub/Sub',
-                subtitle: 'Sub-Millisecond Event Broker & High-Speed Sliding Window Cache',
-                badge: 'Cache & Pub/Sub Tier',
-                role: 'กระจายข้อความแชทข้ามเครื่องแบบ Pub/Sub (pubsub:channel:*), ติดตามสถานะ Online/Offline (TTL 60s), และแคชโปรไฟล์ผู้ใช้เพื่อลดภาระ Database',
-                security: 'เปิดใช้งานโหมด AOF (Append-Only File) เพื่อความทนทาน และซ่อนพอร์ต 6379 ภายใน Docker Network',
+                title: 'Redis 7 (Databases Tier - Cache & Pub/Sub)',
+                subtitle: 'Sub-Millisecond In-Memory Event Broker & High-Speed Cache',
+                badge: 'Databases Tier',
+                role: 'จัดเก็บ Key Patterns สำคัญ: pubsub:channel:{ch_id} (กระจายข้อความแชท), presence:user:{uid} (Heartbeat TTL 60s), presence:ws:{id}:online (Set ผู้ใช้ออนไลน์), cache:user:{id} และ cache:channel:{id} เพื่อลดภาระ Database',
+                security: 'เปิดใช้งานโหมด AOF (Append-Only File) เพื่อความทนทาน และซ่อนพอร์ต 6379 ภายใน Docker Network (127.0.0.1)',
                 files: ['app/services/redis_pubsub.py', 'app/services/presence_service.py']
-            },
-            rabbitmq: {
-                icon: '🐇',
-                title: 'RabbitMQ Message Broker',
-                subtitle: 'AMQP 0-9-1 Reliable Task Queue • At-Least-Once Delivery',
-                badge: 'Message Queue Tier',
-                role: 'รับงานแจ้งเตือน Asynchronous ในเบื้องหลัง (เช่น Offline Push Notification, Email Digest เมื่อถูก @mention และการบีบอัดรูปภาพ)',
-                security: 'คิว chat_notifications มีคุณสมบัติ Durable=True และข้อความ Persistent Delivery ป้องกันข้อมูลสูญหายเมื่อเครื่องดับ',
-                files: ['scripts/worker.py', 'app/services/rabbitmq_service.py']
-            },
-            worker: {
-                icon: '👷',
-                title: 'Background Notification Worker',
-                subtitle: 'Independent Worker Container (Dockerfile.worker)',
-                badge: 'Worker Tier',
-                role: 'ดึงงานจาก RabbitMQ มาประมวลผลส่ง Push / Email แจ้งเตือนไปยังสมาชิกที่ Offline และสร้าง Thumbnail ไฟล์แนบ',
-                security: 'เชื่อมต่อ RabbitMQ ด้วย aio-pika connect_robust() เพื่อ Reconnect อัตโนมัติหาก Network ชั่วคราวมีปัญหา',
-                files: ['scripts/worker.py', 'Dockerfile.worker']
             },
             monitoring: {
                 icon: '📊',
